@@ -171,6 +171,9 @@ public class   VotingModel {
      * @return whether the current vote is valid
      */
     public boolean checkValidVote() {
+        if (getHighestVote() == Integer.MAX_VALUE) {
+            return false;
+        }
         return getHighestVote() >= ballot.getNumVotesNeeded();
     }
 
