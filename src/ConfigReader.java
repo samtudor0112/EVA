@@ -11,8 +11,10 @@ public class ConfigReader {
     /**
      * Reads the config file in format of
      * numBallots
-     * numCandidates:numVotesNeeded:Candidate~Party
-     * 1:1:yeet~labor
+     * name:numCandidates:numVotesNeeded:Candidate~Party
+     *
+     * 1
+     * Senate:1:1:yeet~labor
      *
      * @param filepath - the filepath of the config file
      * @return - A list of ballot objects read from the config file
@@ -38,8 +40,9 @@ public class ConfigReader {
         int numCandidates, minPrefs;
         List<Candidate> candidates = new ArrayList<>();
 
-        String[] parts = line.split(":", 3);
+        String[] parts = line.split(":", 4);
 
+        String name = parts[0];
         numCandidates = Integer.parseInt(parts[0]);
         minPrefs = Integer.parseInt(parts[1]);
 
@@ -48,7 +51,7 @@ public class ConfigReader {
             candidates.add(readCandidate(candidatesRaw[i]));
         }
 
-        return new Ballot(numCandidates ,minPrefs, candidates);
+        return new Ballot(name, numCandidates ,minPrefs, candidates);
     }
 
     private static Candidate readCandidate(String candidate) {
