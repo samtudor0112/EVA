@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the rules and candidates for a single ballot paper
@@ -20,7 +21,7 @@ public class Ballot {
      * Party,Candidate,Party...
      * @param filename The file to parse
      */
-    public Ballot(String filename) {
+    public Ballot(int numCandidates, int votesNeeded, List<Candidate> candidates) {
         // TODO
     }
 
