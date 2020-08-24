@@ -12,7 +12,7 @@ public class ConfigReader {
      * Reads the config file in format of
      * 2
      * 1:1:bob~libs
-     * 1:1:,yeet~labor
+     * 1:1:yeet~labor
      *
      * @param filepath - the filepath of the config file
      * @return - A list of ballot objects read from the config file
@@ -32,6 +32,10 @@ public class ConfigReader {
         return ballots;
     }
 
+
+    /**
+     * Java docs yeet
+     */
     public static Ballot readBallot(String line) {
         int numCandidates, minPrefs;
         List<Candidate> candidates = new ArrayList<>();
