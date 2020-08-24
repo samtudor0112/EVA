@@ -6,6 +6,9 @@ import java.util.List;
  */
 public class Ballot {
 
+    // Name of the Ballot
+    private String name;
+
     // Number of Candidates
     private int numCandidates;
 
@@ -13,16 +16,18 @@ public class Ballot {
     private int numVotesNeeded;
 
     // The list of candidates on the ballot
-    private ArrayList<Candidate> candidateList;
+    private List<Candidate> candidateList;
 
     /**
-     * Parse a file filename to create the ballot
-     * format is numCandidates,numVotesNeeded,Candidate,
-     * Party,Candidate,Party...
-     * @param filename The file to parse
+     * Create a new Ballot
+     * @param numCandidates the number of candidates on the ballot
+     * @param votesNeeded the number of votes needed for a vote on this ballot to be legal
+     * @param candidates the list of candidates on the ballot
      */
-    public Ballot(int numCandidates, int votesNeeded, List<Candidate> candidates) {
-        // TODO
+    public Ballot(String name, int numCandidates, int votesNeeded, List<Candidate> candidates) {
+        this.numCandidates = numCandidates;
+        this.numVotesNeeded = votesNeeded;
+        this.candidateList = candidates;
     }
 
     /**
@@ -45,7 +50,7 @@ public class Ballot {
      * Getter for the list of candidates
      * @return The list of candidates
      */
-    public ArrayList<Candidate> getCandidateList() {
+    public List<Candidate> getCandidateList() {
         return candidateList;
     }
 }

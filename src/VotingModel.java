@@ -55,6 +55,7 @@ public class VotingModel {
         return true;
     }
 
+    // This might be unnecessary - maybe voteNext is all that's required.
     /**
      * Try to vote for a a candidate, checking if it's a valid vote first.
      * @param candidate who we're voting for
@@ -86,6 +87,20 @@ public class VotingModel {
     }
 
     /**
+     * Vote for the candidate as the next non-voted-for vote
+     * (e.g. if 3 candidates have been voted for as 1,2,3, vote for this candidate as 4).
+     * @param candidate The candidate to vote for
+     */
+    public void voteNext(Candidate candidate) {
+        int highestVote = getHighestVote();
+        if (highestVote != Integer.MAX_VALUE) {
+            setVote(candidate, getHighestVote() + 1);
+        } else {
+            setVote(candidate, 1);
+        }
+    }
+
+    /**
      * Deselect a candidate from the vote ("unvote" for a candidate)
      * @param candidate who to unvote for
      */
@@ -111,6 +126,16 @@ public class VotingModel {
         }
 
         return null;
+    }
+
+    /**
+     * Returns the map of votes, but only with candidates who have been voted for
+     * @return the filtered map
+     */
+    public Map<Candidate, Integer> getVotedForMap() {
+        return currentVotes.entrySet().stream()
+                .filter(entry -> entry.getValue() != Integer.MAX_VALUE)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**

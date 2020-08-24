@@ -10,8 +10,8 @@ public class ConfigReader {
 
     /**
      * Reads the config file in format of
-     * 2
-     * 1:1:bob~libs
+     * numBallots
+     * numCandidates:numVotesNeeded:Candidate~Party
      * 1:1:yeet~labor
      *
      * @param filepath - the filepath of the config file
@@ -33,10 +33,8 @@ public class ConfigReader {
     }
 
 
-    /**
-     * Java docs yeet
-     */
-    public static Ballot readBallot(String line) {
+    // Private, no javadoc needed ;)
+    private static Ballot readBallot(String line) {
         int numCandidates, minPrefs;
         List<Candidate> candidates = new ArrayList<>();
 
