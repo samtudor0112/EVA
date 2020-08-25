@@ -43,10 +43,10 @@ public class ConfigReader {
         String[] parts = line.split(":", 4);
 
         String name = parts[0];
-        numCandidates = Integer.parseInt(parts[0]);
-        minPrefs = Integer.parseInt(parts[1]);
+        numCandidates = Integer.parseInt(parts[1]);
+        minPrefs = Integer.parseInt(parts[2]);
 
-        String[] candidatesRaw = parts[2].split(",");
+        String[] candidatesRaw = parts[3].split(",");
         for (int i = 0; i < numCandidates; i++) {
             candidates.add(readCandidate(candidatesRaw[i]));
         }

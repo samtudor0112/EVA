@@ -25,9 +25,18 @@ public class Ballot {
      * @param candidates the list of candidates on the ballot
      */
     public Ballot(String name, int numCandidates, int votesNeeded, List<Candidate> candidates) {
+        this.name = name;
         this.numCandidates = numCandidates;
         this.numVotesNeeded = votesNeeded;
         this.candidateList = candidates;
+    }
+
+    /**
+     * Getter for name
+     * @return name of the ballot
+     */
+    public String getName() {
+        return name;
     }
 
     /**
