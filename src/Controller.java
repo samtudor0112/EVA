@@ -11,9 +11,9 @@ public class Controller {
     public VotingModel model;
 
     /** The current view of the MVC */
-    public Object currentView;
+    public AbstractView currentView;
 
-    public Controller(Object currentView) {
+    public Controller(AbstractView currentView) {
         this.currentView = currentView;
     }
 }

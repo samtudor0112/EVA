@@ -37,6 +37,7 @@ public class Candidate implements Comparable<Candidate>{
 
     @Override
     public int compareTo(Candidate o) {
+        // We sort by candidate name
         return name.compareTo(o.getName());
     }
 }

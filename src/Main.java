@@ -16,10 +16,12 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
+        stage.show();
+
         RepAcceptView view = new RepAcceptView(stage.getWidth(), stage.getHeight());
         stage.setScene(view.getScene());
 
-        stage.show();
+
 
     }
     public static void main(String[] args) {

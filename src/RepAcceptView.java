@@ -9,8 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public class RepAcceptView {
-    private Scene scene;
+public class RepAcceptView extends AbstractView {
 
     public RepAcceptView(double width, double height) {
         scene = new Scene(new Group());
@@ -48,9 +47,5 @@ public class RepAcceptView {
         titleLabel.setLayoutY(height * 0.2);
 
         titleLabel.setWrappingWidth(width * 0.93);
-    }
-
-    public Scene getScene() {
-        return scene;
     }
 }
