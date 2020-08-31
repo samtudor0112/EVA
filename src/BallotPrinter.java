@@ -5,10 +5,13 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.printing.PDFPageable;
 import java.awt.print.PrinterJob;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class BallotPrinter {
 
-    public static void createPDF() {
+    public static void createPDF(HashMap<Candidate, Integer> currentVotes) {
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage();
         doc.addPage(page);
@@ -20,9 +23,15 @@ public class BallotPrinter {
             PDFont font = PDType1Font.HELVETICA_BOLD;
             contents.setFont(font, 30);
 
-            contents.newLineAtOffset(50, 700);
-            contents.showText("Test");
-            contents.endText();
+            ArrayList<Candidate> candidates = new ArrayList<Candidate> (currentVotes.keySet());
+
+            Collections.sort(candidates);
+
+            for (int i = 0; i < candidates.size(); i++) {
+                contents.newLineAtOffset(50, 700 + 50 * i);
+                contents.showText(Integer.toString(currentVotes.get(candidates.indexOf(i))) + candidates.indexOf(i));
+                contents.endText();
+            }
 
             contents.close();
             //doc.save("D:\\Files\\Desktop\\testpdf.pdf");
