@@ -71,10 +71,16 @@ public class ConfirmWindow extends Application {
         table.setItems(data);
         table.getColumns().addAll(preferenceCol, candidateCol, partyCol);
 
+        table.getStyleClass().add("confirm-table-view");
+
         // TODO pretty CSS for table
 
         Button backButton = new Button("Back");
         Button confirmButton = new Button("CONFIRM");
+
+        backButton.getStyleClass().add("cancel-button");
+        confirmButton.getStyleClass().add("confirm-button");
+
 
         HBox buttonRow = new HBox(backButton, confirmButton);
 

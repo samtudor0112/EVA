@@ -1,0 +1,43 @@
+.root{
+    -fx-background-color: #EEEEEE;
+}
+
+
+.confirm-table-view .column-header-background{
+    -fx-background-color: linear-gradient(#000000 0%, #444444 100%);
+}
+
+.confirm-table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.confirm-table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.confirm-button {
+    -fx-background-color:
+        #000000,
+        linear-gradient(#a1009e, #590058),
+        linear-gradient(#970094, #4f004E),
+        linear-gradient(#8D008A, #590044);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 40px;
+}
+
+.cancel-button {
+    -fx-background-color:
+        #000000,
+        linear-gradient(#b4b4b4, #949494),
+        linear-gradient(#a4a4a4, #848484),
+        linear-gradient(#949494, #747474);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 40px;
+}
