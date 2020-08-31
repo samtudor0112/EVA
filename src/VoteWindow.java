@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -34,12 +35,14 @@ public class VoteWindow extends Application {
             new DummyCandidate(7, "Robert Brown", "Shooters, Fishers and Farmers Party")
     );
 
+    private final int VOTE_TABLE_COLUMNS = 2;
+
     @Override
     public void start(Stage stage) {
 
         Scene scene = new Scene(new Group());
         stage.setTitle("Place Vote");
-        stage.setWidth(700);
+        stage.setWidth(900);
         stage.setHeight(600);
 
         scene.getStylesheets().add("styles/styles.css");
@@ -81,6 +84,14 @@ public class VoteWindow extends Application {
             Text candidateName = new Text(candidateList.get(i).getCandidate());
             Text candidateParty = new Text(candidateList.get(i).getParty());
 
+            candidateName.getStyleClass().add("candidate-name");
+            candidateName.getStyleClass().add("party-name");
+
+            // Wrap the name and party text labels so it doesn't squash other vote card elements
+            // MaGiC NuMbErS, just leave these,
+            candidateName.setWrappingWidth(200);
+            candidateParty.setWrappingWidth(200);
+
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
             candidateVbox.getStyleClass().add("vote-candidate-display");
@@ -103,7 +114,7 @@ public class VoteWindow extends Application {
             voteCardMap.put(candidateList.get(i), voteCard);
 
             // This is why we need the numeric index, every other candidate is put onto a new line
-            votePane.add(voteCard, i % 2, i / 2);
+            votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
 
             // Event handler for when the card is clicked, and the user votes/unvotes for this candidate
             voteCard.setOnMouseClicked(mouseEvent -> {
@@ -119,7 +130,6 @@ public class VoteWindow extends Application {
                 // use the preferenceBoxMap to access the Label associated with a candidate,
                 // then use .setText(NEW_NUMBER_HERE)
             });
-
         }
 
         // Spacer between vote options and buttons
@@ -148,7 +158,12 @@ public class VoteWindow extends Application {
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().addAll(titleBox, votePane, spacer, buttonRow);
 
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
+        ScrollPane scrolly = new ScrollPane();
+        scrolly.setContent(vbox);
+        scrolly.pannableProperty().set(true);
+        scrolly.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        ((Group) scene.getRoot()).getChildren().addAll(scrolly);
 
         stage.setScene(scene);
         stage.show();
