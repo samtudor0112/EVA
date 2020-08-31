@@ -41,3 +41,8 @@
     -fx-text-fill: white;
     -fx-font-size: 40px;
 }
+
+.purple-header {
+    -fx-background-color: linear-gradient(#520051 0%, #690067 100%);
+    -fx-text-fill: white;
+}

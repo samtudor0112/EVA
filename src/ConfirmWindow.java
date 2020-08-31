@@ -96,8 +96,6 @@ public class ConfirmWindow extends Application {
         backButton.setPrefHeight(100);
         confirmButton.setPrefHeight(100);
 
-        // TODO pretty CSS for buttons
-
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
