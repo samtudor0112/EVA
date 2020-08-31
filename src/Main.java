@@ -9,7 +9,6 @@ import java.awt.print.PrinterJob;
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-//        RepAcceptView view = new RepAcceptView(stage.getWidth(), stage.getHeight());
         stage.setTitle("Printing...");
 
         stage.setFullScreen(true);
@@ -18,10 +17,8 @@ public class Main extends Application {
 
         stage.show();
 
-        RepAcceptView view = new RepAcceptView(stage.getWidth(), stage.getHeight());
+        AbstractView view = new ConfirmWindowView(stage.getWidth(), stage.getHeight());
         stage.setScene(view.getScene());
-
-
 
     }
     public static void main(String[] args) {
