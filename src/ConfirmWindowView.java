@@ -30,7 +30,7 @@ public class ConfirmWindowView extends AbstractView {
     );
 
     public ConfirmWindowView(double width, double height) {
-        Scene scene = new Scene(new Group());
+        scene = new Scene(new Group());
 
         scene.getStylesheets().add("styles/styles.css");
 

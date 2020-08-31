@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class SenateAcceptView extends AbstractView {
 
     public SenateAcceptView(double width, double height) {
-        Scene scene = new Scene(new Group());
+        scene = new Scene(new Group());
 
         scene.getStylesheets().add("styles/styles.css");
 
@@ -23,7 +23,7 @@ public class SenateAcceptView extends AbstractView {
 
         Button confirmButton = new Button("Finish");
 
-        confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+        /*confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
 
@@ -31,7 +31,7 @@ public class SenateAcceptView extends AbstractView {
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
             }
-        });
+        });*/
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));;
 
         ((Group) scene.getRoot()).getChildren().addAll(confirmButton, titleLabel);
