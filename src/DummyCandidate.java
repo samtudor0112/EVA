@@ -1,5 +1,3 @@
-package sample;
-
 /**
  * DUMMY CANDIDATE OBJECT FOR TESTING - NOT FOR FINAL USE
  */

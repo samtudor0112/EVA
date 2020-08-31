@@ -1,13 +1,7 @@
-package sample;
 import javafx.application.Application;
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,20 +9,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.TableViewSkin;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
-import javax.swing.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConfirmWindow extends Application {
 
@@ -38,18 +25,18 @@ public class ConfirmWindow extends Application {
         I KNOW WE ARE USING A HASHMAP. I am a shit programmer and couldn't get this working with hashmaps
         I just need to put stuff in the table to know what it's going to look like with data    */
     private final ObservableList<DummyCandidate> data = FXCollections.observableArrayList(
-            new DummyCandidate(1, "Scott Morrison" ,"LNP"),
-            new DummyCandidate(2, "Anthony Albanese", "ALP"),
-            new DummyCandidate(3, "Adam Bandt", "Greens"),
-            new DummyCandidate(4, "Pauline Hanson", "One Nation"),
+            new DummyCandidate(1, "Scott Morrison" ,"Liberal National Party"),
+            new DummyCandidate(2, "Anthony Albanese", "Australian Labor Party"),
+            new DummyCandidate(3, "Adam Bandt", "Australian Greens"),
+            new DummyCandidate(4, "Pauline Hanson", "Pauline Hanson's One Nation"),
             new DummyCandidate(5, "Robbie Katter", "Katter's Australian Party")
     );
 
-    /* FOR STANDALONE TESTING ONLY
+    /* FOR STANDALONE TESTING ONLY */
     public static void main(String[] args) {
         launch(args);
     }
-    */
+
     
     @Override
     public void start(Stage stage) {
@@ -58,6 +45,8 @@ public class ConfirmWindow extends Application {
         stage.setTitle("Confirm Vote");
         stage.setWidth(620);
         stage.setHeight(600);
+
+        scene.getStylesheets().add("styles/styles.css");
 
         Text titleLabel = new Text("Confirm Vote");
         titleLabel.setTextAlignment(TextAlignment.CENTER);
