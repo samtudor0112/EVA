@@ -1,21 +1,25 @@
+/* Root style, mainly for background colour */
 .root{
     -fx-background-color: #EEEEEE;
 }
 
-
+/* The "Vote Confirm" screen's display table header background style */
 .confirm-table-view .column-header-background{
     -fx-background-color: linear-gradient(#000000 0%, #444444 100%);
 }
 
+/* The "Vote Confirm" screen's display table header text style */
 .confirm-table-view .column-header-background .label{
     -fx-background-color: transparent;
     -fx-text-fill: white;
 }
 
+/* The "Vote Confirm" screen's display table column header style */
 .confirm-table-view .column-header {
     -fx-background-color: transparent;
 }
 
+/* The confirm button style */
 .confirm-button {
     -fx-background-color:
         #000000,
@@ -29,20 +33,48 @@
     -fx-font-size: 40px;
 }
 
+/* The "cancel" / "clear current vote" style */
 .cancel-button {
     -fx-background-color:
         #000000,
-        linear-gradient(#b4b4b4, #949494),
-        linear-gradient(#a4a4a4, #848484),
-        linear-gradient(#949494, #747474);
+        linear-gradient(#f4f4f4, #d4d4d4),
+        linear-gradient(#e4e4e4, #c4c4c4),
+        linear-gradient(#d4d4d4, #b4b4b4);
     -fx-background-insets: 0, 1, 2, 3;
     -fx-background-radius: 3, 2, 2, 2;
     -fx-padding: 12 30 12 30;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-font-size: 40px;
 }
 
+/* Header style in accordance with colour scheme */
 .purple-header {
     -fx-background-color: linear-gradient(#520051 0%, #690067 100%);
+    /*-fx-text-fill: white;*/
+}
+
+/* Header text style in accordance with colour scheme */
+.text-header-purple {
+    -fx-font-size: 30px;
     -fx-text-fill: white;
+}
+
+/* Vote input text area style */
+.input-vote {
+    -fx-font-size: 20px;
+}
+
+/* Vote screen candidate "card" candidate text style */
+.vote-candidate-display {
+    /* TODO Style and align text more desirably */
+}
+
+/* Vote screen candidate "card" card style */
+.vote-card {
+/*    -fx-padding: 10;*/
+    -fx-border-style: solid inside;
+    -fx-border-width: 2;
+/*    -fx-border-insets: 5;*/
+    -fx-background-color: #cccccc;
+/*    -fx-border-color: #555555; */
 }
