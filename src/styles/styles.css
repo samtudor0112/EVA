@@ -86,3 +86,13 @@
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
+
+.candidate-name {
+    -fx-font-weight: bold;
+}
+
+.party-name {
+    /* simply put
+       stuff here
+     */
+}
