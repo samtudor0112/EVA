@@ -36,7 +36,7 @@ public class SenateAcceptBox extends Application {
 
         scene.getStylesheets().add("styles/styles.css");
 
-        Text titleLabel = new Text("Senate ballot complete, ballot printing...");
+        Text titleLabel = new Text("Upper house ballot complete, ballot printing...");
         titleLabel.setTextAlignment(TextAlignment.CENTER);
         titleLabel.setFont(new Font(30));
 
@@ -46,7 +46,8 @@ public class SenateAcceptBox extends Application {
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // do button stuff here
+
+                // exit
                 Stage stage = (Stage) confirmButton.getScene().getWindow();
                 stage.close();
             }
@@ -68,6 +69,7 @@ public class SenateAcceptBox extends Application {
         confirmButton.setLayoutX(WIDTH * 0.78);
         confirmButton.setLayoutY(HEIGHT * 0.83);
 
+        confirmButton.getStyleClass().add("confirm-button");
 
         titleLabel.setLayoutX(WIDTH * 0);
         titleLabel.setLayoutY(HEIGHT * 0.2);
@@ -76,9 +78,5 @@ public class SenateAcceptBox extends Application {
 
     }
 
-    public static void main(String[] args) {
-
-        launch();
-    }
 
 }

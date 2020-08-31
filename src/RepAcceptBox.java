@@ -45,10 +45,8 @@ public class RepAcceptBox extends Application {
         confirmButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                // do button stuff here
 
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
+                // end current window and start senate voting
             }
         });
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));;
@@ -72,13 +70,9 @@ public class RepAcceptBox extends Application {
         titleLabel.setLayoutX(WIDTH * 0);
         titleLabel.setLayoutY(HEIGHT * 0.2);
 
+        confirmButton.getStyleClass().add("confirm-button");
         titleLabel.setWrappingWidth(WIDTH * 0.93);
 
-    }
-
-    public static void main(String[] args) {
-
-        launch();
     }
 
 }
