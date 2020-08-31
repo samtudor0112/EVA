@@ -1,3 +1,7 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Control;
+
 /**
  * The Controller class of MVC. Controls the whole application.
  */
@@ -7,7 +11,9 @@ public class Controller {
     public VotingModel model;
 
     /** The current view of the MVC */
-    public ViewWindow currentView;
+    public Object currentView;
 
-    // TODO
+    public Controller(Object currentView) {
+        this.currentView = currentView;
+    }
 }
