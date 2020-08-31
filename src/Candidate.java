@@ -1,7 +1,7 @@
 /**
  * Represents a single candidate on a ballot
  */
-public class Candidate {
+public class Candidate implements Comparable<Candidate>{
 
     // The candidate's name
     private String name;
@@ -33,5 +33,10 @@ public class Candidate {
      */
     public String getParty() {
         return party;
+    }
+
+    @Override
+    public int compareTo(Candidate o) {
+        return name.compareTo(o.getName());
     }
 }

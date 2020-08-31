@@ -160,4 +160,6 @@ public class VotingModel {
     public boolean checkValidVote() {
         return getHighestVote() >= ballot.getNumVotesNeeded();
     }
+
+
 }
