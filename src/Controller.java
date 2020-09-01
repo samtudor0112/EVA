@@ -38,6 +38,21 @@ public class Controller {
             entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
         }
 
+        // Set the button presses for the clear and confirm buttons
+        ((VoteWindowView)currentView).getClearButton().setOnAction(actionEvent -> {
+            model.deselectAll();
+            ((VoteWindowView)currentView).setCandidatePreferences(model.getFullMap());
+        });
+
+        ((VoteWindowView)currentView).getConfirmButton().setOnAction(actionEvent -> {
+            if (model.checkValidVote()) {
+                BallotPrinter.createPDF(model.getFullMap());
+            } else {
+                // TODO
+                System.out.println("Not enough candidates voted for");
+            }
+        });
+
     }
 
     public AbstractView getCurrentView() {

@@ -28,9 +28,7 @@ public class VotingModel {
 
         // Add all the candidates to the map of votes as not selected
         currentVotes = new HashMap<>();
-        for (Candidate candidate: ballot.getCandidateList()) {
-            deselectVote(candidate);
-        }
+        deselectAll();
     }
 
     /**
@@ -88,7 +86,7 @@ public class VotingModel {
         return true;
     }
 
-    /**
+    /*
      * Vote for the candidate as the next non-voted-for vote
      * (e.g. if 3 candidates have been voted for as 1,2,3, vote for this candidate as 4).
      * @param candidate The candidate to vote for
@@ -118,7 +116,7 @@ public class VotingModel {
         return true;
     }
 
-    /**
+    /*
      * Deselect a candidate from the vote ("unvote" for a candidate)
      * @param candidate who to unvote for
      */
@@ -126,7 +124,7 @@ public class VotingModel {
         setVote(candidate, Integer.MAX_VALUE);
     }
 
-    /**
+    /*
      * Set the current vote for a candidate to a specific value
      * @param candidate who we're voting for
      * @param vote the value of our vote
@@ -193,5 +191,14 @@ public class VotingModel {
      */
     public HashMap<Candidate, Integer> getFullMap() {
         return currentVotes;
+    }
+
+    /**
+     * Deselects all candidates from the vote ("unvotes" for all candidates)
+     */
+    public void deselectAll() {
+        for (Candidate candidate: ballot.getCandidateList()) {
+            deselectVote(candidate);
+        }
     }
 }

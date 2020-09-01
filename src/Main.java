@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
- * (in our case, /config/config.txt should be good)
+ * (in our case, config/config.txt should be good)
  */
 public class Main extends Application {
 

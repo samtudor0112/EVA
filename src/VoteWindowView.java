@@ -22,6 +22,10 @@ public class VoteWindowView extends AbstractView {
 
     private GridPane votePane;
 
+    private Button confirmButton;
+
+    private Button clearButton;
+
     private double width;
 
     private double height;
@@ -29,8 +33,6 @@ public class VoteWindowView extends AbstractView {
     private Map<Candidate, Label> preferenceBoxMap;
 
     private Map<Candidate, HBox> voteCardMap;
-
-    private Map<HBox, Candidate> voteCardMapReversed;
 
     public VoteWindowView(double width, double height) {
 
@@ -61,8 +63,8 @@ public class VoteWindowView extends AbstractView {
         Region spacer = new Region();
 
         // Button pane
-        Button clearButton = new Button("Clear all");
-        Button confirmButton = new Button("Confirm");
+        clearButton = new Button("Clear all");
+        confirmButton = new Button("Confirm");
 
         clearButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");
@@ -99,7 +101,6 @@ public class VoteWindowView extends AbstractView {
         // Each "Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
-        voteCardMapReversed = new HashMap<>();
 
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
@@ -144,25 +145,10 @@ public class VoteWindowView extends AbstractView {
 
             // We also assign each candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
-            voteCardMapReversed.put(voteCard, candidateList.get(i));
 
             // This is why we need the numeric index, every other candidate is put onto a new line
             votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
 
-            // Event handler for when the card is clicked, and the user votes/unvotes for this candidate
-            voteCard.setOnMouseClicked(mouseEvent -> {
-                // TODO Implement click vote functionality, and reset preference field
-
-                // You can reset this card's preference number with the following:
-                // preferenceLabel.setText(NEW_NUMBER_HERE);
-
-                // You can also use candidateList.get(i) to get this candidate, but pls
-                // replace the "DummyCandidate" class with the actual proper candidate class
-
-                // If you want to change the preference number outside of this function, then
-                // use the preferenceBoxMap to access the Label associated with a candidate,
-                // then use .setText(NEW_NUMBER_HERE)
-            });
         }
     }
 
@@ -185,7 +171,11 @@ public class VoteWindowView extends AbstractView {
         return preferenceBoxMap;
     }
 
-    public Map<HBox, Candidate> getVoteCardMapReversed() {
-        return voteCardMapReversed;
+    public Button getClearButton() {
+        return clearButton;
+    }
+
+    public Button getConfirmButton() {
+        return confirmButton;
     }
 }
