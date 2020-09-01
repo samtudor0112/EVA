@@ -19,7 +19,9 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
+/*
+ DEPRECATED!!!! Change VoteWindowView Now!!!
+ */
 public class SenateAcceptBox extends Application {
     @Override
 

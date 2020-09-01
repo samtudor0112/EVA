@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/*
+ DEPRECATED!!!! Change VoteWindowView Now!!!
+ */
 public class VoteWindow extends Application {
 
     /* FOR STANDALONE TESTING ONLY */

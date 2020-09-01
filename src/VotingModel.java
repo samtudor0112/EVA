@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,7 @@ public class VotingModel {
         this.ballot = ballot;
 
         // Add all the candidates to the map of votes as not selected
+        currentVotes = new HashMap<>();
         for (Candidate candidate: ballot.getCandidateList()) {
             deselectVote(candidate);
         }
@@ -161,5 +163,11 @@ public class VotingModel {
         return getHighestVote() >= ballot.getNumVotesNeeded();
     }
 
-
+    /**
+     * Returns an unsorted list of the candidates
+     * @return the candidates
+     */
+    public List<Candidate> getCandidateList() {
+        return ballot.getCandidateList();
+    }
 }

@@ -13,25 +13,23 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VoteWindowView extends AbstractView {
 
-    // TESTING PURPOSES ONLY - NOT FOR FINAL USE
-    private final ObservableList<DummyCandidate> candidateList = FXCollections.observableArrayList(
-            new DummyCandidate(1, "Scott Morrison" ,"Liberal National Party"),
-            new DummyCandidate(2, "Anthony Albanese", "Australian Labor Party"),
-            new DummyCandidate(3, "Adam Bandt", "Australian Greens"),
-            new DummyCandidate(4, "Pauline Hanson", "Pauline Hanson's One Nation"),
-            new DummyCandidate(5, "Robbie Katter", "Katter's Australian Party"),
-            new DummyCandidate(6, "Jacqui Lambie", "Jacqui Lambie Network"),
-            new DummyCandidate(7, "Robert Brown", "Shooters, Fishers and Farmers Party")
-    );
-
     private final int VOTE_TABLE_COLUMNS = 2;
+
+    private GridPane votePane;
+
+    private double width;
+
+    private double height;
 
     public VoteWindowView(double width, double height) {
 
+        this.width = width;
+        this.height = height;
 
         scene = new Scene(new Group());
 
@@ -45,19 +43,56 @@ public class VoteWindowView extends AbstractView {
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
-        GridPane votePane = new GridPane();
+        votePane = new GridPane();
         votePane.setPrefWidth(width);
         votePane.setHgap(5);
         votePane.setVgap(5);
         votePane.setPadding(new Insets(0, 5, 0, 5));
 
+
+
+        // Spacer between vote options and buttons
+        Region spacer = new Region();
+
+        // Button pane
+        Button clearButton = new Button("Clear all");
+        Button confirmButton = new Button("Confirm");
+
+        clearButton.getStyleClass().add("cancel-button");
+        confirmButton.getStyleClass().add("confirm-button");
+
+        HBox buttonRow = new HBox(clearButton, confirmButton);
+        buttonRow.setPrefWidth(200);
+        buttonRow.setSpacing(5);
+        buttonRow.setPadding(new Insets(0, 5, 0, 5));
+
+        clearButton.setPrefWidth((width - 20) / 2);
+        confirmButton.setPrefWidth((width - 20) / 2);
+
+        clearButton.setPrefHeight(100);
+        confirmButton.setPrefHeight(100);
+
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        vbox.getChildren().addAll(titleBox, votePane, spacer, buttonRow);
+
+        ScrollPane scrolly = new ScrollPane();
+        scrolly.setContent(vbox);
+        scrolly.pannableProperty().set(true);
+        scrolly.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        ((Group) scene.getRoot()).getChildren().addAll(scrolly);
+    }
+
+    public void drawCandidateCards(List<Candidate> candidateList) {
         // Each "DummyCandidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
-        Map<DummyCandidate, Label> preferenceBoxMap = new HashMap<>();
+        Map<Candidate, Label> preferenceBoxMap = new HashMap<>();
 
         // Each "DummyCandidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
-        Map<DummyCandidate, HBox> voteCardMap = new HashMap<>();
+        Map<Candidate, HBox> voteCardMap = new HashMap<>();
 
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
@@ -71,7 +106,7 @@ public class VoteWindowView extends AbstractView {
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
-            Text candidateName = new Text(candidateList.get(i).getCandidate());
+            Text candidateName = new Text(candidateList.get(i).getName());
             Text candidateParty = new Text(candidateList.get(i).getParty());
 
             candidateName.getStyleClass().add("candidate-name");
@@ -121,38 +156,5 @@ public class VoteWindowView extends AbstractView {
                 // then use .setText(NEW_NUMBER_HERE)
             });
         }
-
-        // Spacer between vote options and buttons
-        Region spacer = new Region();
-
-        // Button pane
-        Button clearButton = new Button("Clear all");
-        Button confirmButton = new Button("Confirm");
-
-        clearButton.getStyleClass().add("cancel-button");
-        confirmButton.getStyleClass().add("confirm-button");
-
-        HBox buttonRow = new HBox(clearButton, confirmButton);
-        buttonRow.setPrefWidth(200);
-        buttonRow.setSpacing(5);
-        buttonRow.setPadding(new Insets(0, 5, 0, 5));
-
-        clearButton.setPrefWidth((width - 20) / 2);
-        confirmButton.setPrefWidth((width - 20) / 2);
-
-        clearButton.setPrefHeight(100);
-        confirmButton.setPrefHeight(100);
-
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-        vbox.getChildren().addAll(titleBox, votePane, spacer, buttonRow);
-
-        ScrollPane scrolly = new ScrollPane();
-        scrolly.setContent(vbox);
-        scrolly.pannableProperty().set(true);
-        scrolly.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-        ((Group) scene.getRoot()).getChildren().addAll(scrolly);
     }
 }

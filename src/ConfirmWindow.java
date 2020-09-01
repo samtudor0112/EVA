@@ -16,7 +16,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-
+/*
+ DEPRECATED!!!! Change VoteWindowView Now!!!
+ */
 public class ConfirmWindow extends Application {
 
     private TableView table = new TableView();

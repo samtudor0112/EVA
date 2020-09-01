@@ -1,10 +1,14 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.awt.print.PrinterJob;
+import java.io.IOException;
+import java.util.List;
 
 public class Main extends Application {
     @Override
@@ -17,12 +21,31 @@ public class Main extends Application {
 
         stage.show();
 
-        AbstractView view = new VoteWindowView(stage.getWidth(), stage.getHeight());
-        stage.setScene(view.getScene());
+
+
+        List<Ballot> ballots = null;
+        try {
+            ballots = ConfigReader.read(getParameters().getRaw().get(0));
+        } catch (IOException | IndexOutOfBoundsException e) {
+            System.out.println("Invalid filepath to ballot config");
+            Platform.exit();
+            System.exit(1);
+        }
+
+        for (Ballot ballot: ballots) {
+            VotingModel model = new VotingModel(ballot);
+
+            // Controller instantiates the view
+            Controller controller = new Controller(stage, model);
+
+            // This will only show the last controller I think so that's a problem
+            // We also need a way to change the view to keep going to the next screen
+            controller.getStage().setScene(controller.getCurrentView().getScene());
+        }
 
     }
-    public static void main(String[] args) {
 
-        launch();
+    public static void main(String[] args) {
+        launch(args);
     }
 }
