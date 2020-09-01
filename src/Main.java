@@ -17,7 +17,7 @@ public class Main extends Application {
 
         stage.show();
 
-        AbstractView view = new ConfirmWindowView(stage.getWidth(), stage.getHeight());
+        AbstractView view = new VoteWindowView(stage.getWidth(), stage.getHeight());
         stage.setScene(view.getScene());
 
     }
