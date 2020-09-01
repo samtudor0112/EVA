@@ -57,7 +57,7 @@ public class VotingModel {
         return true;
     }
 
-    // This might be unnecessary - maybe voteNext is all that's required.
+    // This might be unnecessary - maybe voteNext / tryVoteNext is all that's required.
     /**
      * Try to vote for a a candidate, checking if it's a valid vote first.
      * @param candidate who we're voting for
@@ -93,13 +93,29 @@ public class VotingModel {
      * (e.g. if 3 candidates have been voted for as 1,2,3, vote for this candidate as 4).
      * @param candidate The candidate to vote for
      */
-    public void voteNext(Candidate candidate) {
+    private void voteNext(Candidate candidate) {
         int highestVote = getHighestVote();
         if (highestVote != Integer.MAX_VALUE) {
             setVote(candidate, getHighestVote() + 1);
         } else {
             setVote(candidate, 1);
         }
+    }
+    /**
+     * Try to vote for the candidate as the next non-voted-for vote.
+     * (e.g. if 3 candidates have been voted for as 1,2,3, vote for this candidate as 4).
+     * If the candidate already has a vote, returns false
+     * @param candidate The candidate to try to vote for
+     */
+    public boolean tryVoteNext(Candidate candidate) {
+        int currentVoteValue = currentVotes.get(candidate);
+        // Check if this candidate has already been voted for
+        if (currentVoteValue != Integer.MAX_VALUE) {
+            return false;
+        }
+
+        voteNext(candidate);
+        return true;
     }
 
     /**
@@ -169,5 +185,13 @@ public class VotingModel {
      */
     public List<Candidate> getCandidateList() {
         return ballot.getCandidateList();
+    }
+
+    /**
+     * Returns the whole map of votes, including candidates with no vote with value Integer.MAX_VALUE
+     * @return the map of preferences
+     */
+    public HashMap<Candidate, Integer> getFullMap() {
+        return currentVotes;
     }
 }

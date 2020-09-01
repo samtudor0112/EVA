@@ -26,6 +26,12 @@ public class VoteWindowView extends AbstractView {
 
     private double height;
 
+    private Map<Candidate, Label> preferenceBoxMap;
+
+    private Map<Candidate, HBox> voteCardMap;
+
+    private Map<HBox, Candidate> voteCardMapReversed;
+
     public VoteWindowView(double width, double height) {
 
         this.width = width;
@@ -88,11 +94,12 @@ public class VoteWindowView extends AbstractView {
     public void drawCandidateCards(List<Candidate> candidateList) {
         // Each "Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
-        Map<Candidate, Label> preferenceBoxMap = new HashMap<>();
+        preferenceBoxMap = new HashMap<>();
 
         // Each "Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
-        Map<Candidate, HBox> voteCardMap = new HashMap<>();
+        voteCardMap = new HashMap<>();
+        voteCardMapReversed = new HashMap<>();
 
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
@@ -137,6 +144,7 @@ public class VoteWindowView extends AbstractView {
 
             // We also assign each candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
+            voteCardMapReversed.put(voteCard, candidateList.get(i));
 
             // This is why we need the numeric index, every other candidate is put onto a new line
             votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
@@ -156,5 +164,28 @@ public class VoteWindowView extends AbstractView {
                 // then use .setText(NEW_NUMBER_HERE)
             });
         }
+    }
+
+    /**
+     * Sets the text of each candidate's label according to the preferences map
+     * @param preferences the map of preferences
+     */
+    public void setCandidatePreferences(Map<Candidate, Integer> preferences) {
+        for (Map.Entry<Candidate, Integer> entry: preferences.entrySet()) {
+            String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
+            preferenceBoxMap.get(entry.getKey()).setText(textVote);
+        }
+    }
+
+    public Map<Candidate, HBox> getVoteCardMap() {
+        return voteCardMap;
+    }
+
+    public Map<Candidate, Label> getPreferenceBoxMap() {
+        return preferenceBoxMap;
+    }
+
+    public Map<HBox, Candidate> getVoteCardMapReversed() {
+        return voteCardMapReversed;
     }
 }
