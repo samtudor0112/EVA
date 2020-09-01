@@ -10,7 +10,12 @@ import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
+ * (in our case, /config/config.txt should be good)
+ */
 public class Main extends Application {
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Printing...");
@@ -20,8 +25,6 @@ public class Main extends Application {
         stage.setResizable(false);
 
         stage.show();
-
-
 
         List<Ballot> ballots = null;
         try {

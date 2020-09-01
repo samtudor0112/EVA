@@ -26,7 +26,6 @@ public class Controller {
 
         // This should only be done for the voteWindow view
         ((VoteWindowView)currentView).drawCandidateCards(model.getCandidateList());
-
     }
 
     public AbstractView getCurrentView() {

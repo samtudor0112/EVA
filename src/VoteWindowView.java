@@ -49,7 +49,7 @@ public class VoteWindowView extends AbstractView {
         votePane.setVgap(5);
         votePane.setPadding(new Insets(0, 5, 0, 5));
 
-
+        // Populating the votePane now occurs in drawCandidateCards
 
         // Spacer between vote options and buttons
         Region spacer = new Region();
@@ -86,11 +86,11 @@ public class VoteWindowView extends AbstractView {
     }
 
     public void drawCandidateCards(List<Candidate> candidateList) {
-        // Each "DummyCandidate" object is assigned a TextArea, which can be changed when
+        // Each "Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
         Map<Candidate, Label> preferenceBoxMap = new HashMap<>();
 
-        // Each "DummyCandidate" object is also assigned a box that, when clicked, will register
+        // Each "Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         Map<Candidate, HBox> voteCardMap = new HashMap<>();
 
@@ -102,7 +102,7 @@ public class VoteWindowView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
-            // Here, the DummyCandidate is assigned a TextArea
+            // Here, the Candidate is assigned a TextArea
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
