@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The view implementing the main voting screen.
+ */
 public class VoteWindowView extends AbstractView {
 
     private final int VOTE_TABLE_COLUMNS = 2;
@@ -34,6 +37,12 @@ public class VoteWindowView extends AbstractView {
 
     private Map<Candidate, HBox> voteCardMap;
 
+    /**
+     * Instantiate the vote window from a stage of size width by height.
+     * Sets up some of the ui elements (the static ones), but not the candidate
+     * @param width the width of the javafx stage
+     * @param height the height of the javafx stage
+     */
     public VoteWindowView(double width, double height) {
 
         this.width = width;
@@ -93,6 +102,10 @@ public class VoteWindowView extends AbstractView {
         ((Group) scene.getRoot()).getChildren().addAll(scrolly);
     }
 
+    /**
+     * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * @param candidateList the list of candidates to draw
+     */
     public void drawCandidateCards(List<Candidate> candidateList) {
         // Each "Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
@@ -163,18 +176,34 @@ public class VoteWindowView extends AbstractView {
         }
     }
 
+    /**
+     * Getter for the vote card map
+     * @return the vote card map
+     */
     public Map<Candidate, HBox> getVoteCardMap() {
         return voteCardMap;
     }
 
+    /**
+     * Getter for the preference box map
+     * @return the preference box map
+     */
     public Map<Candidate, Label> getPreferenceBoxMap() {
         return preferenceBoxMap;
     }
 
+    /**
+     * Getter for the clear button
+     * @return the clear button
+     */
     public Button getClearButton() {
         return clearButton;
     }
 
+    /**
+     * Getter for the confirm button
+     * @return the confirm button
+     */
     public Button getConfirmButton() {
         return confirmButton;
     }

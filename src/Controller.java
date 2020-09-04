@@ -15,18 +15,27 @@ import java.util.Map;
  */
 public class Controller {
 
-    /** The current model of the MVC */
+    /* The current model of the MVC */
     private VotingModel model;
 
-    /** The current view of the MVC */
+    /* The current view of the MVC */
     private AbstractView currentView;
 
-    /** The javafx stage **/
+    /* The javafx stage */
     private Stage stage;
 
+    /**
+     * Instantiates the controller to display on a given stage and with a given VotingModel.
+     * Temporarily just instantiates the current view as the vote window
+     * @param stage the javafx stage to display on
+     * @param model the VotingModel to work from
+     */
     public Controller(Stage stage, VotingModel model) {
         this.stage = stage;
         this.model = model;
+
+        // TEMPORARY
+
         this.currentView = new VoteWindowView(stage.getWidth(), stage.getHeight());
 
         // Below this should only be done for the voteWindow view
@@ -55,14 +64,26 @@ public class Controller {
 
     }
 
+    /**
+     * Getter for the current view
+     * @return the current view
+     */
     public AbstractView getCurrentView() {
         return currentView;
     }
 
+    /**
+     * Getter for the javafx stage
+     * @return the javafx stage
+     */
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Getter for the voting model
+     * @return the voting model
+     */
     public VotingModel getModel() {
         return model;
     }

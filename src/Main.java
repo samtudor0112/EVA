@@ -18,6 +18,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        // TEMPORARY
         stage.setTitle("Printing...");
 
         stage.setFullScreen(true);
@@ -35,6 +37,7 @@ public class Main extends Application {
             System.exit(1);
         }
 
+        // 
         for (Ballot ballot: ballots) {
             VotingModel model = new VotingModel(ballot);
 
