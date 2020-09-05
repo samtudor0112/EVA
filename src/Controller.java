@@ -35,7 +35,6 @@ public class Controller {
         this.model = model;
 
         // TEMPORARY
-
         this.currentView = new VoteWindowView(stage.getWidth(), stage.getHeight());
 
         // Below this should only be done for the voteWindow view
@@ -55,7 +54,8 @@ public class Controller {
 
         ((VoteWindowView)currentView).getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                BallotPrinter.createPDF(model.getFullMap());
+                setCurrentView(new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap()));
+                //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
             } else {
                 // TODO
                 System.out.println("Not enough candidates voted for");
@@ -70,6 +70,12 @@ public class Controller {
      */
     public AbstractView getCurrentView() {
         return currentView;
+    }
+
+    public void setCurrentView(AbstractView view) {
+        this.currentView = view;
+        stage.setScene(currentView.getScene());
+        stage.show();
     }
 
     /**

@@ -46,7 +46,7 @@ public class ConfigReader {
         numCandidates = Integer.parseInt(parts[1]);
         minPrefs = Integer.parseInt(parts[2]);
 
-        String[] candidatesRaw = parts[3].split(",");
+        String[] candidatesRaw = parts[3].split("\\|");
         for (int i = 0; i < numCandidates; i++) {
             candidates.add(readCandidate(candidatesRaw[i]));
         }

@@ -45,7 +45,8 @@ public class ConfirmWindowView extends AbstractView {
         }
     }
 
-    public ConfirmWindowView(double width, double height) {
+    public ConfirmWindowView(double width, double height, HashMap<Candidate, Integer> prefs) {
+        this.prefList = prefs;
         scene = new Scene(new Group());
 
         scene.getStylesheets().add("styles/styles.css");
@@ -64,6 +65,8 @@ public class ConfirmWindowView extends AbstractView {
 
         list.setMinWidth(600);
         list.getStyleClass().add("confirm-list-view");
+
+        list.setFocusTraversable(false);
 
         Button backButton = new Button("Back");
         Button confirmButton = new Button("CONFIRM");
