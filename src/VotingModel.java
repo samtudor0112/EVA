@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -10,7 +7,7 @@ import java.util.stream.Collectors;
  * We check most of whether a vote is valid as the voting occurs,
  * only waiting to check if enough votes have been placed until the end
  */
-public class VotingModel {
+public class   VotingModel {
 
     // The map of candidates and their current vote. Integer.MAX_VALUE means not selected
     // We need to never allow dupe votes
@@ -200,5 +197,20 @@ public class VotingModel {
         for (Candidate candidate: ballot.getCandidateList()) {
             deselectVote(candidate);
         }
+    }
+
+    public Map<Integer, Candidate> orderMap() {
+        Map<Integer, Candidate> output = new TreeMap<>();
+
+        Set<Candidate> candidates = currentVotes.keySet();
+
+        for (Candidate c : candidates) {
+            if (currentVotes.get(c) == Integer.MAX_VALUE) {
+                continue;
+            }
+            output.put(currentVotes.get(c), c);
+        }
+
+        return output;
     }
 }
