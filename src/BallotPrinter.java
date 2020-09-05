@@ -17,21 +17,23 @@ public class BallotPrinter {
         try {
             contents = new PDPageContentStream(doc, page);
 
-            contents.beginText();
+            //contents.beginText();
             PDFont font = PDType1Font.HELVETICA_BOLD;
             contents.setFont(font, 30);
 
             Collections.sort(candidates);
 
             for (int i = 0; i < candidates.size(); i++) {
-                contents.newLineAtOffset(50, 700 + 50 * i);
+                contents.beginText();
+                contents.newLineAtOffset(50, 700 - 50 * i);
                 int vote = currentVotes.get(candidates.get(i));
                 if (vote == Integer.MAX_VALUE) {
                     // Not sure what to do here
-                    contents.showText(candidates.get(i).getName());
+                    contents.showText(" " + candidates.get(i).getName());
                 } else {
                     contents.showText(Integer.toString(vote) + candidates.get(i).getName());
                 }
+                System.out.println(candidates.get(i).getName());
                 contents.endText();
             }
 
@@ -45,7 +47,8 @@ public class BallotPrinter {
 
             doc.close();
         } catch (Exception e) {
-            System.out.println("contents couldn't be created");
+            e.printStackTrace();
+            //System.out.println("contents couldn't be created");
         }
     }
 }

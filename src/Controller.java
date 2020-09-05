@@ -54,14 +54,19 @@ public class Controller {
 
         ((VoteWindowView)currentView).getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                setCurrentView(new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap()));
-                //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+                //setCurrentView(new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap()));
+                BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
             } else {
                 // TODO
                 System.out.println("Not enough candidates voted for");
             }
         });
 
+    }
+
+    private void setupVoteWindow(VoteWindowView vw) {
+        vw.drawCandidateCards(model.getCandidateList());
+        vw.setCandidatePreferences(model.getFullMap());
     }
 
     /**
