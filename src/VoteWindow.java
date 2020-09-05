@@ -122,6 +122,8 @@ public class VoteWindow extends Application {
             voteCard.setOnMouseClicked(mouseEvent -> {
                 // TODO Implement click vote functionality, and reset preference field
 
+
+
                 // You can reset this card's preference number with the following:
                 // preferenceLabel.setText(NEW_NUMBER_HERE);
 

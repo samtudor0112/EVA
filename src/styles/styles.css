@@ -3,6 +3,34 @@
     -fx-background-color: #EEEEEE;
 }
 
+/* Make the list look less ugly */
+.confirm-list-view {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+}
+
+/* to make the preference node look cool */
+.preference-style {
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-align: center;
+    -fx-padding: 10px;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+    -fx-border-color: gray;
+    -fx-width: 50px;
+}
+
+/* CONFIRM TABLE VIEW CSS - Deprecated */
+.confirm-table-view {
+    -fx-background-color: transparent;
+}
+/* removes blue outline from when table is in focus */
+.confirm-table-view:focused {
+    -fx-background-color: transparent;
+}
+
 /* The "Vote Confirm" screen's display table header background style */
 .confirm-table-view .column-header-background{
     -fx-background-color: linear-gradient(#000000 0%, #444444 100%);
