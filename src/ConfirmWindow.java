@@ -5,16 +5,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Border;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 /*
  DEPRECATED!!!! Change VoteWindowView Now!!!
@@ -81,11 +81,14 @@ public class ConfirmWindow extends Application {
         Text subtitleLabel = new Text("Candidates should be numbered from 1 to x in the order of your choice.");
         subtitleLabel.setTextAlignment(TextAlignment.CENTER);
 
+
         ListView list = new ListView(data);
         list.setCellFactory(listView -> new CandidateCell());
 
         list.setMinWidth(600);
         list.getStyleClass().add("confirm-list-view");
+
+        list.setFocusTraversable( false );
 
         /*table.setEditable(true);
         table.setPlaceholder(new Label("No votes to display"));
