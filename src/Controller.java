@@ -55,7 +55,7 @@ public class Controller {
 
         ((VoteWindowView)currentView).getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                BallotPrinter.createPDF(model.getFullMap());
+                BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
             } else {
                 // TODO
                 System.out.println("Not enough candidates voted for");
