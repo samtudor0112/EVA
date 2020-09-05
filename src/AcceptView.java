@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,15 +5,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
-public class RepAcceptView extends AbstractView {
+/**
+ * General class for the accept screen because the only thing that really needs to change is
+ * the name of the ballot. I've created a new class instead of changing an old one because I don't
+ * want to break anything/get rid of something important.
+ */
+public class AcceptView extends AbstractView {
 
-    public RepAcceptView(double width, double height) {
+    /**
+     * Constructor for the view
+     * @param width width of the stage
+     * @param height height of the stage
+     * @param s the name of the ballot/the message to show while the ballot is printing
+     */
+    public AcceptView(double width, double height, String s) {
         scene = new Scene(new Group());
         scene.getStylesheets().add("styles/styles.css");
 
-        Text titleLabel = new Text("Lower house ballot complete, ballot printing...");
+        Text titleLabel = new Text(s);
         titleLabel.setTextAlignment(TextAlignment.CENTER);
         titleLabel.setFont(new Font(30));
 
@@ -33,7 +41,6 @@ public class RepAcceptView extends AbstractView {
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));;
 
         ((Group) scene.getRoot()).getChildren().addAll(confirmButton, titleLabel);
-
 
 
         confirmButton.setPrefWidth(width * 0.20);

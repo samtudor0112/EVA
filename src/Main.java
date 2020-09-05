@@ -30,7 +30,7 @@ public class Main extends Application {
 
         List<Ballot> ballots = null;
         try {
-            ballots = ConfigReader.read(getParameters().getRaw().get(0));
+            ballots = ConfigReader.read("config/config.txt");
         } catch (IOException | IndexOutOfBoundsException e) {
             System.out.println("Invalid filepath to ballot config");
             Platform.exit();

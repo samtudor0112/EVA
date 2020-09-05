@@ -17,10 +17,19 @@ import java.util.HashMap;
 
 public class ConfirmWindowView extends AbstractView {
 
+    /* allows us to display a list of the candidates on screen */
     private ListView<Candidate> list;
+
+    /* a mapping of candidates to how they have been preferenced by the voter */
     private HashMap<Candidate, Integer> prefList;
 
+    private Button backButton;
+    private Button confirmButton;
 
+
+    /**
+     * The cell factory for the ListView
+     */
     private class CandidateCell extends ListCell<Candidate> {
 
         @Override
@@ -45,6 +54,12 @@ public class ConfirmWindowView extends AbstractView {
         }
     }
 
+    /**
+     * Instantiate the confirm window
+     * @param width the width of the javafx stage
+     * @param height the height of the javafx stage
+     * @param prefs a mapping of candidates to how they have been preferenced by the voters
+     */
     public ConfirmWindowView(double width, double height, HashMap<Candidate, Integer> prefs) {
         this.prefList = prefs;
         scene = new Scene(new Group());
@@ -68,8 +83,8 @@ public class ConfirmWindowView extends AbstractView {
 
         list.setFocusTraversable(false);
 
-        Button backButton = new Button("Back");
-        Button confirmButton = new Button("CONFIRM");
+        backButton = new Button("Back");
+        confirmButton = new Button("CONFIRM");
 
         backButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");
@@ -95,4 +110,16 @@ public class ConfirmWindowView extends AbstractView {
 
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
     }
+
+    /**
+     * A getter for the back button
+     * @return the back button
+     */
+    public Button getBackButton() { return this.backButton; }
+
+    /**
+     * A getter for the confirm button
+     * @return the confirm button
+     */
+    public Button getConfirmButton() { return this.confirmButton; }
 }

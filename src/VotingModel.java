@@ -216,4 +216,12 @@ public class   VotingModel {
 
         return output;
     }
+
+    /**
+     * A way to differentiate ballots (Lower house, upper house etc)
+     * Not really relevant right now but will be used later on.
+     * TODO add multiple ballots - this can be used to store the name of the ballot
+     * @return a string message to be displayed when the ballot is confirmed
+     */
+    public String getBallotString() { return ballot.getPrintMsg(); }
 }

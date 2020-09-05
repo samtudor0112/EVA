@@ -26,47 +26,66 @@ public class Controller {
 
     /**
      * Instantiates the controller to display on a given stage and with a given VotingModel.
-     * Temporarily just instantiates the current view as the vote window
+     * Sets up a VoteWindowView that is based on the VotingModel passed
      * @param stage the javafx stage to display on
      * @param model the VotingModel to work from
      */
     public Controller(Stage stage, VotingModel model) {
         this.stage = stage;
         this.model = model;
+        setupVoteWindow();
+    }
 
-        // TEMPORARY
-        this.currentView = new VoteWindowView(stage.getWidth(), stage.getHeight());
+    /* TODO idk if this is even a good way to setup/change views but it works - can figure it out later */
 
-        // Below this should only be done for the voteWindow view
-        ((VoteWindowView)currentView).drawCandidateCards(model.getCandidateList());
-        ((VoteWindowView)currentView).setCandidatePreferences(model.getFullMap());
-
-        // Set the button presses for the candidate cards
-        for (Map.Entry<Candidate, HBox> entry : ((VoteWindowView)currentView).getVoteCardMap().entrySet()) {
+    /**
+     * Creates a new VoteWindowView, sets up event handlers and then sets the current view to
+     * the new VoteWindowView.
+     * TODO make it full screen
+     */
+    private void setupVoteWindow() {
+        VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight());
+        vw.drawCandidateCards(model.getCandidateList());
+        vw.setCandidatePreferences(model.getFullMap());
+        for (Map.Entry<Candidate, HBox> entry : vw.getVoteCardMap().entrySet()) {
             entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
         }
 
-        // Set the button presses for the clear and confirm buttons
-        ((VoteWindowView)currentView).getClearButton().setOnAction(actionEvent -> {
+        vw.getClearButton().setOnAction(actionEvent -> {
             model.deselectAll();
-            ((VoteWindowView)currentView).setCandidatePreferences(model.getFullMap());
+            vw.setCandidatePreferences(model.getFullMap());
         });
 
-        ((VoteWindowView)currentView).getConfirmButton().setOnAction(actionEvent -> {
+        vw.getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                //setCurrentView(new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap()));
-                BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+                setupConfirmWindow();
             } else {
-                // TODO
+                // TODO - maybe grey out button until valid ??
                 System.out.println("Not enough candidates voted for");
             }
         });
-
+        setCurrentView(vw);
     }
 
-    private void setupVoteWindow(VoteWindowView vw) {
-        vw.drawCandidateCards(model.getCandidateList());
-        vw.setCandidatePreferences(model.getFullMap());
+    /**
+     * sets up a new ConfirmWindowView and sets the stage to the new view.
+     */
+    private void setupConfirmWindow() {
+        ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap());
+        cw.getBackButton().setOnAction(actionEvent -> setupVoteWindow());
+        cw.getConfirmButton().setOnAction(actionEvent -> {
+            setupAcceptWindow();
+            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+        });
+        setCurrentView(cw);
+    }
+
+    /**
+     * sets up a new AcceptWindow and then sets the stage to the new view
+     */
+    private void setupAcceptWindow() {
+        setCurrentView(
+                new AcceptView(stage.getWidth(), stage.getHeight(), model.getBallotString()));
     }
 
     /**
@@ -77,6 +96,10 @@ public class Controller {
         return currentView;
     }
 
+    /**
+     * changes the current scene to a new one (i.e. on a button click)
+     * @param view the view to change to
+     */
     public void setCurrentView(AbstractView view) {
         this.currentView = view;
         stage.setScene(currentView.getScene());

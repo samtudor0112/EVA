@@ -9,6 +9,11 @@ import java.util.*;
 
 public class BallotPrinter {
 
+    /**
+     * Creates a PDF from a list of candidates and prints it to the device's default printer
+     * @param candidates a list of candidates that can be sorted into alphabetical order
+     * @param currentVotes a mapping of candidates to how they've been preferenced by the voter
+     */
     public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes) {
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage();
@@ -22,6 +27,7 @@ public class BallotPrinter {
 
             Collections.sort(candidates);
 
+            /* TODO make this look like an actual nice ballot */
             for (int i = 0; i < candidates.size(); i++) {
                 contents.beginText();
                 contents.newLineAtOffset(50, 700 - 50 * i);
@@ -45,6 +51,7 @@ public class BallotPrinter {
 
             doc.close();
         } catch (Exception e) {
+            /* TODO closing program prematurely throws a PrinterAbortException which we need to handle */
             e.printStackTrace();
             //System.out.println("contents couldn't be created");
         }

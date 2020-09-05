@@ -22,7 +22,7 @@ public class Ballot {
     TODO: instead of having separate classes for RepAcceptBox, SenateAcceptBox etc,
      just have one class that displays a printing msg according to the ballot
      */
-    private String printMsg;
+    private String printMsg = "Lower house ballot complete, ballot printing...";
 
     /**
      * Create a new Ballot
@@ -68,4 +68,10 @@ public class Ballot {
     public List<Candidate> getCandidateList() {
         return candidateList;
     }
+
+    /**
+     * Getter for the print msg for the accept screen
+     * @return a string to display on the print screen
+     */
+    public String getPrintMsg() { return printMsg; }
 }
