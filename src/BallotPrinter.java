@@ -17,7 +17,6 @@ public class BallotPrinter {
         try {
             contents = new PDPageContentStream(doc, page);
 
-            //contents.beginText();
             PDFont font = PDType1Font.HELVETICA_BOLD;
             contents.setFont(font, 30);
 
@@ -31,9 +30,8 @@ public class BallotPrinter {
                     // Not sure what to do here
                     contents.showText(" " + candidates.get(i).getName());
                 } else {
-                    contents.showText(Integer.toString(vote) + candidates.get(i).getName());
+                    contents.showText(vote + " " + candidates.get(i).getName());
                 }
-                System.out.println(candidates.get(i).getName());
                 contents.endText();
             }
 
