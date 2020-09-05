@@ -33,6 +33,7 @@ public class VoteWindowView extends AbstractView {
 
     private double height;
 
+    /* TODO change this to a Map<Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
 
     private Map<Candidate, HBox> voteCardMap;

@@ -18,6 +18,12 @@ public class Ballot {
     // The list of candidates on the ballot
     private List<Candidate> candidateList;
 
+    /*
+    TODO: instead of having separate classes for RepAcceptBox, SenateAcceptBox etc,
+     just have one class that displays a printing msg according to the ballot
+     */
+    private String printMsg;
+
     /**
      * Create a new Ballot
      * @param numCandidates the number of candidates on the ballot
