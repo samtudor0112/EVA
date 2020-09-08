@@ -1,3 +1,5 @@
+package evm;
+
 /**
  * DUMMY CANDIDATE OBJECT FOR TESTING - NOT FOR FINAL USE
  */
@@ -8,7 +10,7 @@ public class DummyCandidate {
     private String party;
 
     /**
-     * Candidate in election
+     * evm.Candidate in election
      * DUMMY OBJECT FOR TESTING - NOT FOR FINAL USE
      * @param preference        Preference of candidate (through votes)
      * @param candidate         Name of candidate

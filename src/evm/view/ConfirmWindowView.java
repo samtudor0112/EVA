@@ -1,3 +1,6 @@
+package evm.view;
+
+import evm.Candidate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -5,17 +8,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-import java.util.Collections;
 import java.util.HashMap;
 
-public class ConfirmWindowView extends AbstractView {
+public class ConfirmWindowView extends evm.view.AbstractView {
+
+    private ObservableList<Candidate> data;
 
     /* allows us to display a list of the candidates on screen */
     private ListView<Candidate> list;
@@ -25,6 +29,9 @@ public class ConfirmWindowView extends AbstractView {
 
     private Button backButton;
     private Button confirmButton;
+    private double width;
+    private double height;
+
 
 
     /**
@@ -39,7 +46,14 @@ public class ConfirmWindowView extends AbstractView {
                 setText("");
             } else {
                 this.setText(candidate.getName() + ", " + candidate.getParty());
-                Label pref = new Label(Integer.toString(prefList.get(candidate)));
+                int preference = prefList.get(candidate);
+                String preferenceText;
+                if (preference == Integer.MAX_VALUE) {
+                    preferenceText = "";
+                } else {
+                    preferenceText = Integer.toString(preference);
+                }
+                Label pref = new Label(preferenceText);
                 pref.getStyleClass().add("preference-style");
                 this.setGraphic(pref);
                 this.getStyleClass().add("candidate-style");
@@ -60,55 +74,59 @@ public class ConfirmWindowView extends AbstractView {
      * @param height the height of the javafx stage
      * @param prefs a mapping of candidates to how they have been preferenced by the voters
      */
-    public ConfirmWindowView(double width, double height, HashMap<Candidate, Integer> prefs) {
+    public ConfirmWindowView(double width, double height,
+                             HashMap<Candidate, Integer> prefs,
+                             ObservableList<Candidate> data) {
         this.prefList = prefs;
-        scene = new Scene(new Group());
+        this.width = width;
+        this.height = height;
+        this.data = data;
 
-        scene.getStylesheets().add("styles/styles.css");
+        BorderPane root = new BorderPane();
+        scene = new Scene(root);
+
+        scene.getStylesheets().add("evm/styles/styles.css");
 
         Text titleLabel = new Text("Please confirm your vote:");
+        root.setTop(titleLabel);
         titleLabel.setTextAlignment(TextAlignment.CENTER);
         titleLabel.setFont(new Font(30));
         Text subtitleLabel = new Text("Candidates should be numbered from 1 to x in the order of your choice.");
         subtitleLabel.setTextAlignment(TextAlignment.CENTER);
 
-        ObservableList<Candidate> data = FXCollections.observableArrayList();
-        data.addAll(prefList.keySet());
+        addButtons(root);
 
         list = new ListView(data);
+        root.setCenter(list);
         list.setCellFactory(listView -> new ConfirmWindowView.CandidateCell());
 
-        list.setMinWidth(600);
-        list.getStyleClass().add("confirm-list-view");
+        list.setMinWidth(width);
+        list.getStyleClass().add("confirm-list-evm.view");
 
         list.setFocusTraversable(false);
 
+    }
+
+
+
+    private void addButtons(BorderPane root) {
         backButton = new Button("Back");
         confirmButton = new Button("CONFIRM");
 
         backButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");
 
-        HBox buttonRow = new HBox(backButton, confirmButton);
-
-        buttonRow.setPrefWidth(200);
-
-        buttonRow.setSpacing(10);
-        //buttonRow.setMargin(backButton, new Insets(10, 10, 10, 10));
-        //buttonRow.setMargin(confirmButton, new Insets(10, 10, 10, 10));
-
         backButton.setPrefWidth((width - 20) / 2);
-        confirmButton.setPrefWidth((height - 20) / 2);
+        confirmButton.setPrefWidth((width - 20) / 2);
 
         backButton.setPrefHeight(100);
         confirmButton.setPrefHeight(100);
 
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(titleLabel, list, buttonRow);
+        HBox buttonRow = new HBox(backButton, confirmButton);
+        root.setBottom(buttonRow);
+        buttonRow.setPrefWidth(200);
+        buttonRow.setSpacing(10);
 
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
     }
 
     /**
@@ -122,4 +140,10 @@ public class ConfirmWindowView extends AbstractView {
      * @return the confirm button
      */
     public Button getConfirmButton() { return this.confirmButton; }
+
+
+    public ObservableList<Candidate> getData() {
+        return data;
+
+    }
 }

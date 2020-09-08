@@ -1,5 +1,6 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+package evm.view;
+
+import evm.Candidate;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,14 +11,14 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import evm.view.AbstractView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * The view implementing the main voting screen.
+ * The evm.view implementing the main voting screen.
  */
 public class VoteWindowView extends AbstractView {
 
@@ -33,7 +34,7 @@ public class VoteWindowView extends AbstractView {
 
     private double height;
 
-    /* TODO change this to a Map<Candidate, Integer> ??? */
+    /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
 
     private Map<Candidate, HBox> voteCardMap;
@@ -49,9 +50,9 @@ public class VoteWindowView extends AbstractView {
         this.width = width;
         this.height = height;
 
-        scene = new Scene(new Group());
+        //scene = new Scene(new Group());
 
-        scene.getStylesheets().add("styles/styles.css");
+        //scene.getStylesheets().add("evm/styles/styles.css");
 
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
@@ -93,14 +94,23 @@ public class VoteWindowView extends AbstractView {
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         VBox.setVgrow(spacer, Priority.ALWAYS);
-        vbox.getChildren().addAll(titleBox, votePane, spacer, buttonRow);
+        vbox.getChildren().add(votePane);
+
+        BorderPane root = new BorderPane();
+        root.setTop(titleBox);
+        root.setBottom(buttonRow);
+
+        scene = new Scene(root);
+
+        scene.getStylesheets().add("evm/styles/styles.css");
 
         ScrollPane scrolly = new ScrollPane();
         scrolly.setContent(vbox);
         scrolly.pannableProperty().set(true);
-        scrolly.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        ((Group) scene.getRoot()).getChildren().addAll(scrolly);
+        root.setCenter(scrolly);
     }
 
     /**
@@ -108,11 +118,11 @@ public class VoteWindowView extends AbstractView {
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList) {
-        // Each "Candidate" object is assigned a TextArea, which can be changed when
+        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
 
-        // Each "Candidate" object is also assigned a box that, when clicked, will register
+        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
@@ -124,7 +134,7 @@ public class VoteWindowView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
-            // Here, the Candidate is assigned a TextArea
+            // Here, the evm.Candidate is assigned a TextArea
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
@@ -132,12 +142,12 @@ public class VoteWindowView extends AbstractView {
             Text candidateParty = new Text(candidateList.get(i).getParty());
 
             candidateName.getStyleClass().add("candidate-name");
-            candidateName.getStyleClass().add("party-name");
+            candidateParty.getStyleClass().add("party-name");
 
             // Wrap the name and party text labels so it doesn't squash other vote card elements
             // MaGiC NuMbErS, just leave these,
             candidateName.setWrappingWidth(200);
-            candidateParty.setWrappingWidth(200);
+            candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
@@ -145,7 +155,7 @@ public class VoteWindowView extends AbstractView {
             candidateVbox.setPadding(new Insets(0, 10, 0, 10));
 
             HBox voteCard = new HBox();
-            voteCard.setPrefWidth(width);
+            voteCard.setPrefWidth(width/2);
             voteCard.getStyleClass().add("vote-card");
             voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
 

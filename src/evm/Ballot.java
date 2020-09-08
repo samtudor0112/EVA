@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package evm;
+
 import java.util.List;
 
 /**
@@ -6,7 +7,7 @@ import java.util.List;
  */
 public class Ballot {
 
-    // Name of the Ballot
+    // Name of the evm.Ballot
     private String name;
 
     // Number of Candidates
@@ -25,7 +26,7 @@ public class Ballot {
     private String printMsg = "Lower house ballot complete, ballot printing...";
 
     /**
-     * Create a new Ballot
+     * Create a new evm.Ballot
      * @param numCandidates the number of candidates on the ballot
      * @param votesNeeded the number of votes needed for a vote on this ballot to be legal
      * @param candidates the list of candidates on the ballot

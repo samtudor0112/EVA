@@ -1,5 +1,5 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+package evm.view;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,13 +7,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
+import evm.view.AbstractView;
 
 public class RepAcceptView extends AbstractView {
 
     public RepAcceptView(double width, double height) {
         scene = new Scene(new Group());
-        scene.getStylesheets().add("styles/styles.css");
+        scene.getStylesheets().add("evm/styles/styles.css");
 
         Text titleLabel = new Text("Lower house ballot complete, ballot printing...");
         titleLabel.setTextAlignment(TextAlignment.CENTER);
