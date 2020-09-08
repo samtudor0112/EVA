@@ -1,3 +1,8 @@
+package evm;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,7 +12,7 @@ import java.util.stream.Collectors;
  * We check most of whether a vote is valid as the voting occurs,
  * only waiting to check if enough votes have been placed until the end
  */
-public class   VotingModel {
+public class VotingModel {
 
     // The map of candidates and their current vote. Integer.MAX_VALUE means not selected
     // We need to never allow dupe votes
@@ -113,7 +118,7 @@ public class   VotingModel {
         return true;
     }
 
-    /*
+    /**
      * Deselect a candidate from the vote ("unvote" for a candidate)
      * @param candidate who to unvote for
      */
@@ -121,7 +126,7 @@ public class   VotingModel {
         setVote(candidate, Integer.MAX_VALUE);
     }
 
-    /*
+    /**
      * Set the current vote for a candidate to a specific value
      * @param candidate who we're voting for
      * @param vote the value of our vote
@@ -202,7 +207,7 @@ public class   VotingModel {
         }
     }
 
-    public Map<Integer, Candidate> orderMap() {
+    private Map<Integer, Candidate> orderMap() {
         Map<Integer, Candidate> output = new TreeMap<>();
 
         Set<Candidate> candidates = currentVotes.keySet();
@@ -215,6 +220,22 @@ public class   VotingModel {
         }
 
         return output;
+    }
+
+    public ObservableList<Candidate> orderedList() {
+        ObservableList<Candidate> candidates = FXCollections.observableArrayList();
+        Map<Integer, Candidate> order = orderMap();
+        ArrayList<Candidate> allCandidates = new ArrayList<>(currentVotes.keySet());
+
+        for (int index : order.keySet()) {
+            Candidate c = order.get(index);
+            candidates.add(c);
+            allCandidates.remove(c);
+        }
+
+        candidates.addAll(allCandidates);
+
+        return candidates;
     }
 
     /**

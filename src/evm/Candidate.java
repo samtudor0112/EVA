@@ -1,3 +1,5 @@
+package evm;
+
 /**
  * Represents a single candidate on a ballot
  */

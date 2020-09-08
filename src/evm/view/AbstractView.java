@@ -1,7 +1,9 @@
+package evm.view;
+
 import javafx.scene.Scene;
 
 /**
- * Abstract Implementation of a view. Simply has a javafx Scene as a protected field and a getter.
+ * Abstract Implementation of a evm.view. Simply has a javafx Scene as a protected field and a getter.
  */
 public abstract class AbstractView {
 

@@ -1,34 +1,35 @@
-import javafx.application.Application;
-import javafx.event.ActionEvent;
+package evm;
+
+import evm.view.VoteWindowView;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import evm.view.AbstractView;
+import evm.view.AcceptView;
+import evm.view.ConfirmWindowView;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * The Controller class of MVC. Controls the whole application.
+ * The evm.Controller class of MVC. Controls the whole application.
  */
 public class Controller {
 
     /* The current model of the MVC */
     private VotingModel model;
 
-    /* The current view of the MVC */
+    /* The current evm.view of the MVC */
     private AbstractView currentView;
 
     /* The javafx stage */
     private Stage stage;
 
     /**
-     * Instantiates the controller to display on a given stage and with a given VotingModel.
-     * Sets up a VoteWindowView that is based on the VotingModel passed
+     * Instantiates the controller to display on a given stage and with a given evm.VotingModel.
+     * Sets up a evm.view.VoteWindowView that is based on the evm.VotingModel passed
      * @param stage the javafx stage to display on
-     * @param model the VotingModel to work from
+     * @param model the evm.VotingModel to work from
      */
     public Controller(Stage stage, VotingModel model) {
         this.stage = stage;
@@ -39,8 +40,8 @@ public class Controller {
     /* TODO idk if this is even a good way to setup/change views but it works - can figure it out later */
 
     /**
-     * Creates a new VoteWindowView, sets up event handlers and then sets the current view to
-     * the new VoteWindowView.
+     * Creates a new evm.view.VoteWindowView, sets up event handlers and then sets the current evm.view to
+     * the new evm.view.VoteWindowView.
      * TODO make it full screen
      */
     private void setupVoteWindow() {
@@ -68,10 +69,12 @@ public class Controller {
     }
 
     /**
-     * sets up a new ConfirmWindowView and sets the stage to the new view.
+     * sets up a new evm.ConfirmWindowView and sets the stage to the new evm.view.
      */
     private void setupConfirmWindow() {
-        ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(), stage.getHeight(), model.getFullMap());
+        ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(),
+                stage.getHeight(), model.getFullMap(), model.orderedList());
+
         cw.getBackButton().setOnAction(actionEvent -> setupVoteWindow());
         cw.getConfirmButton().setOnAction(actionEvent -> {
             setupAcceptWindow();
@@ -81,7 +84,7 @@ public class Controller {
     }
 
     /**
-     * sets up a new AcceptWindow and then sets the stage to the new view
+     * sets up a new AcceptWindow and then sets the stage to the new evm.view
      */
     private void setupAcceptWindow() {
         setCurrentView(
@@ -89,8 +92,8 @@ public class Controller {
     }
 
     /**
-     * Getter for the current view
-     * @return the current view
+     * Getter for the current evm.view
+     * @return the current evm.view
      */
     public AbstractView getCurrentView() {
         return currentView;
@@ -98,7 +101,7 @@ public class Controller {
 
     /**
      * changes the current scene to a new one (i.e. on a button click)
-     * @param view the view to change to
+     * @param view the evm.view to change to
      */
     public void setCurrentView(AbstractView view) {
         this.currentView = view;

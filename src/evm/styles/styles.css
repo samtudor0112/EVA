@@ -110,16 +110,18 @@
     -fx-border-color: black;
     -fx-border-width: 3px;
     -fx-background-color: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 36px;
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
 
 .candidate-name {
     -fx-font-weight: bold;
+    -fx-font-size: 24px;
 }
 
 .party-name {
+    -fx-font-size: 20px;
     /* simply put
        stuff here
      */

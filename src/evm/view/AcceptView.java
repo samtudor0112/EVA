@@ -1,3 +1,5 @@
+package evm.view;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,14 +16,14 @@ import javafx.scene.text.TextAlignment;
 public class AcceptView extends AbstractView {
 
     /**
-     * Constructor for the view
+     * Constructor for the evm.view
      * @param width width of the stage
      * @param height height of the stage
      * @param s the name of the ballot/the message to show while the ballot is printing
      */
     public AcceptView(double width, double height, String s) {
         scene = new Scene(new Group());
-        scene.getStylesheets().add("styles/styles.css");
+        scene.getStylesheets().add("evm/styles/styles.css");
 
         Text titleLabel = new Text(s);
         titleLabel.setTextAlignment(TextAlignment.CENTER);
