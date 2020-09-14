@@ -34,15 +34,21 @@ public class Main extends Application {
 
         List<Ballot> ballots = null;
         try {
+            // get ballots
             ballots = ConfigReader.read("config/config.txt");
+
+            // randomize ballots
         } catch (IOException | IndexOutOfBoundsException e) {
             System.out.println("Invalid filepath to ballot config");
             Platform.exit();
             System.exit(1);
         }
 
-        // 
+
         for (Ballot ballot: ballots) {
+
+            // randomize our ballot
+            ballot.randomize();
             VotingModel model = new VotingModel(ballot);
 
             // evm.Controller instantiates the evm.view
