@@ -2,6 +2,8 @@ package evm;
 
 import evm.view.VoteWindowView;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -34,7 +36,23 @@ public class Controller {
     public Controller(Stage stage, VotingModel model) {
         this.stage = stage;
         this.model = model;
-        setupVoteWindow();
+        AbstractView start = setupVoteWindow();
+        this.currentView = start;
+        stage.setScene(initialise(start));
+        stage.getScene().getStylesheets().add("evm/styles/styles.css");
+        this.stage.setFullScreenExitHint("");
+        this.stage.setFullScreen(true);
+        //stage.show();
+;
+    }
+
+    private Scene initialise(AbstractView start) {
+        return new Scene(start.getRoot());
+    }
+
+    public void changeView(AbstractView view) {
+        this.currentView = view;
+        stage.getScene().setRoot(view.getRoot());
     }
 
     /* TODO idk if this is even a good way to setup/change views but it works - can figure it out later */
@@ -44,10 +62,11 @@ public class Controller {
      * the new evm.view.VoteWindowView.
      * TODO make it full screen
      */
-    private void setupVoteWindow() {
+    private AbstractView setupVoteWindow() {
         VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight());
         vw.drawCandidateCards(model.getCandidateList());
         vw.setCandidatePreferences(model.getFullMap());
+
         for (Map.Entry<Candidate, HBox> entry : vw.getVoteCardMap().entrySet()) {
             entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
         }
@@ -59,36 +78,40 @@ public class Controller {
 
         vw.getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                setupConfirmWindow();
+                AbstractView newView = setupConfirmWindow();
+                this.currentView = newView;
+                stage.getScene().setRoot(newView.getRoot());
             } else {
                 // TODO - maybe grey out button until valid ??
                 System.out.println("Not enough candidates voted for");
             }
         });
-        setCurrentView(vw);
+        return vw;
     }
 
     /**
      * sets up a new evm.ConfirmWindowView and sets the stage to the new evm.view.
      */
-    private void setupConfirmWindow() {
+    private AbstractView setupConfirmWindow() {
         ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(),
                 stage.getHeight(), model.getFullMap(), model.orderedList());
-
-        cw.getBackButton().setOnAction(actionEvent -> setupVoteWindow());
+        cw.getBackButton().setOnAction(actionEvent -> {
+             AbstractView nextView = setupVoteWindow();
+             stage.getScene().setRoot(nextView.getRoot());
+        });
         cw.getConfirmButton().setOnAction(actionEvent -> {
-            setupAcceptWindow();
+            AbstractView nextView = setupAcceptWindow();
+            stage.getScene().setRoot(nextView.getRoot());
             BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
         });
-        setCurrentView(cw);
+        return cw;
     }
 
     /**
      * sets up a new AcceptWindow and then sets the stage to the new evm.view
      */
-    private void setupAcceptWindow() {
-        setCurrentView(
-                new AcceptView(stage.getWidth(), stage.getHeight(), model.getBallotString()));
+    private AbstractView setupAcceptWindow() {
+        return new AcceptView(stage.getWidth(), stage.getHeight(), model.getBallotString());
     }
 
     /**
@@ -97,16 +120,6 @@ public class Controller {
      */
     public AbstractView getCurrentView() {
         return currentView;
-    }
-
-    /**
-     * changes the current scene to a new one (i.e. on a button click)
-     * @param view the evm.view to change to
-     */
-    public void setCurrentView(AbstractView view) {
-        this.currentView = view;
-        stage.setScene(currentView.getScene());
-        stage.show();
     }
 
     /**

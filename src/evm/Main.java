@@ -30,8 +30,6 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
-        stage.show();
-
         List<Ballot> ballots = null;
         try {
             ballots = ConfigReader.read("config/config.txt");
@@ -50,7 +48,8 @@ public class Main extends Application {
 
             // This will only show the last controller I think so that's a problem
             // We also need a way to change the view to keep going to the next screen
-            controller.getStage().setScene(controller.getCurrentView().getScene());
+            controller.getStage().show();
+            //controller.getStage().setScene(controller.getCurrentView().getScene());
         }
 
     }

@@ -22,8 +22,8 @@ public class AcceptView extends AbstractView {
      * @param s the name of the ballot/the message to show while the ballot is printing
      */
     public AcceptView(double width, double height, String s) {
-        scene = new Scene(new Group());
-        scene.getStylesheets().add("evm/styles/styles.css");
+        /* set the root node */
+        root = new Group();
 
         Text titleLabel = new Text(s);
         titleLabel.setTextAlignment(TextAlignment.CENTER);
@@ -31,19 +31,9 @@ public class AcceptView extends AbstractView {
 
 
         Button confirmButton = new Button("Ok");
-        /*confirmButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // do button stuff here
-
-                Stage stage = (Stage) confirmButton.getScene().getWindow();
-                stage.close();
-            }
-        });*/
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));;
 
-        ((Group) scene.getRoot()).getChildren().addAll(confirmButton, titleLabel);
-
+        ((Group) root).getChildren().addAll(confirmButton, titleLabel);
 
         confirmButton.setPrefWidth(width * 0.20);
         confirmButton.setPrefHeight(height * 0.13);

@@ -83,9 +83,9 @@ public class ConfirmWindowView extends evm.view.AbstractView {
         this.data = data;
 
         BorderPane root = new BorderPane();
-        scene = new Scene(root);
+        root.setPrefSize(width, height);
+        this.root = root;
 
-        scene.getStylesheets().add("evm/styles/styles.css");
 
         Text titleLabel = new Text("Please confirm your vote:");
         root.setTop(titleLabel);
@@ -96,7 +96,7 @@ public class ConfirmWindowView extends evm.view.AbstractView {
 
         addButtons(root);
 
-        list = new ListView(data);
+        list = new ListView<>(data);
         root.setCenter(list);
         list.setCellFactory(listView -> new ConfirmWindowView.CandidateCell());
 
@@ -104,14 +104,12 @@ public class ConfirmWindowView extends evm.view.AbstractView {
         list.getStyleClass().add("confirm-list-evm.view");
 
         list.setFocusTraversable(false);
-
     }
-
 
 
     private void addButtons(BorderPane root) {
         backButton = new Button("Back");
-        confirmButton = new Button("CONFIRM");
+        confirmButton = new Button("Confirm");
 
         backButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");

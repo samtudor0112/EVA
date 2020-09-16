@@ -3,6 +3,7 @@ package evm.view;
 import evm.Candidate;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,9 +51,9 @@ public class VoteWindowView extends AbstractView {
         this.width = width;
         this.height = height;
 
-        //scene = new Scene(new Group());
-
-        //scene.getStylesheets().add("evm/styles/styles.css");
+        /* set the root node */
+        BorderPane root = new BorderPane();
+        this.root = root;
 
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
@@ -96,13 +97,8 @@ public class VoteWindowView extends AbstractView {
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().add(votePane);
 
-        BorderPane root = new BorderPane();
         root.setTop(titleBox);
         root.setBottom(buttonRow);
-
-        scene = new Scene(root);
-
-        scene.getStylesheets().add("evm/styles/styles.css");
 
         ScrollPane scrolly = new ScrollPane();
         scrolly.setContent(vbox);

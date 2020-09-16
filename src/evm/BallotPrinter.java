@@ -6,6 +6,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.printing.PDFPageable;
+
+import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterJob;
 import java.util.*;
 
@@ -52,10 +54,11 @@ public class BallotPrinter {
             job.print();
 
             doc.close();
+        } catch (PrinterAbortException e ) {
+            /* do nothing */
         } catch (Exception e) {
-            /* TODO closing program prematurely throws a PrinterAbortException which we need to handle */
+            /* any other exception print a stack trace */
             e.printStackTrace();
-            //System.out.println("contents couldn't be created");
         }
     }
 }
