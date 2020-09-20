@@ -86,22 +86,19 @@ public class BallotPrinter {
                 contents.lineTo(35, 565 - 70 * i);
                 contents.stroke();
 
-                if (vote == Integer.MAX_VALUE) {
-                    contents.beginText();
-                    contents.newLineAtOffset(100, 530 - 70 * i);
-                    contents.showText(candidates.get(i).getName());
-                    contents.endText();
-                } else {
+                // candidate name
+                contents.beginText();
+                contents.newLineAtOffset(100, 530 - 70 * i);
+                contents.showText(candidates.get(i).getName());
+                contents.endText();
+
+                // candidate vote
+                if (vote != Integer.MAX_VALUE) {
                     contents.beginText();
                     contents.newLineAtOffset(50, 530 - 70 * i);
                     contents.showText(vote + "");
                     contents.endText();
-                    contents.beginText();
-                    contents.newLineAtOffset(100, 530 - 70 * i);
-                    contents.showText(candidates.get(i).getName());
-                    contents.endText();
                 }
-
             }
 
             // draw bottom part
