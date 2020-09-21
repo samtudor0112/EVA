@@ -33,9 +33,8 @@ public class Main extends Application {
         List<Ballot> ballots = null;
         try {
             // get ballots
-            ballots = ConfigReader.read("config/config.txt");
+            ballots = ConfigReader.read(getParameters().getRaw().get(1));
 
-            // randomize ballots
         } catch (IOException | IndexOutOfBoundsException e) {
             System.out.println("Invalid filepath to ballot config");
             Platform.exit();
@@ -55,7 +54,7 @@ public class Main extends Application {
             // This will only show the last controller I think so that's a problem
             // We also need a way to change the view to keep going to the next screen
             controller.getStage().show();
-            //controller.getStage().setScene(controller.getCurrentView().getScene());
+            // controller.getStage().setScene(controller.getCurrentView().getScene());
         }
 
     }
