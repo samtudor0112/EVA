@@ -140,10 +140,11 @@ public class VoteWindowView extends AbstractView {
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
 
+            /* TODO check wrapping for longer party names */
             // Wrap the name and party text labels so it doesn't squash other vote card elements
             // MaGiC NuMbErS, just leave these,
-            candidateName.setWrappingWidth(200);
-            candidateParty.setWrappingWidth(250);
+            //candidateName.setWrappingWidth(200);
+            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
