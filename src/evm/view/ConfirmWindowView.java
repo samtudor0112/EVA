@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -86,13 +87,15 @@ public class ConfirmWindowView extends evm.view.AbstractView {
         root.setPrefSize(width, height);
         this.root = root;
 
-
         Text titleLabel = new Text("Please confirm your vote:");
-        root.setTop(titleLabel);
-        titleLabel.setTextAlignment(TextAlignment.CENTER);
-        titleLabel.setFont(new Font(30));
-        Text subtitleLabel = new Text("Candidates should be numbered from 1 to x in the order of your choice.");
-        subtitleLabel.setTextAlignment(TextAlignment.CENTER);
+        titleLabel.getStyleClass().add("text-header-purple");
+        titleLabel.setFill(Color.WHITE);
+
+        HBox titleBox = new HBox(titleLabel);
+        titleBox.getStyleClass().add("purple-header");
+        titleBox.setPrefWidth(width);
+
+        root.setTop(titleBox);
 
         addButtons(root);
 
