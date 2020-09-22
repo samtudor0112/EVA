@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The main entrypoint to the voting application. Should be called with java evm.Main /path/to/config/file
+ * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
  * (in our case, config/config.txt should be good)
  */
 public class Main extends Application {
@@ -48,7 +48,7 @@ public class Main extends Application {
             ballot.randomize();
             VotingModel model = new VotingModel(ballot);
 
-            // evm.Controller instantiates the evm.view
+            // Controller instantiates the view
             Controller controller = new Controller(stage, model);
 
             // This will only show the last controller I think so that's a problem

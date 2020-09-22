@@ -207,34 +207,44 @@ public class VotingModel {
         }
     }
 
-    private Map<Integer, Candidate> orderMap() {
-        Map<Integer, Candidate> output = new TreeMap<>();
+//    private Map<Integer, Candidate> orderMap() {
+//        Map<Integer, Candidate> output = new TreeMap<>();
+//
+//        Set<Candidate> candidates = currentVotes.keySet();
+//
+//        for (Candidate c : candidates) {
+//            if (currentVotes.get(c) == Integer.MAX_VALUE) {
+//                continue;
+//            }
+//            output.put(currentVotes.get(c), c);
+//        }
+//
+//        return output;
+//    }
+//
+//    public ObservableList<Candidate> orderedList() {
+//        ObservableList<Candidate> candidates = FXCollections.observableArrayList();
+//        Map<Integer, Candidate> order = orderMap();
+//        ArrayList<Candidate> allCandidates = new ArrayList<>(currentVotes.keySet());
+//
+//        for (int index : order.keySet()) {
+//            Candidate c = order.get(index);
+//            candidates.add(c);
+//            allCandidates.remove(c);
+//        }
+//
+//        candidates.addAll(allCandidates);
+//
+//        return candidates;
+//    }
 
-        Set<Candidate> candidates = currentVotes.keySet();
-
-        for (Candidate c : candidates) {
-            if (currentVotes.get(c) == Integer.MAX_VALUE) {
-                continue;
-            }
-            output.put(currentVotes.get(c), c);
-        }
-
-        return output;
-    }
-
-    public ObservableList<Candidate> orderedList() {
-        ObservableList<Candidate> candidates = FXCollections.observableArrayList();
-        Map<Integer, Candidate> order = orderMap();
-        ArrayList<Candidate> allCandidates = new ArrayList<>(currentVotes.keySet());
-
-        for (int index : order.keySet()) {
-            Candidate c = order.get(index);
-            candidates.add(c);
-            allCandidates.remove(c);
-        }
-
-        candidates.addAll(allCandidates);
-
+    /**
+     * Returns a list of the candidates sorted by their current preference, ascending
+     * @return the list of candidates sorted
+     */
+    public List<Candidate> orderedList() {
+        ArrayList<Candidate> candidates = new ArrayList(getCandidateList());
+        candidates.sort(Comparator.comparingInt(candidate -> currentVotes.get(candidate)));
         return candidates;
     }
 

@@ -1,7 +1,7 @@
 package evm;
 
 /**
- * evm.Main class to run program
+ * Main class to run program
  * Cant launch a jar with a main class that extends Application thus this
  * wrapper main class
  */
