@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * evm.ConfigReader is a class that reader the config text file and loads the
+ * ConfigReader is a class that reader the config text file and loads the
  * ballots and candidates in to program.
  */
 public class ConfigReader {
@@ -13,7 +13,7 @@ public class ConfigReader {
     /**
      * Reads the config file in format of
      * numBallots
-     * name:numCandidates:numVotesNeeded:evm.Candidate~Party
+     * name:numCandidates:numVotesNeeded:Candidate~Party
      *
      * 1
      * Senate:1:1:yeet~labor

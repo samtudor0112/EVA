@@ -1,7 +1,14 @@
 package evm;
 
 import evm.view.VoteWindowView;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -12,46 +19,65 @@ import evm.view.ConfirmWindowView;
 import java.util.Map;
 
 /**
- * The evm.Controller class of MVC. Controls the whole application.
+ * The Controller class of MVC. Controls the whole application.
  */
 public class Controller {
 
     /* The current model of the MVC */
     private VotingModel model;
 
-    /* The current evm.view of the MVC */
+    /* The current view of the MVC */
     private AbstractView currentView;
 
     /* The javafx stage */
     private Stage stage;
 
     /**
-     * Instantiates the controller to display on a given stage and with a given evm.VotingModel.
-     * Sets up a evm.view.VoteWindowView that is based on the evm.VotingModel passed
+     * Instantiates the controller to display on a given stage and with a given VotingModel.
+     * Sets up a VoteWindowView that is based on the VotingModel passed
      * @param stage the javafx stage to display on
-     * @param model the evm.VotingModel to work from
+     * @param model the VotingModel to work from
      */
     public Controller(Stage stage, VotingModel model) {
         this.stage = stage;
         this.model = model;
-        setupVoteWindow();
+        AbstractView start = setupVoteWindow();
+        this.currentView = start;
+        stage.setScene(initialise(start));
+        stage.getScene().getStylesheets().add("evm/styles/styles.css");
+        this.stage.setFullScreenExitHint("");
+        this.stage.setFullScreen(true);
+        //stage.show();
+;
+    }
+
+    private Scene initialise(AbstractView start) {
+        return new Scene(start.getRoot());
+    }
+
+    public void changeView(AbstractView view) {
+        this.currentView = view;
+        stage.getScene().setRoot(view.getRoot());
     }
 
     /* TODO idk if this is even a good way to setup/change views but it works - can figure it out later */
 
     /**
-     * Creates a new evm.view.VoteWindowView, sets up event handlers and then sets the current evm.view to
-     * the new evm.view.VoteWindowView.
+     * Creates a new VoteWindowView, sets up event handlers and then sets the current view to
+     * the new VoteWindowView.
      * TODO make it full screen
      */
-    private void setupVoteWindow() {
+    private AbstractView setupVoteWindow() {
         VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight());
         vw.drawCandidateCards(model.getCandidateList());
         vw.setCandidatePreferences(model.getFullMap());
+
+        // Draw the candidate boxes
         for (Map.Entry<Candidate, HBox> entry : vw.getVoteCardMap().entrySet()) {
             entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
         }
 
+        // Set up the button handlers
         vw.getClearButton().setOnAction(actionEvent -> {
             model.deselectAll();
             vw.setCandidatePreferences(model.getFullMap());
@@ -59,54 +85,49 @@ public class Controller {
 
         vw.getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                setupConfirmWindow();
+                AbstractView newView = setupConfirmWindow();
+                changeView(newView);
             } else {
                 // TODO - maybe grey out button until valid ??
                 System.out.println("Not enough candidates voted for");
             }
         });
-        setCurrentView(vw);
+        return vw;
     }
 
     /**
-     * sets up a new evm.ConfirmWindowView and sets the stage to the new evm.view.
+     * sets up a new ConfirmWindowView and sets the stage to the new view.
      */
-    private void setupConfirmWindow() {
+    private AbstractView setupConfirmWindow() {
         ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(),
-                stage.getHeight(), model.getFullMap(), model.orderedList());
-
-        cw.getBackButton().setOnAction(actionEvent -> setupVoteWindow());
+                stage.getHeight());
+        cw.updateList(model.orderedList(), model.getFullMap());
+        // Set up the button handlers
+        cw.getBackButton().setOnAction(actionEvent -> {
+             AbstractView nextView = setupVoteWindow();
+             changeView(nextView);
+        });
         cw.getConfirmButton().setOnAction(actionEvent -> {
-            setupAcceptWindow();
+            AbstractView nextView = setupAcceptWindow();
+            changeView(nextView);
             BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
         });
-        setCurrentView(cw);
+        return cw;
     }
 
     /**
-     * sets up a new AcceptWindow and then sets the stage to the new evm.view
+     * sets up a new AcceptWindow and then sets the stage to the new view
      */
-    private void setupAcceptWindow() {
-        setCurrentView(
-                new AcceptView(stage.getWidth(), stage.getHeight(), model.getBallotString()));
+    private AbstractView setupAcceptWindow() {
+        return new AcceptView(stage.getWidth(), stage.getHeight(), model.getBallotString());
     }
 
     /**
-     * Getter for the current evm.view
-     * @return the current evm.view
+     * Getter for the current view
+     * @return the current view
      */
     public AbstractView getCurrentView() {
         return currentView;
-    }
-
-    /**
-     * changes the current scene to a new one (i.e. on a button click)
-     * @param view the evm.view to change to
-     */
-    public void setCurrentView(AbstractView view) {
-        this.currentView = view;
-        stage.setScene(currentView.getScene());
-        stage.show();
     }
 
     /**
@@ -151,4 +172,6 @@ public class Controller {
             ((VoteWindowView)currentView).setCandidatePreferences(model.getFullMap());
         }
     }
+
+
 }

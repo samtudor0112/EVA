@@ -1,5 +1,6 @@
 package evm;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  */
 public class Ballot {
 
-    // Name of the evm.Ballot
+    // Name of the Ballot
     private String name;
 
     // Number of Candidates
@@ -26,7 +27,7 @@ public class Ballot {
     private String printMsg = "Lower house ballot complete, ballot printing...";
 
     /**
-     * Create a new evm.Ballot
+     * Create a new Ballot
      * @param numCandidates the number of candidates on the ballot
      * @param votesNeeded the number of votes needed for a vote on this ballot to be legal
      * @param candidates the list of candidates on the ballot
@@ -36,6 +37,14 @@ public class Ballot {
         this.numCandidates = numCandidates;
         this.numVotesNeeded = votesNeeded;
         this.candidateList = candidates;
+    }
+
+    /**
+     * Randomizes order of candidates on ballot
+     */
+    public void randomize() {
+
+        Collections.shuffle(candidateList);
     }
 
     /**

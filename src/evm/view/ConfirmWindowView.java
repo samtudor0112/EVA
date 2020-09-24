@@ -1,6 +1,7 @@
 package evm.view;
 
 import evm.Candidate;
+import evm.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,33 +12,80 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * The view implementing the confirm screen.
+ */
 public class ConfirmWindowView extends evm.view.AbstractView {
-
-    private ObservableList<Candidate> data;
 
     /* allows us to display a list of the candidates on screen */
     private ListView<Candidate> list;
-
-    /* a mapping of candidates to how they have been preferenced by the voter */
-    private HashMap<Candidate, Integer> prefList;
 
     private Button backButton;
     private Button confirmButton;
     private double width;
     private double height;
 
+    /**
+     * Instantiate the confirm window
+     * @param width the width of the javafx stage
+     * @param height the height of the javafx stage
+     */
+    public ConfirmWindowView(double width, double height) {
+        this.width = width;
+        this.height = height;
 
+        BorderPane root = new BorderPane();
+        root.setPrefSize(width, height);
+        this.root = root;
+
+        Text titleLabel = new Text("Please confirm your vote:");
+        titleLabel.getStyleClass().add("text-header-purple");
+        titleLabel.setFill(Color.WHITE);
+
+        HBox titleBox = new HBox(titleLabel);
+        titleBox.getStyleClass().add("purple-header");
+        titleBox.setPrefWidth(width);
+
+        root.setTop(titleBox);
+
+        addButtons(root);
+    }
+
+    /**
+     * Draw the candidate list
+     * @param data the observableList of candidates
+     * @param preferences the preference map
+     */
+    public void updateList(List<Candidate> data, Map<Candidate, Integer> preferences) {
+        list = new ListView<>(FXCollections.observableArrayList(data));
+        ((BorderPane)root).setCenter(list);
+        list.setCellFactory(listView -> new ConfirmWindowView.CandidateCell(preferences));
+
+        list.setMinWidth(width);
+        list.getStyleClass().add("confirm-list-evm.view");
+
+        list.setFocusTraversable(false);
+    }
 
     /**
      * The cell factory for the ListView
      */
-    private class CandidateCell extends ListCell<Candidate> {
+    public class CandidateCell extends ListCell<Candidate> {
+
+        Map<Candidate, Integer> preferences;
+
+        public CandidateCell(Map<Candidate, Integer> preferences) {
+            this.preferences = preferences;
+        }
 
         @Override
         protected void updateItem(Candidate candidate, boolean empty) {
@@ -46,7 +94,7 @@ public class ConfirmWindowView extends evm.view.AbstractView {
                 setText("");
             } else {
                 this.setText(candidate.getName() + ", " + candidate.getParty());
-                int preference = prefList.get(candidate);
+                int preference = preferences.get(candidate);
                 String preferenceText;
                 if (preference == Integer.MAX_VALUE) {
                     preferenceText = "";
@@ -68,50 +116,14 @@ public class ConfirmWindowView extends evm.view.AbstractView {
         }
     }
 
+
     /**
-     * Instantiate the confirm window
-     * @param width the width of the javafx stage
-     * @param height the height of the javafx stage
-     * @param prefs a mapping of candidates to how they have been preferenced by the voters
+     * Adds the confirm and back buttons to the root
+     * @param root the pane to add the buttons to.
      */
-    public ConfirmWindowView(double width, double height,
-                             HashMap<Candidate, Integer> prefs,
-                             ObservableList<Candidate> data) {
-        this.prefList = prefs;
-        this.width = width;
-        this.height = height;
-        this.data = data;
-
-        BorderPane root = new BorderPane();
-        scene = new Scene(root);
-
-        scene.getStylesheets().add("evm/styles/styles.css");
-
-        Text titleLabel = new Text("Please confirm your vote:");
-        root.setTop(titleLabel);
-        titleLabel.setTextAlignment(TextAlignment.CENTER);
-        titleLabel.setFont(new Font(30));
-        Text subtitleLabel = new Text("Candidates should be numbered from 1 to x in the order of your choice.");
-        subtitleLabel.setTextAlignment(TextAlignment.CENTER);
-
-        addButtons(root);
-
-        list = new ListView(data);
-        root.setCenter(list);
-        list.setCellFactory(listView -> new ConfirmWindowView.CandidateCell());
-
-        list.setMinWidth(width);
-        list.getStyleClass().add("confirm-list-evm.view");
-
-        list.setFocusTraversable(false);
-
-    }
-
-
-
     private void addButtons(BorderPane root) {
         backButton = new Button("Back");
-        confirmButton = new Button("CONFIRM");
+        confirmButton = new Button("Confirm");
 
         backButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");
@@ -140,10 +152,4 @@ public class ConfirmWindowView extends evm.view.AbstractView {
      * @return the confirm button
      */
     public Button getConfirmButton() { return this.confirmButton; }
-
-
-    public ObservableList<Candidate> getData() {
-        return data;
-
-    }
 }

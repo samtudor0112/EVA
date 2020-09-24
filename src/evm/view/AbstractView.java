@@ -1,20 +1,19 @@
 package evm.view;
 
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 /**
- * Abstract Implementation of a evm.view. Simply has a javafx Scene as a protected field and a getter.
+ * Abstract implementation of a view. Simply has a javafx Node as a protected field and a getter.
  */
 public abstract class AbstractView {
 
-    // The scene we're drawing
-    protected Scene scene;
+    /* a view is simply a new root node now */
+    protected Parent root;
 
     /**
-     * Getter for the javafx scene
-     * @return the javafx scene
+     * Getter for the root Parent
+     * @return the root Parent
      */
-    public Scene getScene() {
-        return scene;
-    }
+    public Parent getRoot() { return root; }
 }

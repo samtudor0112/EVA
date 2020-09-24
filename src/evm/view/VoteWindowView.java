@@ -3,6 +3,7 @@ package evm.view;
 import evm.Candidate;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The evm.view implementing the main voting screen.
+ * The view implementing the main voting screen.
  */
 public class VoteWindowView extends AbstractView {
 
@@ -50,9 +51,9 @@ public class VoteWindowView extends AbstractView {
         this.width = width;
         this.height = height;
 
-        //scene = new Scene(new Group());
-
-        //scene.getStylesheets().add("evm/styles/styles.css");
+        /* set the root node */
+        BorderPane root = new BorderPane();
+        this.root = root;
 
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
@@ -96,13 +97,8 @@ public class VoteWindowView extends AbstractView {
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().add(votePane);
 
-        BorderPane root = new BorderPane();
         root.setTop(titleBox);
         root.setBottom(buttonRow);
-
-        scene = new Scene(root);
-
-        scene.getStylesheets().add("evm/styles/styles.css");
 
         ScrollPane scrolly = new ScrollPane();
         scrolly.setContent(vbox);
@@ -118,11 +114,11 @@ public class VoteWindowView extends AbstractView {
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList) {
-        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
+        // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
 
-        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
+        // Each Candidate object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
@@ -134,7 +130,7 @@ public class VoteWindowView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
-            // Here, the evm.Candidate is assigned a TextArea
+            // Here, the Candidate is assigned a TextArea
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
@@ -144,10 +140,11 @@ public class VoteWindowView extends AbstractView {
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
 
+            /* TODO check wrapping for longer party names */
             // Wrap the name and party text labels so it doesn't squash other vote card elements
             // MaGiC NuMbErS, just leave these,
-            candidateName.setWrappingWidth(200);
-            candidateParty.setWrappingWidth(250);
+            //candidateName.setWrappingWidth(200);
+            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
