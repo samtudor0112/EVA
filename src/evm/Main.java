@@ -42,19 +42,38 @@ public class Main extends Application {
         }
 
 
+
+        VotingModel model = null;
+        VotingModel aboveModel = null;
+        VotingModel belowModel = null;
+        int index = 0;
         for (Ballot ballot: ballots) {
 
             // randomize our ballot
             ballot.randomize();
-            VotingModel model = new VotingModel(ballot);
+            index += 1;
 
-            // Controller instantiates the view
-            Controller controller = new Controller(stage, model);
+            if(index == 1) {
 
-            // This will only show the last controller I think so that's a problem
-            // We also need a way to change the view to keep going to the next screen
-            controller.getStage().show();
-            // controller.getStage().setScene(controller.getCurrentView().getScene());
+                model = new VotingModel(ballot);
+            } else if (index == 2) {
+
+                aboveModel = new VotingModel(ballot);
+            } else if (index == 3) {
+                belowModel = new VotingModel(ballot);
+
+                // all ballots are now set
+                // evm.Controller instantiates the evm.view
+                Controller controller = new Controller(stage, model, aboveModel, belowModel);
+
+                // This will only show the last controller I think so that's a problem
+                // We also need a way to change the view to keep going to the next screen
+                controller.getStage().show();
+
+                // restart counter of 3s
+                index = 0;
+            }
+
         }
 
     }
