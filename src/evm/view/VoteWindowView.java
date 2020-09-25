@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The evm.view implementing the main voting screen.
+ * The view implementing the main voting screen.
  */
 public class VoteWindowView extends AbstractView {
 
@@ -114,11 +114,11 @@ public class VoteWindowView extends AbstractView {
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList) {
-        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
+        // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
 
-        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
+        // Each Candidate object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
@@ -130,7 +130,7 @@ public class VoteWindowView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
-            // Here, the evm.Candidate is assigned a TextArea
+            // Here, the Candidate is assigned a TextArea
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 

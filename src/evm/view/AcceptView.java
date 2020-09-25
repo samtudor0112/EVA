@@ -9,9 +9,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
 /**
- * General class for the accept screen because the only thing that really needs to change is
- * the name of the ballot. I've created a new class instead of changing an old one because I don't
- * want to break anything/get rid of something important.
+ * A generic accept view for any given string s.
  */
 public class AcceptView extends AbstractView {
 
