@@ -29,7 +29,7 @@ public class UpperVoteWindowView extends AbstractView {
 
     private final int VOTE_TABLE_COLUMNS = 2;
 
-    private GridPane votePane;
+    public GridPane votePane;
 
     private Button aboveButton;
 
@@ -44,7 +44,7 @@ public class UpperVoteWindowView extends AbstractView {
     private double height;
 
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
-    private Map<Candidate, Label> preferenceBoxMapAbove;
+    private Map<Candidate, Label> preferenceBoxMap;
     private Map<Candidate, Label> preferenceBoxMapBelow;
 
     private Map<Candidate, HBox> voteCardMap;
@@ -67,15 +67,15 @@ public class UpperVoteWindowView extends AbstractView {
         aboveButton = new Button("Above line");
         belowButton = new Button("Below line");
 
-        aboveButton.setOnAction(actionEvent -> {
-
-            setAboveLine();
-        });
-
-        belowButton.setOnAction(actionEvent -> {
-
-            setBelowLine();
-        });
+//        aboveButton.setOnAction(actionEvent -> {
+//
+//            setAboveLine();
+//        });
+//
+//        belowButton.setOnAction(actionEvent -> {
+//
+//            setBelowLine();
+//        });
 
         // create hbox with above/below options at top of page
         HBox optionBox = new HBox(aboveButton, belowButton);
@@ -145,9 +145,10 @@ public class UpperVoteWindowView extends AbstractView {
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList) {
+        votePane.getChildren().clear();
         // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
-        preferenceBoxMapAbove = new HashMap<>();
+        preferenceBoxMap = new HashMap<>();
 
         // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
@@ -163,7 +164,7 @@ public class UpperVoteWindowView extends AbstractView {
 
             // Here, the evm.Candidate is assigned a TextArea
             // (the box with the preference number inside)
-            preferenceBoxMapAbove.put(candidateList.get(i), preferenceLabel);
+            preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
             Text candidateName = new Text(candidateList.get(i).getName());
             Text candidateParty = new Text(candidateList.get(i).getParty());
@@ -198,6 +199,7 @@ public class UpperVoteWindowView extends AbstractView {
             // We also assign each candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
 
+           
             // This is why we need the numeric index, every other candidate is put onto a new line
             votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
 
@@ -212,7 +214,7 @@ public class UpperVoteWindowView extends AbstractView {
         for (Map.Entry<Candidate, Integer> entry: preferences.entrySet()) {
             String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
 
-            preferenceBoxMapAbove.get(entry.getKey()).setText(textVote);
+            preferenceBoxMap.get(entry.getKey()).setText(textVote);
 
         }
     }
@@ -229,8 +231,8 @@ public class UpperVoteWindowView extends AbstractView {
      * Getter for the preference box map
      * @return the preference box map
      */
-    public Map<Candidate, Label> getPreferenceBoxMapAbove() {
-        return preferenceBoxMapAbove;
+    public Map<Candidate, Label> getpreferenceBoxMap() {
+        return preferenceBoxMap;
     }
 
     public Map<Candidate, Label> getPreferenceBoxMapBelow() {
@@ -264,6 +266,7 @@ public class UpperVoteWindowView extends AbstractView {
      * Swaps to showing below the line voting
      */
     public void setBelowLine() {
+
 
         // below the line is state 1
         setCurrentState(1);
