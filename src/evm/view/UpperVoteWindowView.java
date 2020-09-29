@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,7 @@ public class UpperVoteWindowView extends AbstractView {
     // currentState == 1 : below line
     private int currentState = 0;
 
-    private final int VOTE_TABLE_COLUMNS = 2;
+    private int VOTE_TABLE_COLUMNS = 2;
 
     public GridPane votePane;
 
@@ -42,6 +44,10 @@ public class UpperVoteWindowView extends AbstractView {
     private double width;
 
     private double height;
+
+
+
+    public ScrollPane scrolly;
 
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
@@ -131,7 +137,7 @@ public class UpperVoteWindowView extends AbstractView {
 
         root.setBottom(buttonRow);
 
-        ScrollPane scrolly = new ScrollPane();
+        scrolly = new ScrollPane();
         scrolly.setContent(vbox);
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -154,6 +160,37 @@ public class UpperVoteWindowView extends AbstractView {
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
+        // number of candidates written to screen for each party
+        Map<String, Integer> partyCandidates = new HashMap<>();
+        Map<String, Integer> partyPositions = new HashMap<>();
+
+        if(getCurrentState() == 1) {
+
+            // we are below the line
+
+            ArrayList<String> parties = new ArrayList<>();
+
+            // get and sort parties
+            for(int i = 0; i < candidateList.size(); i++) {
+
+                if(!parties.contains(candidateList.get(i).getParty())) {
+                    partyCandidates.put(candidateList.get(i).getParty(), 0);
+                    parties.add(candidateList.get(i).getParty());
+                }
+
+                double newWidth = Math.max(parties.size() * 0.5, 1.0);
+                newWidth = newWidth * width;
+                votePane.setPrefWidth(newWidth);
+            }
+            // sort maybe (if u want)
+
+            // get position of each party
+            for(int i = 0; i < parties.size(); i++) {
+
+                partyPositions.put(parties.get(i), i);
+            }
+
+        }
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < candidateList.size(); i++) {
@@ -199,9 +236,28 @@ public class UpperVoteWindowView extends AbstractView {
             // We also assign each candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
 
-           
-            // This is why we need the numeric index, every other candidate is put onto a new line
-            votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+            if(getCurrentState() == 0) {
+
+                // above line
+                VOTE_TABLE_COLUMNS = 2;
+                // This is why we need the numeric index, every other candidate is put onto a new line
+                votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+            } else {
+
+                // below line
+                //VOTE_TABLE_COLUMNS = 3;
+                //votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+
+                // each column is a party
+                // each row is a candidate
+                String party = candidateList.get(i).getParty();
+                int col = partyPositions.get(party);
+                int row = partyCandidates.get(party);
+                partyCandidates.put(party, row + 1);
+                votePane.add(voteCard, col, row);
+
+            }
+
 
         }
     }
@@ -268,6 +324,8 @@ public class UpperVoteWindowView extends AbstractView {
     public void setBelowLine() {
 
 
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
         // below the line is state 1
         setCurrentState(1);
     }
@@ -279,7 +337,8 @@ public class UpperVoteWindowView extends AbstractView {
 
         // set the displayed voting model as
 
-
+        votePane.setPrefWidth(width);
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         // above the line is state 0
         setCurrentState(0);
     }

@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -201,6 +202,8 @@ public class Controller {
 
 
         uw.getAboveButton().setOnAction(actionEvent -> {
+
+
 
             // update state
             uw.setAboveLine();
