@@ -15,10 +15,7 @@ import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The evm.view implementing the main voting screen.
@@ -162,7 +159,7 @@ public class UpperVoteWindowView extends AbstractView {
 
         // number of candidates written to screen for each party
         Map<String, Integer> partyCandidates = new HashMap<>();
-        Map<String, Integer> partyPositions = new HashMap<>();
+        TreeMap<String, Integer> partyPositions = new TreeMap<>();
 
         if(getCurrentState() == 1) {
 
@@ -178,6 +175,9 @@ public class UpperVoteWindowView extends AbstractView {
                     parties.add(candidateList.get(i).getParty());
                 }
 
+
+                Collections.shuffle(parties);
+
                 double newWidth = Math.max(parties.size() * 0.5, 1.0);
                 newWidth = newWidth * width;
                 votePane.setPrefWidth(newWidth);
@@ -189,6 +189,8 @@ public class UpperVoteWindowView extends AbstractView {
 
                 partyPositions.put(parties.get(i), i);
             }
+
+
 
         }
         // Iterates through all the candidates and displays them on the screen

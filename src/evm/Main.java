@@ -50,14 +50,15 @@ public class Main extends Application {
         for (Ballot ballot: ballots) {
 
             // randomize our ballot
-            ballot.randomize();
+
             index += 1;
 
             if(index == 1) {
-
+                ballot.randomize();
                 model = new VotingModel(ballot);
             } else if (index == 2) {
 
+                ballot.randomize();
                 aboveModel = new VotingModel(ballot);
             } else if (index == 3) {
                 belowModel = new VotingModel(ballot);
