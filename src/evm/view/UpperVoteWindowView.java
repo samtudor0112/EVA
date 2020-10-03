@@ -30,6 +30,8 @@ public class UpperVoteWindowView extends AbstractView {
 
     public GridPane votePane;
 
+    public GridPane partyPane;
+
     private Button aboveButton;
 
     private Button belowButton;
@@ -51,6 +53,11 @@ public class UpperVoteWindowView extends AbstractView {
     private Map<Candidate, Label> preferenceBoxMapBelow;
 
     private Map<Candidate, HBox> voteCardMap;
+
+    private Map<Candidate, Label> partyPreferenceBoxMap;
+    private Map<Candidate, HBox> partyVoteCardMap;
+
+    private TreeMap<String, Integer> partyPositions;
 
     /**
      * Instantiate the vote window from a stage of size width by height.
@@ -102,6 +109,12 @@ public class UpperVoteWindowView extends AbstractView {
         votePane.setVgap(5);
         votePane.setPadding(new Insets(0, 5, 0, 5));
 
+        partyPane = new GridPane();
+        partyPane.setPrefWidth(width);
+        partyPane.setHgap(5);
+        partyPane.setVgap(5);
+        partyPane.setPadding(new Insets(0, 5, 0, 5));
+
         // Populating the votePane now occurs in drawCandidateCards
 
         // Spacer between vote options and buttons
@@ -128,6 +141,7 @@ public class UpperVoteWindowView extends AbstractView {
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         VBox.setVgrow(spacer, Priority.ALWAYS);
+        vbox.getChildren().add(partyPane);
         vbox.getChildren().add(votePane);
 
         root.setTop(topBox);
@@ -159,7 +173,7 @@ public class UpperVoteWindowView extends AbstractView {
 
         // number of candidates written to screen for each party
         Map<String, Integer> partyCandidates = new HashMap<>();
-        TreeMap<String, Integer> partyPositions = new TreeMap<>();
+        partyPositions = new TreeMap<>();
 
         if(getCurrentState() == 1) {
 
@@ -257,6 +271,102 @@ public class UpperVoteWindowView extends AbstractView {
                 int row = partyCandidates.get(party);
                 partyCandidates.put(party, row + 1);
                 votePane.add(voteCard, col, row);
+
+            }
+
+
+        }
+    }
+
+    /**
+     * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * @param candidateList the list of candidates to draw
+     */
+    public void drawPartyCards(List<Candidate> candidateList) {
+        partyPane.getChildren().clear();
+        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
+        // user changes their vote
+        partyPreferenceBoxMap = new HashMap<>();
+
+        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
+        // a vote for that candidate
+        partyVoteCardMap = new HashMap<>();
+
+        if(getCurrentState() == 1) {
+
+            // we are below the line
+
+
+            // get and sort parties
+            partyPane.setPrefWidth(votePane.getWidth());
+            // sort maybe (if u want)
+
+
+
+        }
+        // Iterates through all the candidates and displays them on the screen
+        // Do not use a for-each loop here, we need a numeric index
+        for (int i = 0; i < candidateList.size(); i++) {
+//            Label preferenceLabel = new Label();
+//            //preferenceLabel.setText("1");
+//            preferenceLabel.getStyleClass().add("preference-label");
+//            preferenceLabel.setPrefSize(50, 50);
+
+            // Here, the evm.Candidate is assigned a TextArea
+            // (the box with the preference number inside)
+//            partyPreferenceBoxMap.put(candidateList.get(i), preferenceLabel);
+
+//            Text candidateName = new Text(candidateList.get(i).getName());
+            Text candidateParty = new Text(candidateList.get(i).getParty());
+
+            // Note this is reversed
+//            candidateName.getStyleClass().add("candidate-name");
+            candidateParty.getStyleClass().add("candidate-name");
+
+            /* TODO check wrapping for longer party names */
+            // Wrap the name and party text labels so it doesn't squash other vote card elements
+            // MaGiC NuMbErS, just leave these,
+            //candidateName.setWrappingWidth(200);
+            //candidateParty.setWrappingWidth(250);
+
+            VBox candidateVbox = new VBox();
+            candidateVbox.getChildren().addAll(candidateParty);
+            candidateVbox.getStyleClass().add("vote-candidate-display");
+            candidateVbox.setPadding(new Insets(0, 10, 0, 10));
+
+            HBox voteCard = new HBox();
+            voteCard.setPrefWidth(width/2);
+            voteCard.getStyleClass().add("vote-card");
+            voteCard.getChildren().addAll(/*preferenceLabel, */candidateVbox);
+
+            // Shadow to make the cards look a bit more pretty and professional
+            DropShadow cardShadow = new DropShadow();
+            cardShadow.setRadius(2.0);
+            cardShadow.setOffsetX(1.0);
+            cardShadow.setOffsetY(1.0);
+            cardShadow.setColor(Color.color(0.5, 0.5, 0.5));
+            voteCard.setEffect(cardShadow);
+
+            // We also assign each candidate a vote "card" (just an HBox)
+            partyVoteCardMap.put(candidateList.get(i), voteCard);
+
+            if(getCurrentState() == 0) {
+
+                // above line
+                VOTE_TABLE_COLUMNS = 2;
+                // This is why we need the numeric index, every other candidate is put onto a new line
+                partyPane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+            } else {
+
+                // below line
+                //VOTE_TABLE_COLUMNS = 3;
+                //votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+
+                // each column is a party
+                // each row is a candidate
+                String party = candidateList.get(i).getParty();
+                int col = partyPositions.get(party);
+                partyPane.add(voteCard, col, 0);
 
             }
 

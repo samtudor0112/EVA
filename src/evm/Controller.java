@@ -178,7 +178,7 @@ public class Controller {
         return av;
     }
 
-       private AbstractView setupUpperVoteWindow(int state) {
+    private AbstractView setupUpperVoteWindow(int state) {
 
         UpperVoteWindowView uw = new UpperVoteWindowView(stage.getWidth(), stage.getHeight());
 
@@ -193,6 +193,8 @@ public class Controller {
         } else {
 
             uw.drawCandidateCards(belowModel.getCandidateList());
+//             TEMP
+            uw.drawPartyCards(aboveModel.getCandidateList());
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
@@ -210,6 +212,7 @@ public class Controller {
             // show above the line voting if state == 0...
 
             uw.drawCandidateCards(aboveModel.getCandidateList());
+
             uw.setCandidatePreferences(aboveModel.getFullMap());
 
 
@@ -225,6 +228,8 @@ public class Controller {
             uw.setBelowLine();
             // show below the line voting
             uw.drawCandidateCards(belowModel.getCandidateList());
+            // TEMP
+            uw.drawPartyCards(aboveModel.getCandidateList());
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
