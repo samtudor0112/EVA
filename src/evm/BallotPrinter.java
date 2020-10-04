@@ -31,7 +31,7 @@ public class BallotPrinter {
             Collections.sort(candidates);
             contents = new PDPageContentStream(doc, page);
             BufferedReader reader;
-            PDFont font;
+            PDFont font = PDType1Font.HELVETICA;
             try {
                 reader = new BufferedReader(new FileReader(
                         "src\\evm\\templates\\default.txt"));
