@@ -40,28 +40,28 @@ public class BallotPrinter {
                     // do stuff
                     String seg[] = line.split(",");
 
-                    if (seg[0] == "font") {
-                        if (seg[1] == "helvetica") {
+                    if (seg[0].equals("font")) {
+                        if (seg[1].equals("helvetica")) {
                             font = PDType1Font.HELVETICA;
-                        } else if (seg[1] == "helvetica_bold") {
+                        } else if (seg[1].equals("helvetica_bold")) {
                             font = PDType1Font.HELVETICA_BOLD;
                         }
                         // might need add more if required for certain ballot(s)
-                    } else if (seg[0] == "fsize") {
+                    } else if (seg[0].equals("fsize")) {
                         contents.setFont(font, Integer.parseInt(seg[1]));
-                    } else if (seg[0] == "text") {
+                    } else if (seg[0].equals("text")) {
                         contents.beginText();
                         contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
                         contents.showText(seg[3]);
                         contents.endText();
-                    } else if (seg[0] == "image") {
+                    } else if (seg[0].equals("image")) {
                         PDImageXObject pdImage = PDImageXObject.createFromFile(seg[3], doc);
                         contents.drawImage(pdImage, Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
-                    } else if (seg[0] == "line") {
+                    } else if (seg[0].equals("line")) {
                         contents.moveTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
                         contents.lineTo(Integer.parseInt(seg[3]), Integer.parseInt(seg[4]));
                         contents.stroke();
-                    } else if (seg[0] == "box") {
+                    } else if (seg[0].equals("box")) {
                         for (int i = 0; i < candidates.size(); i++) {
                             // its looks complicated but its been found and replaced, check previous commit when it was hardcoded before if u need to edit
                             contents.moveTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
@@ -77,14 +77,14 @@ public class BallotPrinter {
                             contents.lineTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
                             contents.stroke();
                         }
-                    } else if (seg[0] == "cname") {
+                    } else if (seg[0].equals("cname")) {
                         for (int i = 0; i < candidates.size(); i++) {
                             contents.beginText();
                             contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]) - Integer.parseInt(seg[3]) * i);
                             contents.showText(candidates.get(i).getName());
                             contents.endText();
                         }
-                    } else if (seg[0] == "cvote") {
+                    } else if (seg[0].equals("cvote")) {
                         for (int i = 0; i < candidates.size(); i++) {
                             int vote = currentVotes.get(candidates.get(i));
                             if (vote != Integer.MAX_VALUE) {
