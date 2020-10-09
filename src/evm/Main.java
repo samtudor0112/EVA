@@ -36,7 +36,7 @@ public class Main extends Application {
             ballots = ConfigReader.read(getParameters().getRaw().get(1));
 
         } catch (IOException | IndexOutOfBoundsException e) {
-            System.out.println("Invalid filepath to ballot config");
+            System.out.println("Invalid ballot config");
             Platform.exit();
             System.exit(1);
         }
