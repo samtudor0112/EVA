@@ -176,18 +176,19 @@ public class Controller {
         PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
-            uw.drawCandidateCards(aboveModel.getCandidateList());
+            uw.drawCandidateCards(belowModel.getCandidateList(), false);
+            uw.drawPartyCards(aboveModel.getCandidateList(), true);
             uw.setCandidatePreferences(aboveModel.getFullMap());
 
 
-            for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
+            for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
             }
         } else {
 
-            uw.drawCandidateCards(belowModel.getCandidateList());
+            uw.drawCandidateCards(belowModel.getCandidateList(), true);
 //             TEMP
-            uw.drawPartyCards(aboveModel.getCandidateList());
+            uw.drawPartyCards(aboveModel.getCandidateList(), false);
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
@@ -204,12 +205,13 @@ public class Controller {
             uw.setAboveLine();
             // show above the line voting if state == 0...
 
-            uw.drawCandidateCards(aboveModel.getCandidateList());
+            uw.drawCandidateCards(belowModel.getCandidateList(), false);
+            uw.drawPartyCards(aboveModel.getCandidateList(), true);
 
             uw.setCandidatePreferences(aboveModel.getFullMap());
 
 
-            for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
+            for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
             }
 
@@ -220,9 +222,9 @@ public class Controller {
 
             uw.setBelowLine();
             // show below the line voting
-            uw.drawCandidateCards(belowModel.getCandidateList());
+            uw.drawCandidateCards(belowModel.getCandidateList(), true);
             // TEMP
-            uw.drawPartyCards(aboveModel.getCandidateList());
+            uw.drawPartyCards(aboveModel.getCandidateList(), false);
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
