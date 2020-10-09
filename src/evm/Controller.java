@@ -121,7 +121,7 @@ public class Controller {
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
-            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+            //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
         });
         return cw;
     }
@@ -174,7 +174,7 @@ public class Controller {
         av.getConfirmButton().setOnAction(actionEvent -> {
 
              // goto above/below the line vote ballot
-            AbstractView newView = setupPrototypeSenateUpperVoteWindow(0);
+            AbstractView newView = setupSenateWindow();
             this.currentView = newView;
             stage.getScene().setRoot(newView.getRoot());
         });
@@ -415,11 +415,11 @@ public class Controller {
     }
 
     private AbstractView setupSenateWindow() {
-        SenateView view = new SenateView(stage.getWidth(), stage.getHeight(), aboveModel.getParties());
-        view.drawCandidateMenus(aboveModel.getCandidatesByParty());
+        SenateView view = new SenateView(stage.getWidth(), stage.getHeight(), senateModel.getParties());
+        view.drawCandidateMenus(senateModel.getCandidatesByParty());
 
 
-        for (String party: aboveModel.getParties()) {
+        for (String party: senateModel.getParties()) {
             view.getPartyCards().get(party).setOnMouseClicked(mouseEvent ->
                     view.partyClick(view.getPartyCards().get(party), view.getCandidateVBoxes().get(party)));
         }
@@ -433,18 +433,22 @@ public class Controller {
 
         // Set up the button handlers
         view.getClearButton().setOnAction(actionEvent -> {
-            model.deselectAll();
-            view.setCandidatePreferences(model.getFullMap());
+            senateModel.deselectAll();
+            view.setCandidatePreferences(senateModel.getFullMap());
         });
 
         view.getConfirmButton().setOnAction(actionEvent -> {
-            if (model.checkValidVote()) {
+            if (senateModel.checkValidVote()) {
                 AbstractView newView = setupConfirmWindow();
                 changeView(newView);
             } else {
                 // TODO - maybe grey out button until valid ??
                 System.out.println("Not enough candidates voted for");
             }
+        });
+
+        view.getLineButton().setOnAction(actionEvent -> {
+            view.clickButton();
         });
 
 

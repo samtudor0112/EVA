@@ -26,6 +26,9 @@ public class SenateView extends AbstractView {
     private VBox focussedParty;
     private Button confirmButton;
     private Button clearButton;
+    private Button lineButton;
+
+    private Boolean aboveLine;
 
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
@@ -35,6 +38,7 @@ public class SenateView extends AbstractView {
     public SenateView(double width, double height, List<String> parties) {
         this.width = width;
         this.height = height;
+        this.aboveLine = true;
 
         BorderPane root = new BorderPane();
         root.setPrefSize(width, height);
@@ -48,11 +52,22 @@ public class SenateView extends AbstractView {
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
+        //remove
+        lineButton = new Button("Above Line");
+        lineButton.getStyleClass().add("confirm-button");
+        lineButton.setPrefWidth(250);
+
         HBox titleBox = new HBox(titleLabel);
+        titleBox.getChildren().add(lineButton);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
+        titleBox.setSpacing(5);
+        titleBox.setPadding(new Insets(0, 50, 0, 50));
+
         root.setTop(titleBox);
+
+
 
         /** Body Stuff */
 
@@ -272,5 +287,19 @@ public class SenateView extends AbstractView {
     public void setConfirmButtonGrey() {
         confirmButton.getStyleClass().clear();
         confirmButton.getStyleClass().add("confirm-button-grey");
+    }
+
+    public Button getLineButton() {
+        return lineButton;
+    }
+
+    public void clickButton() {
+        if (aboveLine) {
+            aboveLine = false;
+            lineButton.setText("Below Line");
+        } else {
+            aboveLine = true;
+            lineButton.setText("Above Line");
+        }
     }
 }
