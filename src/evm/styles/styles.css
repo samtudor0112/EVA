@@ -37,6 +37,19 @@
     -fx-font-size: 40px;
 }
 
+.confirm-button-grey {
+    -fx-background-color:
+            #000000,
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 40px;
+}
+
 /* The "cancel" / "clear current vote" style */
 .cancel-button {
     -fx-background-color:
@@ -82,6 +95,19 @@
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
     -fx-background-color: #eeeeee;
+}
+
+.focus-vote-card {
+    -fx-padding: 10px;
+    -fx-border-style: solid inside;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #e091ff;
+}
+
+.party-card {
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
 }
 
 .preference-label {
