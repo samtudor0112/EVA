@@ -1,16 +1,9 @@
 package evm;
 
 import evm.view.*;
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -143,7 +136,7 @@ public class Controller {
         cw.updateList(currentModel.orderedList(), currentModel.getFullMap());
         cw.getBackButton().setOnAction(actionEvent -> {
 
-            AbstractView nextView = setupUpperVoteWindow(state);
+            AbstractView nextView = setupPrototypeSenateUpperVoteWindow(state);
             this.currentView = nextView;
             stage.getScene().setRoot(nextView.getRoot());
         });
@@ -171,16 +164,16 @@ public class Controller {
         av.getConfirmButton().setOnAction(actionEvent -> {
 
              // goto above/below the line vote ballot
-            AbstractView newView = setupUpperVoteWindow(0);
+            AbstractView newView = setupPrototypeSenateUpperVoteWindow(0);
             this.currentView = newView;
             stage.getScene().setRoot(newView.getRoot());
         });
         return av;
     }
 
-    private AbstractView setupUpperVoteWindow(int state) {
+    private AbstractView setupPrototypeSenateUpperVoteWindow(int state) {
 
-        UpperVoteWindowView uw = new UpperVoteWindowView(stage.getWidth(), stage.getHeight());
+        PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
             uw.drawCandidateCards(aboveModel.getCandidateList());
@@ -198,7 +191,7 @@ public class Controller {
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new BelowCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
             }
         }
 
@@ -233,7 +226,7 @@ public class Controller {
             uw.setCandidatePreferences(belowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new BelowCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
             }
 
         });
@@ -374,15 +367,15 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((UpperVoteWindowView)currentView).setCandidatePreferences(aboveModel.getFullMap());
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(aboveModel.getFullMap());
         }
     }
     // Handler for the button presses on the candidate cards
-    private class BelowCandidateClickHandler implements EventHandler<MouseEvent> {
+    private class PrototypeSenateBelowCandidateClickHandler implements EventHandler<MouseEvent> {
 
         private Candidate candidate;
 
-        public BelowCandidateClickHandler(Candidate candidate) {
+        public PrototypeSenateBelowCandidateClickHandler(Candidate candidate) {
             this.candidate = candidate;
         }
 
@@ -400,7 +393,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((UpperVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
         }
     }
 

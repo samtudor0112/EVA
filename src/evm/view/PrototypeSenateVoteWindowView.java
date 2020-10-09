@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * The evm.view implementing the main voting screen.
  */
-public class UpperVoteWindowView extends AbstractView {
+public class PrototypeSenateVoteWindowView extends AbstractView {
 
     // currentState == 0 : above line
     // currentState == 1 : below line
@@ -65,7 +65,7 @@ public class UpperVoteWindowView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public UpperVoteWindowView(double width, double height) {
+    public PrototypeSenateVoteWindowView(double width, double height) {
 
         this.width = width;
         this.height = height;
