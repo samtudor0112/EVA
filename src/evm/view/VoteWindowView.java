@@ -79,7 +79,9 @@ public class VoteWindowView extends AbstractView {
         confirmButton = new Button("Confirm");
 
         clearButton.getStyleClass().add("cancel-button");
-        confirmButton.getStyleClass().add("confirm-button");
+
+        confirmButton.getStyleClass().add("confirm-button-grey");
+
 
         HBox buttonRow = new HBox(clearButton, confirmButton);
         buttonRow.setPrefWidth(200);
@@ -214,5 +216,15 @@ public class VoteWindowView extends AbstractView {
      */
     public Button getConfirmButton() {
         return confirmButton;
+    }
+
+    public void setConfirmButtonColor() {
+        confirmButton.getStyleClass().clear();
+        confirmButton.getStyleClass().add("confirm-button");
+    }
+
+    public void setConfirmButtonGrey() {
+        confirmButton.getStyleClass().clear();
+        confirmButton.getStyleClass().add("confirm-button-grey");
     }
 }

@@ -13,7 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Controller class of MVC. Controls the whole application.
@@ -28,6 +28,8 @@ public class Controller {
     private VotingModel aboveModel;
     // below the line
     private VotingModel belowModel;
+
+    private VotingModel senateModel;
 
     /* The current view of the MVC */
     private AbstractView currentView;
@@ -45,6 +47,7 @@ public class Controller {
         this.stage = stage;
         this.model = model;
         this.aboveModel = aboveModel;
+        senateModel = aboveModel;
         this.belowModel = belowModel;
         AbstractView start = setupVoteWindow();
         this.currentView = start;
@@ -88,6 +91,7 @@ public class Controller {
         vw.getClearButton().setOnAction(actionEvent -> {
             model.deselectAll();
             vw.setCandidatePreferences(model.getFullMap());
+            vw.setConfirmButtonGrey();
         });
 
         vw.getConfirmButton().setOnAction(actionEvent -> {
@@ -117,7 +121,7 @@ public class Controller {
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
-            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+            //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
         });
         return cw;
     }
@@ -170,7 +174,7 @@ public class Controller {
         av.getConfirmButton().setOnAction(actionEvent -> {
 
              // goto above/below the line vote ballot
-            AbstractView newView = setupUpperVoteWindow(0);
+            AbstractView newView = setupSenateWindow();
             this.currentView = newView;
             stage.getScene().setRoot(newView.getRoot());
         });
@@ -289,6 +293,44 @@ public class Controller {
 
     }
 
+    private AbstractView setupSenateWindow() {
+        SenateView view = new SenateView(stage.getWidth(), stage.getHeight(), aboveModel.getParties());
+        view.drawCandidateMenus(aboveModel.getCandidatesByParty());
+
+
+        for (String party: aboveModel.getParties()) {
+            view.getPartyCards().get(party).setOnMouseClicked(mouseEvent ->
+                    view.partyClick(view.getPartyCards().get(party), view.getCandidateVBoxes().get(party)));
+        }
+
+
+
+        // Draw the candidate boxes
+        for (Map.Entry<Candidate, HBox> entry : view.getVoteCardMap().entrySet()) {
+            entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+        }
+
+        // Set up the button handlers
+        view.getClearButton().setOnAction(actionEvent -> {
+            model.deselectAll();
+            view.setCandidatePreferences(model.getFullMap());
+        });
+
+        view.getConfirmButton().setOnAction(actionEvent -> {
+            if (model.checkValidVote()) {
+                AbstractView newView = setupConfirmWindow();
+                changeView(newView);
+            } else {
+                // TODO - maybe grey out button until valid ??
+                System.out.println("Not enough candidates voted for");
+            }
+        });
+
+
+        return view;
+    }
+
+
     /**
      * Getter for the current view
      * @return the current view
@@ -334,6 +376,13 @@ public class Controller {
                     return;
                 }
             }
+
+
+            if (model.checkValidVote()) {
+                ((VoteWindowView)currentView).setConfirmButtonColor();
+            }
+
+
 
             // Redraw all the candidate preference numbers because why not
             ((VoteWindowView)currentView).setCandidatePreferences(model.getFullMap());
@@ -393,6 +442,39 @@ public class Controller {
 
             // Redraw all the candidate preference numbers because why not
             ((UpperVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
+        }
+    }
+
+
+
+    private class SenateCandidateClickHandler implements EventHandler<MouseEvent> {
+
+        private Candidate candidate;
+
+        public SenateCandidateClickHandler(Candidate candidate) {
+            this.candidate = candidate;
+        }
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            // Vote in the model
+            boolean success = senateModel.tryVoteNext(candidate);
+            if (!success) {
+                success = senateModel.tryDeselectVote(candidate);
+                if (!success) {
+                    // The candidate can't be voted for or deselected.
+                    // Do nothing?
+                    return;
+                }
+            }
+
+
+            if (senateModel.checkValidVote()) {
+                ((SenateView)currentView).setConfirmButtonColor();
+            }
+
+            // Redraw all the candidate preference numbers because why not
+            ((SenateView)currentView).setCandidatePreferences(senateModel.getFullMap());
         }
     }
 
