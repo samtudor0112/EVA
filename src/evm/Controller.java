@@ -121,7 +121,7 @@ public class Controller {
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
-            //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
         });
         return cw;
     }
@@ -174,14 +174,135 @@ public class Controller {
         av.getConfirmButton().setOnAction(actionEvent -> {
 
              // goto above/below the line vote ballot
-            AbstractView newView = setupSenateWindow();
+            AbstractView newView = setupPrototypeSenateUpperVoteWindow(0);
             this.currentView = newView;
             stage.getScene().setRoot(newView.getRoot());
         });
         return av;
     }
 
-       private AbstractView setupUpperVoteWindow(int state) {
+    private AbstractView setupPrototypeSenateUpperVoteWindow(int state) {
+
+        PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
+
+        if(state == 0) {
+            uw.drawCandidateCards(belowModel.getCandidateList(), false);
+            uw.drawPartyCards(aboveModel.getCandidateList(), true);
+            uw.setCandidatePreferences(aboveModel.getFullMap());
+
+
+            for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
+                entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
+            }
+        } else {
+
+            uw.drawCandidateCards(belowModel.getCandidateList(), true);
+//             TEMP
+            uw.drawPartyCards(aboveModel.getCandidateList(), false);
+            uw.setCandidatePreferences(belowModel.getFullMap());
+
+            for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
+                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
+            }
+        }
+
+
+        uw.getAboveButton().setOnAction(actionEvent -> {
+
+
+
+            // update state
+            uw.setAboveLine();
+            // show above the line voting if state == 0...
+
+            uw.drawCandidateCards(belowModel.getCandidateList(), false);
+            uw.drawPartyCards(aboveModel.getCandidateList(), true);
+
+            uw.setCandidatePreferences(aboveModel.getFullMap());
+
+
+            for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
+                entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
+            }
+
+        });
+
+        uw.getBelowButton().setOnAction(actionEvent -> {
+
+
+            uw.setBelowLine();
+            // show below the line voting
+            uw.drawCandidateCards(belowModel.getCandidateList(), true);
+            // TEMP
+            uw.drawPartyCards(aboveModel.getCandidateList(), false);
+            uw.setCandidatePreferences(belowModel.getFullMap());
+
+            for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
+                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
+            }
+
+        });
+
+
+        uw.getClearButton().setOnAction(actionEvent -> {
+
+            // this version deselects everything from currently
+            // viewed ballot
+            if(uw.getCurrentState() == 0) {
+
+                // currently viewing above the line ballot
+                aboveModel.deselectAll();
+                uw.setCandidatePreferences(aboveModel.getFullMap());
+            } else {
+
+                // currently viewing below the line ballot
+                belowModel.deselectAll();
+                uw.setCandidatePreferences(belowModel.getFullMap());
+            }
+
+            // this version deselects everything from both ballots
+            /*
+            aboveModel.deselectAll();
+            belowModel.deselectAll();
+
+            if(uw.getCurrentState() == 0) {
+                uw.setCandidatePreferences(aboveModel.getFullMap());
+            } else {
+                uw.setCandidatePreferences(belowModel.getFullMap());
+            }
+            */
+
+        });
+
+
+        uw.getConfirmButton().setOnAction(actionEvent -> {
+
+            VotingModel currentModel = null;
+            // put through currently selected ballot
+            if(uw.getCurrentState() == 0) {
+
+                // put through above line ballot
+                currentModel = aboveModel;
+            } else {
+
+                currentModel = belowModel;
+            }
+
+            if (currentModel.checkValidVote()) {
+                AbstractView newView = setupUpperConfirmWindow(uw.getCurrentState());
+                this.currentView = newView;
+                stage.getScene().setRoot(newView.getRoot());
+            } else {
+
+                System.out.println("Not enough candidates voted for");
+            }
+        });
+
+        return uw;
+
+    }
+
+    private AbstractView setupUpperVoteWindow(int state) {
 
         UpperVoteWindowView uw = new UpperVoteWindowView(stage.getWidth(), stage.getHeight());
 
@@ -390,6 +511,62 @@ public class Controller {
     }
 
      // Handler for the button presses on the candidate cards
+    private class PrototypeSenateAboveCandidateClickHandler implements EventHandler<MouseEvent> {
+
+        private Candidate candidate;
+
+        public PrototypeSenateAboveCandidateClickHandler(Candidate candidate) {
+            this.candidate = candidate;
+        }
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            // Vote in the model
+
+
+            boolean success = aboveModel.tryVoteNext(candidate);
+            if (!success) {
+                success = aboveModel.tryDeselectVote(candidate);
+                if (!success) {
+                    // The candidate can't be voted for or deselected.
+                    // Do nothing?
+
+                    return;
+                }
+            }
+
+            // Redraw all the candidate preference numbers because why not
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(aboveModel.getFullMap());
+        }
+    }
+    // Handler for the button presses on the candidate cards
+    private class PrototypeSenateBelowCandidateClickHandler implements EventHandler<MouseEvent> {
+
+        private Candidate candidate;
+
+        public PrototypeSenateBelowCandidateClickHandler(Candidate candidate) {
+            this.candidate = candidate;
+        }
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            // Vote in the model
+            boolean success = belowModel.tryVoteNext(candidate);
+            if (!success) {
+                success = belowModel.tryDeselectVote(candidate);
+                if (!success) {
+                    // The candidate can't be voted for or deselected.
+                    // Do nothing?
+                    return;
+                }
+            }
+
+            // Redraw all the candidate preference numbers because why not
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
+        }
+    }
+
+    // Handler for the button presses on the candidate cards
     private class AboveCandidateClickHandler implements EventHandler<MouseEvent> {
 
         private Candidate candidate;

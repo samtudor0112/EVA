@@ -10,6 +10,9 @@ import org.apache.pdfbox.printing.PDFPageable;
 
 import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class BallotPrinter {
@@ -25,92 +28,81 @@ public class BallotPrinter {
         doc.addPage(page);
         PDPageContentStream contents;
         try {
-            contents = new PDPageContentStream(doc, page);
-
-            PDFont font = PDType1Font.HELVETICA;
-            contents.setFont(font, 20);
-
             Collections.sort(candidates);
+            contents = new PDPageContentStream(doc, page);
+            BufferedReader reader;
+            PDFont font = PDType1Font.HELVETICA;
+            try {
+                reader = new BufferedReader(new FileReader(
+                        "src\\evm\\templates\\default.txt"));
+                String line = reader.readLine();
+                while (line != null) {
+                    // do stuff
+                    String seg[] = line.split(",");
 
-            // create top text stuff
-            contents.beginText();
-            contents.newLineAtOffset(200, 750);
-            contents.showText("House of Representatives");
-            contents.endText();
+                    if (seg[0].equals("font")) {
+                        if (seg[1].equals("helvetica")) {
+                            font = PDType1Font.HELVETICA;
+                        } else if (seg[1].equals("helvetica_bold")) {
+                            font = PDType1Font.HELVETICA_BOLD;
+                        }
+                        // might need add more if required for certain ballot(s)
+                    } else if (seg[0].equals("fsize")) {
+                        contents.setFont(font, Integer.parseInt(seg[1]));
+                    } else if (seg[0].equals("text")) {
+                        contents.beginText();
+                        contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
+                        contents.showText(seg[3]);
+                        contents.endText();
+                    } else if (seg[0].equals("image")) {
+                        PDImageXObject pdImage = PDImageXObject.createFromFile(seg[3], doc);
+                        contents.drawImage(pdImage, Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
+                    } else if (seg[0].equals("line")) {
+                        contents.moveTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
+                        contents.lineTo(Integer.parseInt(seg[3]), Integer.parseInt(seg[4]));
+                        contents.stroke();
+                    } else if (seg[0].equals("box")) {
+                        for (int i = 0; i < candidates.size(); i++) {
+                            // its looks complicated but its been found and replaced, check previous commit when it was hardcoded before if u need to edit
+                            contents.moveTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
+                            contents.lineTo(Integer.parseInt(seg[2]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
+                            contents.stroke();
+                            contents.moveTo(Integer.parseInt(seg[2]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
+                            contents.lineTo(Integer.parseInt(seg[2]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i - (Integer.parseInt(seg[2]) - Integer.parseInt(seg[1])));
+                            contents.stroke();
+                            contents.moveTo(Integer.parseInt(seg[2]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i - (Integer.parseInt(seg[2]) - Integer.parseInt(seg[1])));
+                            contents.lineTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i - (Integer.parseInt(seg[2]) - Integer.parseInt(seg[1])));
+                            contents.stroke();
+                            contents.moveTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i - (Integer.parseInt(seg[2]) - Integer.parseInt(seg[1])));
+                            contents.lineTo(Integer.parseInt(seg[1]), Integer.parseInt(seg[3]) - Integer.parseInt(seg[4]) * i);
+                            contents.stroke();
+                        }
+                    } else if (seg[0].equals("cname")) {
+                        for (int i = 0; i < candidates.size(); i++) {
+                            contents.beginText();
+                            contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]) - Integer.parseInt(seg[3]) * i);
+                            contents.showText(candidates.get(i).getName());
+                            contents.endText();
+                        }
+                    } else if (seg[0].equals("cvote")) {
+                        for (int i = 0; i < candidates.size(); i++) {
+                            int vote = currentVotes.get(candidates.get(i));
+                            if (vote != Integer.MAX_VALUE) {
+                                contents.beginText();
+                                contents.newLineAtOffset(50, 530 - 70 * i);
+                                contents.showText(vote + "");
+                                contents.endText();
+                            }
+                        }
+                    }
 
-            contents.beginText();
-            contents.newLineAtOffset(200, 720);
-            contents.showText("Ballot Paper");
-            contents.endText();
-
-            // add images
-            PDImageXObject pdImage = PDImageXObject.createFromFile("src\\evm\\img\\commonwealth-trans-bw-full.jpg", doc);
-            contents.drawImage(pdImage, 10, 660);
-
-            contents.setFont(font, 25);
-            contents.beginText();
-            contents.newLineAtOffset(70, 630);
-            contents.showText("Number the boxes from 1 to 8 in");
-            contents.endText();
-
-            contents.beginText();
-            contents.newLineAtOffset(70, 600);
-            contents.showText("the order of your choice");
-            contents.endText();
-
-
-            // draw lines
-            contents.moveTo(30, 590);
-            contents.lineTo(580, 590);
-            contents.stroke();
-
-            contents.moveTo(30, 660);
-            contents.lineTo(580, 660);
-            contents.stroke();
-
-            contents.setFont(font, 30);
-            for (int i = 0; i < candidates.size(); i++) {
-                int vote = currentVotes.get(candidates.get(i));
-                // draw box
-                // basically etch-a-sketch
-                contents.moveTo(35, 565 - 70 * i);
-                contents.lineTo(85, 565 - 70 * i);
-                contents.stroke();
-                contents.moveTo(85, 565 - 70 * i);
-                contents.lineTo(85, 565 - 70 * i - 50);
-                contents.stroke();
-                contents.moveTo(85, 565 - 70 * i - 50);
-                contents.lineTo(35, 565 - 70 * i - 50);
-                contents.stroke();
-                contents.moveTo(35, 565 - 70 * i - 50);
-                contents.lineTo(35, 565 - 70 * i);
-                contents.stroke();
-
-                // candidate name
-                contents.beginText();
-                contents.newLineAtOffset(100, 530 - 70 * i);
-                contents.showText(candidates.get(i).getName());
-                contents.endText();
-
-                // candidate vote
-                if (vote != Integer.MAX_VALUE) {
-                    contents.beginText();
-                    contents.newLineAtOffset(50, 530 - 70 * i);
-                    contents.showText(vote + "");
-                    contents.endText();
+                    // read next line
+                    line = reader.readLine();
                 }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            // draw bottom part
-            contents.moveTo(30, 50);
-            contents.lineTo(580, 50);
-            contents.stroke();
-
-            contents.setFont(font, 15);
-            contents.beginText();
-            contents.newLineAtOffset(100, 30);
-            contents.showText("Remember... number every box to make your vote count");
-            contents.endText();
 
             contents.close();
             //doc.save("D:\\Files\\Desktop\\testpdf.pdf");

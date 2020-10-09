@@ -1,0 +1,24 @@
+font,helvetica
+fsize,20
+text,200,750,House of Representatives
+//create top text stuff
+text,200,720,Ballot Paper
+//add images (may need double slash)
+image,10,660,src\evm\img\commonwealth-trans-bw-full.jpg
+fsize,25
+text,70,630,Number the boxes from 1 to 8 in
+text,70,600,the order of your choice
+line,30,590,580,590
+line,30,660,580,660
+fsize,30
+// candidate vote stuff
+//drawbox-x1,x2,y1,offset(*i),y2=y1-(x1-x2)
+box,35,85,565,70
+//     x , y , (offset) * i
+cname,100,530,70
+cvote,50,530,70
+
+//draw bottom part
+line,30,50,580,50
+fsize,15
+text,100,30,Remember... number every box to make your vote count
