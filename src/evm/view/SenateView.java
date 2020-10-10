@@ -147,7 +147,7 @@ public class SenateView extends AbstractView {
             // partyCard.setPadding(new Insets(0, 10, 0, 10));
 
             //expand button
-            Button expand = new Button(">");
+            Button expand = new Button("→");
             expand.setPrefSize(100, 100);
             expand.getStyleClass().add("confirm-button");
 
