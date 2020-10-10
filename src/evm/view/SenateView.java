@@ -19,11 +19,18 @@ public class SenateView extends AbstractView {
 
     private double width, height;
     private VBox cards;
+
+    //a map of party names to cards
     private Map<String, VBox> partyCards;
+    //a map of party names to expand buttons
+    private Map<String, Button> partyExpand;
+
     private Map<String, VBox> candidateVBoxes;
     private VBox candidateCards;
     private VBox candidateMenu;
+    // the currently clicked party
     private VBox focussedParty;
+
     private Button confirmButton;
     private Button clearButton;
     private Button lineButton;
@@ -52,13 +59,15 @@ public class SenateView extends AbstractView {
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
         //remove
         lineButton = new Button("Above Line");
         lineButton.getStyleClass().add("confirm-button");
         lineButton.setPrefWidth(250);
 
-        HBox titleBox = new HBox(titleLabel);
-        titleBox.getChildren().add(lineButton);
+        HBox titleBox = new HBox(titleLabel, region, lineButton);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
@@ -127,13 +136,20 @@ public class SenateView extends AbstractView {
     public void drawPartyMenu(List<String> parties) {
         partyCards = new HashMap<>();
 
+        partyExpand = new HashMap<>();
+
         for (String partyName : parties) {
             VBox partyCard = new VBox();
             partyCard.getStyleClass().add("vote-card");
-            partyCard.setPrefWidth(width / 2);
+            partyCard.setPrefWidth(width / 2 - 100);
             partyCard.setMinHeight(85);
             partyCard.setAlignment(Pos.CENTER_LEFT);
             // partyCard.setPadding(new Insets(0, 10, 0, 10));
+
+            //expand button
+            Button expand = new Button(">");
+            expand.setPrefSize(100, 100);
+            expand.getStyleClass().add("confirm-button");
 
             Text party = new Text(partyName);
             party.getStyleClass().add("party-card");
@@ -147,9 +163,14 @@ public class SenateView extends AbstractView {
 
             partyCard.getChildren().add(party);
 
-            cards.getChildren().add(partyCard);
+            HBox card = new HBox();
+            card.getChildren().addAll(partyCard, expand);
+
+            cards.getChildren().add(card);
 
             partyCards.put(partyName, partyCard);
+
+            partyExpand.put(partyName, expand);
         }
 
     }
@@ -209,6 +230,10 @@ public class SenateView extends AbstractView {
 
     public Map<String,VBox> getPartyCards() {
         return partyCards;
+    }
+
+    public Map<String,Button> getPartyExpand() {
+        return partyExpand;
     }
 
     public Map<String, VBox> getCandidateVBoxes() {

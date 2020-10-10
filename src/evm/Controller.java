@@ -121,7 +121,7 @@ public class Controller {
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
-            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap(), false);
+            //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap(), false);
         });
         return cw;
     }
@@ -420,7 +420,7 @@ public class Controller {
 
 
         for (String party: senateModel.getParties()) {
-            view.getPartyCards().get(party).setOnMouseClicked(mouseEvent ->
+            view.getPartyExpand().get(party).setOnAction(actionEvent ->
                     view.partyClick(view.getPartyCards().get(party), view.getCandidateVBoxes().get(party)));
         }
 
