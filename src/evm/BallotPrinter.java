@@ -3,6 +3,7 @@ package evm;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -22,9 +23,14 @@ public class BallotPrinter {
      * @param candidates a list of candidates that can be sorted into alphabetical order
      * @param currentVotes a mapping of candidates to how they've been preferenced by the voter
      */
-    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes) {
+    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait) {
         PDDocument doc = new PDDocument();
-        PDPage page = new PDPage();
+        PDPage page;
+        if (portrait) {
+            page = new PDPage();
+        } else {
+            page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
+        }
         doc.addPage(page);
         PDPageContentStream contents;
         try {
@@ -34,7 +40,7 @@ public class BallotPrinter {
             PDFont font = PDType1Font.HELVETICA;
             try {
                 reader = new BufferedReader(new FileReader(
-                        "src\\evm\\templates\\default.txt"));
+                        "src\\evm\\templates\\other.txt"));
                 String line = reader.readLine();
                 while (line != null) {
                     // do stuff

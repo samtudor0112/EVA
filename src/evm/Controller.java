@@ -121,7 +121,7 @@ public class Controller {
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
-            //BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap());
+            BallotPrinter.createPDF(model.getCandidateList(), model.getFullMap(), false);
         });
         return cw;
     }
@@ -157,7 +157,7 @@ public class Controller {
             stage.getScene().setRoot(nextView.getRoot());
              */
 
-            BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap());
+            BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false);
         });
         return cw;
     }
