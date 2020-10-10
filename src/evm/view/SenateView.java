@@ -3,6 +3,7 @@ package evm.view;
 import evm.Candidate;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -21,15 +22,17 @@ public class SenateView extends AbstractView {
     private VBox cards;
 
     //a map of party names to cards
-    private Map<String, VBox> partyCards;
+    private Map<String, HBox> partyCards;
     //a map of party names to expand buttons
     private Map<String, Button> partyExpand;
+
+    private Map<HBox,Candidate> candidateVoteCard;
 
     private Map<String, VBox> candidateVBoxes;
     private VBox candidateCards;
     private VBox candidateMenu;
     // the currently clicked party
-    private VBox focussedParty;
+    private HBox focussedParty;
 
     private Button confirmButton;
     private Button clearButton;
@@ -39,6 +42,8 @@ public class SenateView extends AbstractView {
 
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
+
+    private Map<String, Label> partypreferenceBoxMap;
 
     private Map<Candidate, HBox> voteCardMap;
 
@@ -139,12 +144,17 @@ public class SenateView extends AbstractView {
         partyExpand = new HashMap<>();
 
         for (String partyName : parties) {
+
+            /*
+            Label preferenceLabel = new Label();
+            preferenceLabel.getStyleClass().add("preference-label");
+            preferenceLabel.setPrefSize(50, 50);
+
+             */
+
             VBox partyCard = new VBox();
-            partyCard.getStyleClass().add("vote-card");
-            partyCard.setPrefWidth(width / 2 - 100);
-            partyCard.setMinHeight(85);
             partyCard.setAlignment(Pos.CENTER_LEFT);
-            // partyCard.setPadding(new Insets(0, 10, 0, 10));
+            partyCard.setPadding(new Insets(0, 10, 0, 10));
 
             //expand button
             Button expand = new Button("→");
@@ -154,29 +164,39 @@ public class SenateView extends AbstractView {
             Text party = new Text(partyName);
             party.getStyleClass().add("party-card");
 
+            partyCard.getChildren().add(party);
+
+            HBox voteCard = new HBox();
+            voteCard.setPrefWidth(width/2 - 100);
+            voteCard.setMinHeight(85);
+            voteCard.getStyleClass().add("vote-card");
+            voteCard.getChildren().addAll(partyCard);
+
             DropShadow cardShadow = new DropShadow();
             cardShadow.setRadius(2.0);
             cardShadow.setOffsetX(1.0);
             cardShadow.setOffsetY(1.0);
             cardShadow.setColor(Color.color(0.5, 0.5, 0.5));
-            partyCard.setEffect(cardShadow);
-
-            partyCard.getChildren().add(party);
+            voteCard.setEffect(cardShadow);
 
             HBox card = new HBox();
-            card.getChildren().addAll(partyCard, expand);
+            card.getChildren().addAll(voteCard, expand);
 
             cards.getChildren().add(card);
 
-            partyCards.put(partyName, partyCard);
+            partyCards.put(partyName, voteCard);
 
             partyExpand.put(partyName, expand);
         }
+
+        addPartyPreferenceBoxes();
 
     }
 
     public void drawCandidateMenus(Map<String, List<Candidate>> theMap) {
         candidateVBoxes = new HashMap<>();
+
+        candidateVoteCard = new HashMap<>();
 
         preferenceBoxMap = new HashMap<>();
 
@@ -186,12 +206,6 @@ public class SenateView extends AbstractView {
             VBox candidateMenu = new VBox();
 
             for (Candidate candidate : theMap.get(party)) {
-                Label preferenceLabel = new Label();
-                //preferenceLabel.setText("1");
-                preferenceLabel.getStyleClass().add("preference-label");
-                preferenceLabel.setPrefSize(50, 50);
-
-                preferenceBoxMap.put(candidate, preferenceLabel);
 
                 Text candidateName = new Text(candidate.getName());
                 Text candidateParty = new Text(candidate.getParty());
@@ -208,7 +222,7 @@ public class SenateView extends AbstractView {
                 voteCard.setPrefWidth(width/2);
                 voteCard.setMinHeight(85);
                 voteCard.getStyleClass().add("vote-card");
-                voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
+                voteCard.getChildren().addAll(candidateVbox);
 
                 voteCardMap.put(candidate, voteCard);
 
@@ -221,14 +235,16 @@ public class SenateView extends AbstractView {
                 voteCard.setEffect(cardShadow);
 
                 candidateMenu.getChildren().add(voteCard);
+                candidateVoteCard.put(voteCard, candidate);
             }
 
             candidateMenu.setSpacing(5);
             candidateVBoxes.put(party, candidateMenu);
         }
+
     }
 
-    public Map<String,VBox> getPartyCards() {
+    public Map<String,HBox> getPartyCards() {
         return partyCards;
     }
 
@@ -240,7 +256,7 @@ public class SenateView extends AbstractView {
         return candidateVBoxes;
     }
 
-    public void partyClick(VBox party, VBox candidate) {
+    public void partyClick(HBox party, VBox candidate) {
         setCandidateMenu(candidate);
         setFocussedParty(party);
     }
@@ -251,7 +267,7 @@ public class SenateView extends AbstractView {
         candidateCards = candidates;
     }
 
-    public void setFocussedParty(VBox party) {
+    public void setFocussedParty(HBox party) {
         if (focussedParty != null) {
             focussedParty.getStyleClass().clear();
             focussedParty.getStyleClass().add("vote-card");
@@ -319,6 +335,7 @@ public class SenateView extends AbstractView {
     }
 
     public void clickButton() {
+        changeVoting();
         if (aboveLine) {
             aboveLine = false;
             lineButton.setText("Below Line");
@@ -327,4 +344,62 @@ public class SenateView extends AbstractView {
             lineButton.setText("Above Line");
         }
     }
+
+    public void changeVoting() {
+        if (aboveLine) {
+            removePartyPreferenceBoxes();
+            addCandidatePreferenceBoxes();
+        } else {
+            addPartyPreferenceBoxes();
+            removeCandidatePreferenceBoxes();
+        }
+    }
+
+    public void addPartyPreferenceBoxes() {
+        for (String party: partyCards.keySet()) {
+            Label preferenceLabel = new Label();
+            preferenceLabel.getStyleClass().add("preference-label");
+            preferenceLabel.setPrefSize(50, 50);
+
+            partyCards.get(party).getChildren().add(0, preferenceLabel);
+        }
+    }
+
+    public void removePartyPreferenceBoxes() {
+        for (String party: partyCards.keySet()) {
+            partyCards.get(party).getChildren().remove(0);
+        }
+    }
+
+    public void addCandidatePreferenceBoxes() {
+        for (String party: candidateVBoxes.keySet()) {
+
+            for (Node voteCard: candidateVBoxes.get(party).getChildren()) {
+                Label preferenceLabel = new Label();
+                preferenceLabel.getStyleClass().add("preference-label");
+                preferenceLabel.setPrefSize(50, 50);
+
+                HBox child = (HBox) voteCard;
+                child.getChildren().add(0, preferenceLabel);
+
+                preferenceBoxMap.put(candidateVoteCard.get(child), preferenceLabel);
+            }
+
+        }
+    }
+
+    public void removeCandidatePreferenceBoxes() {
+        preferenceBoxMap.clear();
+
+        for (String party: candidateVBoxes.keySet()) {
+            for (Node voteCard: candidateVBoxes.get(party).getChildren()) {
+
+                HBox child = (HBox) voteCard;
+                child.getChildren().remove(0);
+
+            }
+        }
+    }
+
+
 }

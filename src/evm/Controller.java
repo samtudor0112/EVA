@@ -425,7 +425,6 @@ public class Controller {
         }
 
 
-
         // Draw the candidate boxes
         for (Map.Entry<Candidate, HBox> entry : view.getVoteCardMap().entrySet()) {
             entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
@@ -449,6 +448,7 @@ public class Controller {
 
         view.getLineButton().setOnAction(actionEvent -> {
             view.clickButton();
+            senateModel.deselectAll();
         });
 
 

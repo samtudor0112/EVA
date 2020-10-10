@@ -285,4 +285,5 @@ public class VotingModel {
 
         return candidatesByParty;
     }
+
 }
