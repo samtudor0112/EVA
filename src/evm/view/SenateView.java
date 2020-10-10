@@ -296,6 +296,10 @@ public class SenateView extends AbstractView {
         return voteCardMap;
     }
 
+    public Map<Candidate, HBox> getPartyVoteCardMap() {
+        return voteCardMap;
+    }
+
     /**
      * Getter for the preference box map
      * @return the preference box map

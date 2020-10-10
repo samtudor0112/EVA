@@ -1,4 +1,7 @@
-3
+6
 House of Representatives:7:3:Scott Morrison~Liberal National Party|Anthony Albanese~Australian Labour Party|Adam Bandt~Australian Greens|Pauline Hanson~Pauline Hanson's One Nation|Robbie Katter~Katter's Australia Party|Jacqui Lambie~Jacqui Lambie Network|Robert Brown~Shooters, Fishers and Farmers Party
 Senate above line:4:3: ~CCP| ~Broscience party| ~Open Borders Party| ~5% Party|
 Senate below line:7:3:Sum Ting Wong~CCP|Chad Thundercock~CCP|Brad Bradford~CCP|Fred~Broscience party|Abraham Goldstein~Open Borders Party|Rich Piana~5% Party|Zyzz~Broscience party
+Senate above line:4:3: ~CCP| ~Broscience party| ~Open Borders Party| ~5% Party|
+Senate below line:7:3:Sum Ting Wong~CCP|Chad Thundercock~CCP|Brad Bradford~CCP|Fred~Broscience party|Abraham Goldstein~Open Borders Party|Rich Piana~5% Party|Zyzz~Broscience party
+Senate above line:9:3:Sco Mo~Liberal National Party|Christopher Pyne~Liberal National Party|Bill Shorten~Australian Labour Party|Anthony Albanese~Australian Labour Party|Richard Di Natale~Australian Greens|Malcom Roberts~Pauline Hanson's One Nation|Kit Katter~Katter's Australia Party|Jacqui Lambie~Jacqui Lambie Network|Robert Brown~Shooters, Fishers and Farmers Party

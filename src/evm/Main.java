@@ -7,6 +7,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,8 +42,15 @@ public class Main extends Application {
             System.exit(1);
         }
 
+        /** TEMP REPLACE THIS SHIT */
+        List<VotingModel> models = new ArrayList<>();
+        for (Ballot ballot : ballots) {
+            models.add(new VotingModel(ballot));
+        }
 
-
+        Controller controller = new Controller(stage, models);
+        controller.getStage().show();
+        /*
         VotingModel model = null;
         VotingModel aboveModel = null;
         VotingModel belowModel = null;
@@ -76,6 +84,8 @@ public class Main extends Application {
             }
 
         }
+
+         */
 
     }
 

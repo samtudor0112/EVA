@@ -7,7 +7,7 @@ package evm;
  */
 public class WindowsNein {
     public static void main(String[] args) {
-        String[] a = new String[] {"program_name", "config/Ella_config.txt"};
+        String[] a = new String[] {"program_name", "config/config.txt"};
         Main.main(a);
     }
 }

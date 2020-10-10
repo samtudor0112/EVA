@@ -29,6 +29,10 @@ public class Controller {
     // below the line
     private VotingModel belowModel;
 
+    private VotingModel SaboveModel;
+    // below the line
+    private VotingModel SbelowModel;
+
     private VotingModel senateModel;
 
     /* The current view of the MVC */
@@ -36,6 +40,9 @@ public class Controller {
 
     /* The javafx stage */
     private Stage stage;
+
+    /** TEMP TO GET THE THING WORKING */
+    private int ballotNum = 0;
 
     /**
      * Instantiates the controller to display on a given stage and with a given VotingModel.
@@ -57,6 +64,24 @@ public class Controller {
         this.stage.setFullScreen(true);
         //stage.show();
 ;
+    }
+
+    /** ABSOLUTE PIECE OF SHIT TEMP CONSTRUCTOR */
+    public Controller(Stage stage, List<VotingModel> models) {
+        this.stage = stage;
+        this.model = models.get(0);
+        this.aboveModel = models.get(1);
+        this.belowModel = models.get(2);
+        this.SaboveModel = models.get(3);
+        this.SbelowModel = models.get(4);
+        this.senateModel = models.get(5);
+
+        AbstractView start = setupVoteWindow();
+        this.currentView = start;
+        stage.setScene(initialise(start));
+        stage.getScene().getStylesheets().add("evm/styles/styles.css");
+        this.stage.setFullScreenExitHint("");
+        this.stage.setFullScreen(true);
     }
 
     private Scene initialise(AbstractView start) {
@@ -96,7 +121,7 @@ public class Controller {
 
         vw.getConfirmButton().setOnAction(actionEvent -> {
             if (model.checkValidVote()) {
-                AbstractView newView = setupConfirmWindow();
+                AbstractView newView = setupConfirmWindow(model);
                 changeView(newView);
             } else {
                 // TODO - maybe grey out button until valid ??
@@ -109,15 +134,37 @@ public class Controller {
     /**
      * sets up a new ConfirmWindowView and sets the stage to the new view.
      */
-    private AbstractView setupConfirmWindow() {
+    private AbstractView setupConfirmWindow(VotingModel voteModel) {
         ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(),
                 stage.getHeight(), "");
-        cw.updateList(model.orderedList(), model.getFullMap());
+        cw.updateList(voteModel.orderedList(), voteModel.getFullMap());
         // Set up the button handlers
         cw.getBackButton().setOnAction(actionEvent -> {
-             AbstractView nextView = setupVoteWindow();
-             changeView(nextView);
+             AbstractView nextView;
+             /** MORE TEMP SHIT */
+             switch (ballotNum) {
+                 case 0:
+                     nextView = setupVoteWindow();
+                     break;
+                 case 1:
+                     nextView = setupUpperVoteWindow(0);
+                     break;
+                 case 2:
+                     nextView = setupPrototypeSenateUpperVoteWindow(0);
+                     break;
+                 case 3:
+                     nextView = setupSenateWindow();
+                     break;
+                 default:
+                     nextView = setupVoteWindow();
+                     break;
+             }
+            if (ballotNum > 0) {
+                ballotNum--;
+            }
+            changeView(nextView);
         });
+
         cw.getConfirmButton().setOnAction(actionEvent -> {
             AbstractView nextView = setupAcceptWindow();
             changeView(nextView);
@@ -174,7 +221,23 @@ public class Controller {
         av.getConfirmButton().setOnAction(actionEvent -> {
 
              // goto above/below the line vote ballot
-            AbstractView newView = setupSenateWindow();
+            AbstractView newView;
+            /** MORE TEMP SHIT */
+            switch (ballotNum) {
+                case 0:
+                    newView = setupUpperVoteWindow(0);
+                    break;
+                case 1:
+                    newView = setupPrototypeSenateUpperVoteWindow(0);
+                    break;
+                case 2:
+                    newView = setupSenateWindow();
+                    break;
+                default:
+                    newView = setupVoteWindow();
+                    break;
+            }
+            ballotNum++;
             this.currentView = newView;
             stage.getScene().setRoot(newView.getRoot());
         });
@@ -186,9 +249,9 @@ public class Controller {
         PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
-            uw.drawCandidateCards(belowModel.getCandidateList(), false);
-            uw.drawPartyCards(aboveModel.getCandidateList(), true);
-            uw.setCandidatePreferences(aboveModel.getFullMap());
+            uw.drawCandidateCards(SbelowModel.getCandidateList(), false);
+            uw.drawPartyCards(SaboveModel.getCandidateList(), true);
+            uw.setCandidatePreferences(SaboveModel.getFullMap());
 
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
@@ -196,10 +259,10 @@ public class Controller {
             }
         } else {
 
-            uw.drawCandidateCards(belowModel.getCandidateList(), true);
+            uw.drawCandidateCards(SbelowModel.getCandidateList(), true);
 //             TEMP
-            uw.drawPartyCards(aboveModel.getCandidateList(), false);
-            uw.setCandidatePreferences(belowModel.getFullMap());
+            uw.drawPartyCards(SaboveModel.getCandidateList(), false);
+            uw.setCandidatePreferences(SbelowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
@@ -215,10 +278,10 @@ public class Controller {
             uw.setAboveLine();
             // show above the line voting if state == 0...
 
-            uw.drawCandidateCards(belowModel.getCandidateList(), false);
-            uw.drawPartyCards(aboveModel.getCandidateList(), true);
+            uw.drawCandidateCards(SbelowModel.getCandidateList(), false);
+            uw.drawPartyCards(SaboveModel.getCandidateList(), true);
 
-            uw.setCandidatePreferences(aboveModel.getFullMap());
+            uw.setCandidatePreferences(SaboveModel.getFullMap());
 
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
@@ -232,10 +295,10 @@ public class Controller {
 
             uw.setBelowLine();
             // show below the line voting
-            uw.drawCandidateCards(belowModel.getCandidateList(), true);
+            uw.drawCandidateCards(SbelowModel.getCandidateList(), true);
             // TEMP
-            uw.drawPartyCards(aboveModel.getCandidateList(), false);
-            uw.setCandidatePreferences(belowModel.getFullMap());
+            uw.drawPartyCards(SaboveModel.getCandidateList(), false);
+            uw.setCandidatePreferences(SbelowModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
@@ -251,13 +314,13 @@ public class Controller {
             if(uw.getCurrentState() == 0) {
 
                 // currently viewing above the line ballot
-                aboveModel.deselectAll();
-                uw.setCandidatePreferences(aboveModel.getFullMap());
+                SaboveModel.deselectAll();
+                uw.setCandidatePreferences(SaboveModel.getFullMap());
             } else {
 
                 // currently viewing below the line ballot
-                belowModel.deselectAll();
-                uw.setCandidatePreferences(belowModel.getFullMap());
+                SbelowModel.deselectAll();
+                uw.setCandidatePreferences(SbelowModel.getFullMap());
             }
 
             // this version deselects everything from both ballots
@@ -282,14 +345,14 @@ public class Controller {
             if(uw.getCurrentState() == 0) {
 
                 // put through above line ballot
-                currentModel = aboveModel;
+                currentModel = SaboveModel;
             } else {
 
-                currentModel = belowModel;
+                currentModel = SbelowModel;
             }
 
             if (currentModel.checkValidVote()) {
-                AbstractView newView = setupUpperConfirmWindow(uw.getCurrentState());
+                AbstractView newView = setupConfirmWindow(currentModel);
                 this.currentView = newView;
                 stage.getScene().setRoot(newView.getRoot());
             } else {
@@ -401,7 +464,7 @@ public class Controller {
             }
 
             if (currentModel.checkValidVote()) {
-                AbstractView newView = setupUpperConfirmWindow(uw.getCurrentState());
+                AbstractView newView = setupConfirmWindow(currentModel);
                 this.currentView = newView;
                 stage.getScene().setRoot(newView.getRoot());
             } else {
@@ -430,6 +493,7 @@ public class Controller {
             entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
         }
 
+
         // Set up the button handlers
         view.getClearButton().setOnAction(actionEvent -> {
             senateModel.deselectAll();
@@ -438,7 +502,7 @@ public class Controller {
 
         view.getConfirmButton().setOnAction(actionEvent -> {
             if (senateModel.checkValidVote()) {
-                AbstractView newView = setupConfirmWindow();
+                AbstractView newView = setupConfirmWindow(senateModel);
                 changeView(newView);
             } else {
                 // TODO - maybe grey out button until valid ??
@@ -528,9 +592,9 @@ public class Controller {
             // Vote in the model
 
 
-            boolean success = aboveModel.tryVoteNext(candidate);
+            boolean success = SaboveModel.tryVoteNext(candidate);
             if (!success) {
-                success = aboveModel.tryDeselectVote(candidate);
+                success = SaboveModel.tryDeselectVote(candidate);
                 if (!success) {
                     // The candidate can't be voted for or deselected.
                     // Do nothing?
@@ -540,7 +604,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(aboveModel.getFullMap());
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SaboveModel.getFullMap());
         }
     }
     // Handler for the button presses on the candidate cards
@@ -555,9 +619,9 @@ public class Controller {
         @Override
         public void handle(MouseEvent mouseEvent) {
             // Vote in the model
-            boolean success = belowModel.tryVoteNext(candidate);
+            boolean success = SbelowModel.tryVoteNext(candidate);
             if (!success) {
-                success = belowModel.tryDeselectVote(candidate);
+                success = SbelowModel.tryDeselectVote(candidate);
                 if (!success) {
                     // The candidate can't be voted for or deselected.
                     // Do nothing?
@@ -566,7 +630,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SbelowModel.getFullMap());
         }
     }
 
