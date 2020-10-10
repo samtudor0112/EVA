@@ -12,6 +12,7 @@ import org.apache.pdfbox.printing.PDFPageable;
 import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterJob;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -39,8 +40,8 @@ public class BallotPrinter {
             BufferedReader reader;
             PDFont font = PDType1Font.HELVETICA;
             try {
-                reader = new BufferedReader(new FileReader(
-                        "src\\evm\\templates\\other.txt"));
+                String template = "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt";
+                reader = new BufferedReader(new FileReader(template));
                 String line = reader.readLine();
                 while (line != null) {
                     // do stuff
@@ -61,6 +62,7 @@ public class BallotPrinter {
                         contents.showText(seg[3]);
                         contents.endText();
                     } else if (seg[0].equals("image")) {
+                        seg[3] = seg[3].replace("\\", File.separator);
                         PDImageXObject pdImage = PDImageXObject.createFromFile(seg[3], doc);
                         contents.drawImage(pdImage, Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
                     } else if (seg[0].equals("line")) {
