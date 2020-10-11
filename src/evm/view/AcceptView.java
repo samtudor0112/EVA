@@ -13,6 +13,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class AcceptView extends AbstractView {
 
+    private Button confirmButton;
     /**
      * Constructor for the evm.view
      * @param width width of the stage
@@ -43,5 +44,12 @@ public class AcceptView extends AbstractView {
         titleLabel.setLayoutY(height * 0.2);
 
         titleLabel.setWrappingWidth(width * 0.93);
+
+        this.confirmButton = confirmButton;
+    }
+
+    public Button getConfirmButton() {
+
+        return this.confirmButton;
     }
 }

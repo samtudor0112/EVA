@@ -39,15 +39,22 @@ public class ConfirmWindowView extends evm.view.AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public ConfirmWindowView(double width, double height) {
+    public ConfirmWindowView(double width, double height, String lineState) {
         this.width = width;
-        this.height = height;
+        this.height = height; 
 
         BorderPane root = new BorderPane();
         root.setPrefSize(width, height);
         this.root = root;
 
-        Text titleLabel = new Text("Please confirm your vote:");
+        String title;
+        if(lineState.compareTo("") == 0) {
+
+            title = "Please confirm your vote:";
+        } else {
+            title = "Please confirm your vote: " + lineState;
+        }
+        Text titleLabel = new Text(title);
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 

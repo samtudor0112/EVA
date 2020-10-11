@@ -14,18 +14,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
- * The view implementing the main voting screen.
+ * The evm.view implementing the main voting screen.
  */
-public class VoteWindowView extends AbstractView {
+public class UpperVoteWindowView extends AbstractView {
 
-    private final int VOTE_TABLE_COLUMNS = 2;
+    // currentState == 0 : above line
+    // currentState == 1 : below line
+    private int currentState = 0;
 
-    private GridPane votePane;
+    private int VOTE_TABLE_COLUMNS = 2;
+
+    public GridPane votePane;
+
+    private Button aboveButton;
+
+    private Button belowButton;
 
     private Button confirmButton;
 
@@ -35,8 +42,13 @@ public class VoteWindowView extends AbstractView {
 
     private double height;
 
+
+
+    public ScrollPane scrolly;
+
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
+    private Map<Candidate, Label> preferenceBoxMapBelow;
 
     private Map<Candidate, HBox> voteCardMap;
 
@@ -46,7 +58,7 @@ public class VoteWindowView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public VoteWindowView(double width, double height) {
+    public UpperVoteWindowView(double width, double height) {
 
         this.width = width;
         this.height = height;
@@ -55,6 +67,24 @@ public class VoteWindowView extends AbstractView {
         BorderPane root = new BorderPane();
         this.root = root;
 
+        aboveButton = new Button("Above line");
+        belowButton = new Button("Below line");
+
+//        aboveButton.setOnAction(actionEvent -> {
+//
+//            setAboveLine();
+//        });
+//
+//        belowButton.setOnAction(actionEvent -> {
+//
+//            setBelowLine();
+//        });
+
+        // create hbox with above/below options at top of page
+        HBox optionBox = new HBox(aboveButton, belowButton);
+        optionBox.setPrefWidth(width);
+        optionBox.setSpacing(5);
+        optionBox.setPadding(new Insets(0, 5, 0, 5));
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
@@ -62,6 +92,9 @@ public class VoteWindowView extends AbstractView {
         HBox titleBox = new HBox(titleLabel);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
+
+        VBox topBox = new VBox(optionBox, titleBox);
+        topBox.setPrefWidth(width);
 
         votePane = new GridPane();
         votePane.setPrefWidth(width);
@@ -79,9 +112,7 @@ public class VoteWindowView extends AbstractView {
         confirmButton = new Button("Confirm");
 
         clearButton.getStyleClass().add("cancel-button");
-
-        confirmButton.getStyleClass().add("confirm-button-grey");
-
+        confirmButton.getStyleClass().add("confirm-button");
 
         HBox buttonRow = new HBox(clearButton, confirmButton);
         buttonRow.setPrefWidth(200);
@@ -99,10 +130,11 @@ public class VoteWindowView extends AbstractView {
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().add(votePane);
 
-        root.setTop(titleBox);
+        root.setTop(topBox);
+
         root.setBottom(buttonRow);
 
-        ScrollPane scrolly = new ScrollPane();
+        scrolly = new ScrollPane();
         scrolly.setContent(vbox);
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -116,14 +148,51 @@ public class VoteWindowView extends AbstractView {
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList) {
-        // Each Candidate object is assigned a TextArea, which can be changed when
+        votePane.getChildren().clear();
+        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
 
-        // Each Candidate object is also assigned a box that, when clicked, will register
+        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
+        // number of candidates written to screen for each party
+        Map<String, Integer> partyCandidates = new HashMap<>();
+        TreeMap<String, Integer> partyPositions = new TreeMap<>();
+
+        if(getCurrentState() == 1) {
+
+            // we are below the line
+
+            ArrayList<String> parties = new ArrayList<>();
+
+            // get and sort parties
+            for(int i = 0; i < candidateList.size(); i++) {
+
+                if(!parties.contains(candidateList.get(i).getParty())) {
+                    partyCandidates.put(candidateList.get(i).getParty(), 0);
+                    parties.add(candidateList.get(i).getParty());
+                }
+
+
+                Collections.shuffle(parties);
+
+                double newWidth = Math.max(parties.size() * 0.5, 1.0);
+                newWidth = newWidth * width;
+                votePane.setPrefWidth(newWidth);
+            }
+            // sort maybe (if u want)
+
+            // get position of each party
+            for(int i = 0; i < parties.size(); i++) {
+
+                partyPositions.put(parties.get(i), i);
+            }
+
+
+
+        }
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < candidateList.size(); i++) {
@@ -132,7 +201,7 @@ public class VoteWindowView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
-            // Here, the Candidate is assigned a TextArea
+            // Here, the evm.Candidate is assigned a TextArea
             // (the box with the preference number inside)
             preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
 
@@ -169,8 +238,28 @@ public class VoteWindowView extends AbstractView {
             // We also assign each candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
 
-            // This is why we need the numeric index, every other candidate is put onto a new line
-            votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+            if(getCurrentState() == 0) {
+
+                // above line
+                VOTE_TABLE_COLUMNS = 2;
+                // This is why we need the numeric index, every other candidate is put onto a new line
+                votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+            } else {
+
+                // below line
+                //VOTE_TABLE_COLUMNS = 3;
+                //votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
+
+                // each column is a party
+                // each row is a candidate
+                String party = candidateList.get(i).getParty();
+                int col = partyPositions.get(party);
+                int row = partyCandidates.get(party);
+                partyCandidates.put(party, row + 1);
+                votePane.add(voteCard, col, row);
+
+            }
+
 
         }
     }
@@ -182,7 +271,9 @@ public class VoteWindowView extends AbstractView {
     public void setCandidatePreferences(Map<Candidate, Integer> preferences) {
         for (Map.Entry<Candidate, Integer> entry: preferences.entrySet()) {
             String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
+
             preferenceBoxMap.get(entry.getKey()).setText(textVote);
+
         }
     }
 
@@ -198,9 +289,14 @@ public class VoteWindowView extends AbstractView {
      * Getter for the preference box map
      * @return the preference box map
      */
-    public Map<Candidate, Label> getPreferenceBoxMap() {
+    public Map<Candidate, Label> getpreferenceBoxMap() {
         return preferenceBoxMap;
     }
+
+    public Map<Candidate, Label> getPreferenceBoxMapBelow() {
+        return preferenceBoxMapBelow;
+    }
+
 
     /**
      * Getter for the clear button
@@ -218,13 +314,44 @@ public class VoteWindowView extends AbstractView {
         return confirmButton;
     }
 
-    public void setConfirmButtonColor() {
-        confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button");
+    public int getCurrentState() { return this.currentState; }
+
+    private void setCurrentState(int newState) {
+
+        this.currentState = newState;
+    }
+    /**
+     * Swaps to showing below the line voting
+     */
+    public void setBelowLine() {
+
+
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        // below the line is state 1
+        setCurrentState(1);
     }
 
-    public void setConfirmButtonGrey() {
-        confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button-grey");
+    /**
+     * Swaps to showing above the line voting
+     */
+    public void setAboveLine() {
+
+        // set the displayed voting model as
+
+        votePane.setPrefWidth(width);
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        // above the line is state 0
+        setCurrentState(0);
+    }
+
+    public Button getAboveButton() {
+
+        return aboveButton;
+    }
+
+    public Button getBelowButton() {
+
+        return belowButton;
     }
 }

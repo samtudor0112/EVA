@@ -1,0 +1,2 @@
+font,helvetica
+image,0,0,src\evm\img\senate-btl-sample.png

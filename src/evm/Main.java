@@ -7,6 +7,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,26 +37,55 @@ public class Main extends Application {
             ballots = ConfigReader.read(getParameters().getRaw().get(1));
 
         } catch (IOException | IndexOutOfBoundsException e) {
-            System.out.println("Invalid filepath to ballot config");
+            System.out.println("Invalid ballot config");
             Platform.exit();
             System.exit(1);
         }
 
+        /** TEMP REPLACE THIS SHIT */
+        List<VotingModel> models = new ArrayList<>();
+        for (Ballot ballot : ballots) {
+            models.add(new VotingModel(ballot));
+        }
 
+        Controller controller = new Controller(stage, models);
+        controller.getStage().show();
+        /*
+        VotingModel model = null;
+        VotingModel aboveModel = null;
+        VotingModel belowModel = null;
+        int index = 0;
         for (Ballot ballot: ballots) {
 
             // randomize our ballot
-            ballot.randomize();
-            VotingModel model = new VotingModel(ballot);
 
-            // Controller instantiates the view
-            Controller controller = new Controller(stage, model);
+            index += 1;
 
-            // This will only show the last controller I think so that's a problem
-            // We also need a way to change the view to keep going to the next screen
-            controller.getStage().show();
-            // controller.getStage().setScene(controller.getCurrentView().getScene());
+            if(index == 1) {
+                ballot.randomize();
+                model = new VotingModel(ballot);
+            } else if (index == 2) {
+
+                ballot.randomize();
+                aboveModel = new VotingModel(ballot);
+            } else if (index == 3) {
+                belowModel = new VotingModel(ballot);
+
+                // all ballots are now set
+                // evm.Controller instantiates the evm.view
+                Controller controller = new Controller(stage, model, aboveModel, belowModel);
+
+                // This will only show the last controller I think so that's a problem
+                // We also need a way to change the view to keep going to the next screen
+                controller.getStage().show();
+
+                // restart counter of 3s
+                index = 0;
+            }
+
         }
+
+         */
 
     }
 

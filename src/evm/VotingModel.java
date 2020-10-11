@@ -255,4 +255,17 @@ public class VotingModel {
      * @return a string message to be displayed when the ballot is confirmed
      */
     public String getBallotString() { return ballot.getPrintMsg(); }
+
+
+
+    public void setBallot(Ballot ballot) {
+        this.ballot = ballot;
+        currentVotes.clear();
+        deselectAll();
+    }
+
+    public Ballot getBallot() {
+        return ballot;
+    }
+
 }
