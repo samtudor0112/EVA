@@ -33,7 +33,7 @@ public class Controller {
     // below the line
     private VotingModel SbelowModel;
 
-    private VotingModel senateModel;
+    private SenateVotingModel senateModel;
 
     /* The current view of the MVC */
     private AbstractView currentView;
@@ -54,7 +54,7 @@ public class Controller {
         this.stage = stage;
         this.model = model;
         this.aboveModel = aboveModel;
-        senateModel = aboveModel;
+        senateModel = new SenateVotingModel(aboveModel.getBallot());
         this.belowModel = belowModel;
         AbstractView start = setupVoteWindow();
         this.currentView = start;
@@ -74,7 +74,7 @@ public class Controller {
         this.belowModel = models.get(2);
         this.SaboveModel = models.get(3);
         this.SbelowModel = models.get(4);
-        this.senateModel = models.get(5);
+        this.senateModel = new SenateVotingModel(models.get(5).getBallot());
 
         AbstractView start = setupVoteWindow();
         this.currentView = start;
@@ -485,12 +485,16 @@ public class Controller {
         for (String party: senateModel.getParties()) {
             view.getPartyExpand().get(party).setOnAction(actionEvent ->
                     view.partyClick(view.getPartyCards().get(party), view.getCandidateVBoxes().get(party)));
+            view.getPartyCards().get(party).setOnMouseClicked(
+                    new SenateCandidateClickHandler(party));
         }
+
 
 
         // Draw the candidate boxes
         for (Map.Entry<Candidate, HBox> entry : view.getVoteCardMap().entrySet()) {
-            entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+            entry.getValue().setOnMouseClicked(
+                    new SenateCandidateClickHandler(entry.getKey()));
         }
 
 
@@ -511,6 +515,7 @@ public class Controller {
         });
 
         view.getLineButton().setOnAction(actionEvent -> {
+            senateModel.switchBallot();
             view.clickButton();
             senateModel.deselectAll();
         });
@@ -696,30 +701,39 @@ public class Controller {
 
         private Candidate candidate;
 
+        private Boolean aboveLine;
+
         public SenateCandidateClickHandler(Candidate candidate) {
             this.candidate = candidate;
+            this.aboveLine = false;
+        }
+
+        public SenateCandidateClickHandler(String partyName) {
+            this.candidate = senateModel.partyNameCandidate.get(partyName);
+            this.aboveLine = true;
         }
 
         @Override
         public void handle(MouseEvent mouseEvent) {
             // Vote in the model
-            boolean success = senateModel.tryVoteNext(candidate);
-            if (!success) {
-                success = senateModel.tryDeselectVote(candidate);
+            if (this.aboveLine == senateModel.isAboveLine) {
+                boolean success = senateModel.tryVoteNext(candidate);
                 if (!success) {
-                    // The candidate can't be voted for or deselected.
-                    // Do nothing?
-                    return;
+                    success = senateModel.tryDeselectVote(candidate);
+                    if (!success) {
+                        // The candidate can't be voted for or deselected.
+                        // Do nothing?
+                        return;
+                    }
                 }
+
+                if (senateModel.checkValidVote()) {
+                    ((SenateView) currentView).setConfirmButtonColor();
+                }
+
+                // Redraw all the candidate preference numbers because why not
+                ((SenateView) currentView).setCandidatePreferences(senateModel.getFullMap());
             }
-
-
-            if (senateModel.checkValidVote()) {
-                ((SenateView)currentView).setConfirmButtonColor();
-            }
-
-            // Redraw all the candidate preference numbers because why not
-            ((SenateView)currentView).setCandidatePreferences(senateModel.getFullMap());
         }
     }
 

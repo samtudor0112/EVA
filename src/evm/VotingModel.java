@@ -257,33 +257,15 @@ public class VotingModel {
     public String getBallotString() { return ballot.getPrintMsg(); }
 
 
-    public List<String> getParties() {
-        List<String> parties = new ArrayList<>();
 
-        for (Candidate candidate : ballot.getCandidateList()) {
-            String party = candidate.getParty();
-
-            if (!parties.contains(party)) {
-                parties.add(party);
-            }
-        }
-
-        Collections.sort(parties);
-        return parties;
+    public void setBallot(Ballot ballot) {
+        this.ballot = ballot;
+        currentVotes.clear();
+        deselectAll();
     }
 
-    public Map<String, List<Candidate>> getCandidatesByParty() {
-        Map<String, List<Candidate>> candidatesByParty = new HashMap<>();
-
-        for (Candidate candidate : ballot.getCandidateList()) {
-            String party = candidate.getParty();
-            if (!candidatesByParty.containsKey(party)) {
-                candidatesByParty.put(party, new ArrayList<>());
-            }
-            candidatesByParty.get(party).add(candidate);
-        }
-
-        return candidatesByParty;
+    public Ballot getBallot() {
+        return ballot;
     }
 
 }

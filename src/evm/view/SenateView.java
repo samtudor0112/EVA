@@ -43,7 +43,7 @@ public class SenateView extends AbstractView {
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
 
-    private Map<String, Label> partypreferenceBoxMap;
+    private Map<String, Label> partyPreferenceBoxMap;
 
     private Map<Candidate, HBox> voteCardMap;
 
@@ -55,8 +55,6 @@ public class SenateView extends AbstractView {
         BorderPane root = new BorderPane();
         root.setPrefSize(width, height);
         this.root = root;
-
-        Boolean aboveLine = true;
 
 
         /** Title Stuff */
@@ -143,14 +141,9 @@ public class SenateView extends AbstractView {
 
         partyExpand = new HashMap<>();
 
+        partyPreferenceBoxMap = new HashMap<>();
+
         for (String partyName : parties) {
-
-            /*
-            Label preferenceLabel = new Label();
-            preferenceLabel.getStyleClass().add("preference-label");
-            preferenceLabel.setPrefSize(50, 50);
-
-             */
 
             VBox partyCard = new VBox();
             partyCard.setAlignment(Pos.CENTER_LEFT);
@@ -282,9 +275,16 @@ public class SenateView extends AbstractView {
      * @param preferences the map of preferences
      */
     public void setCandidatePreferences(Map<Candidate, Integer> preferences) {
-        for (Map.Entry<Candidate, Integer> entry: preferences.entrySet()) {
-            String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
-            preferenceBoxMap.get(entry.getKey()).setText(textVote);
+        if (aboveLine) {
+            for (Map.Entry<Candidate, Integer> entry : preferences.entrySet()) {
+                String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
+                partyPreferenceBoxMap.get(entry.getKey().getName()).setText(textVote);
+            }
+        } else {
+            for (Map.Entry<Candidate, Integer> entry : preferences.entrySet()) {
+                String textVote = entry.getValue() == Integer.MAX_VALUE ? " " : Integer.toString(entry.getValue());
+                preferenceBoxMap.get(entry.getKey()).setText(textVote);
+            }
         }
     }
 
@@ -366,10 +366,13 @@ public class SenateView extends AbstractView {
             preferenceLabel.setPrefSize(50, 50);
 
             partyCards.get(party).getChildren().add(0, preferenceLabel);
+
+            partyPreferenceBoxMap.put(party, preferenceLabel);
         }
     }
 
     public void removePartyPreferenceBoxes() {
+        partyPreferenceBoxMap.clear();
         for (String party: partyCards.keySet()) {
             partyCards.get(party).getChildren().remove(0);
         }
