@@ -152,6 +152,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrolly.setStyle("-fx-font-size: 50px;");
 
         root.setCenter(scrolly);
     }

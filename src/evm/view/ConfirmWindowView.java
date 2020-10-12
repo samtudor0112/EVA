@@ -1,23 +1,18 @@
 package evm.view;
 
 import evm.Candidate;
-import evm.Controller;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +107,11 @@ public class ConfirmWindowView extends evm.view.AbstractView {
                 pref.getStyleClass().add("preference-style");
                 this.setGraphic(pref);
                 this.getStyleClass().add("candidate-style");
+
+                if (preference == Integer.MAX_VALUE) {
+                    pref.getStyleClass().add("preference-style-greyed");
+                    this.setTextFill(Color.LIGHTGRAY);
+                }
 
                 pref.setMinWidth(60);
                 pref.setMinHeight(60);
