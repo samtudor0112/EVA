@@ -14,8 +14,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
+import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.List;
 
 /**
  * The evm.view implementing the main voting screen.
@@ -135,12 +137,15 @@ public class UpperVoteWindowView extends AbstractView {
         root.setBottom(buttonRow);
 
         scrolly = new ScrollPane();
+
         scrolly.setContent(vbox);
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
+        scrolly.setStyle("-fx-font-size: 50px;");
         root.setCenter(scrolly);
+
+
     }
 
     /**
