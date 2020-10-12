@@ -29,9 +29,7 @@ public class Controller {
     // below the line
     private VotingModel belowModel;
 
-    private VotingModel SaboveModel;
-    // below the line
-    private VotingModel SbelowModel;
+    private SenateVotingModel SsenateModel;
 
     private SenateVotingModel senateModel;
 
@@ -54,7 +52,7 @@ public class Controller {
         this.stage = stage;
         this.model = model;
         this.aboveModel = aboveModel;
-        senateModel = new SenateVotingModel(aboveModel.getBallot());
+        senateModel = new SenateVotingModel(aboveModel.getBallot(), /*TEMP*/ 3);
         this.belowModel = belowModel;
         AbstractView start = setupVoteWindow();
         this.currentView = start;
@@ -72,9 +70,8 @@ public class Controller {
         this.model = models.get(0);
         this.aboveModel = models.get(1);
         this.belowModel = models.get(2);
-        this.SaboveModel = models.get(3);
-        this.SbelowModel = models.get(4);
-        this.senateModel = new SenateVotingModel(models.get(5).getBallot());
+        this.SsenateModel = new SenateVotingModel(models.get(4).getBallot(), 3);
+        this.senateModel = new SenateVotingModel(models.get(5).getBallot(), /*TEMP*/ 3);
 
         AbstractView start = setupVoteWindow();
         this.currentView = start;
@@ -249,23 +246,31 @@ public class Controller {
         PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
-            uw.drawCandidateCards(SbelowModel.getCandidateList(), false);
-            uw.drawPartyCards(SaboveModel.getCandidateList(), true);
-            uw.setCandidatePreferences(SaboveModel.getFullMap());
+            uw.drawCandidateCards(SsenateModel.getBelowLine().getCandidateList(), false);
+            uw.drawPartyCards(SsenateModel.getAboveLine().getCandidateList(), true);
+            if(!SsenateModel.getIsAboveLine()) {
+                // Set to above line
+                SsenateModel.switchBallot();
+            }
+            uw.setCandidatePreferences(SsenateModel.getFullMap());
 
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateCandidateClickHandler(entry.getKey()));
             }
         } else {
 
-            uw.drawCandidateCards(SbelowModel.getCandidateList(), true);
+            uw.drawCandidateCards(SsenateModel.getBelowLine().getCandidateList(), true);
 //             TEMP
-            uw.drawPartyCards(SaboveModel.getCandidateList(), false);
-            uw.setCandidatePreferences(SbelowModel.getFullMap());
+            uw.drawPartyCards(SsenateModel.getAboveLine().getCandidateList(), false);
+            if(SsenateModel.getIsAboveLine()) {
+                // Set to below line
+                SsenateModel.switchBallot();
+            }
+            uw.setCandidatePreferences(SsenateModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateCandidateClickHandler(entry.getKey()));
             }
         }
 
@@ -278,14 +283,18 @@ public class Controller {
             uw.setAboveLine();
             // show above the line voting if state == 0...
 
-            uw.drawCandidateCards(SbelowModel.getCandidateList(), false);
-            uw.drawPartyCards(SaboveModel.getCandidateList(), true);
+            uw.drawCandidateCards(SsenateModel.getBelowLine().getCandidateList(), false);
+            uw.drawPartyCards(SsenateModel.getAboveLine().getCandidateList(), true);
 
-            uw.setCandidatePreferences(SaboveModel.getFullMap());
+            if(!SsenateModel.getIsAboveLine()) {
+                // Set to above line
+                SsenateModel.switchBallot();
+            }
+            uw.setCandidatePreferences(SsenateModel.getFullMap());
 
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new PrototypeSenateAboveCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateCandidateClickHandler(entry.getKey()));
             }
 
         });
@@ -295,13 +304,17 @@ public class Controller {
 
             uw.setBelowLine();
             // show below the line voting
-            uw.drawCandidateCards(SbelowModel.getCandidateList(), true);
+            uw.drawCandidateCards(SsenateModel.getBelowLine().getCandidateList(), true);
             // TEMP
-            uw.drawPartyCards(SaboveModel.getCandidateList(), false);
-            uw.setCandidatePreferences(SbelowModel.getFullMap());
+            uw.drawPartyCards(SsenateModel.getAboveLine().getCandidateList(), false);
+            if(SsenateModel.getIsAboveLine()) {
+                // Set to below line
+                SsenateModel.switchBallot();
+            }
+            uw.setCandidatePreferences(SsenateModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new PrototypeSenateBelowCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new PrototypeSenateCandidateClickHandler(entry.getKey()));
             }
 
         });
@@ -314,13 +327,21 @@ public class Controller {
             if(uw.getCurrentState() == 0) {
 
                 // currently viewing above the line ballot
-                SaboveModel.deselectAll();
-                uw.setCandidatePreferences(SaboveModel.getFullMap());
+                if(!SsenateModel.getIsAboveLine()) {
+                    // Set to above line
+                    SsenateModel.switchBallot();
+                }
+                SsenateModel.deselectAll();
+                uw.setCandidatePreferences(SsenateModel.getFullMap());
             } else {
 
                 // currently viewing below the line ballot
-                SbelowModel.deselectAll();
-                uw.setCandidatePreferences(SbelowModel.getFullMap());
+                if(SsenateModel.getIsAboveLine()) {
+                    // Set to above line
+                    SsenateModel.switchBallot();
+                }
+                SsenateModel.deselectAll();
+                uw.setCandidatePreferences(SsenateModel.getFullMap());
             }
 
             // this version deselects everything from both ballots
@@ -340,19 +361,8 @@ public class Controller {
 
         uw.getConfirmButton().setOnAction(actionEvent -> {
 
-            VotingModel currentModel = null;
-            // put through currently selected ballot
-            if(uw.getCurrentState() == 0) {
-
-                // put through above line ballot
-                currentModel = SaboveModel;
-            } else {
-
-                currentModel = SbelowModel;
-            }
-
-            if (currentModel.checkValidVote()) {
-                AbstractView newView = setupConfirmWindow(currentModel);
+            if (SsenateModel.checkValidVote()) {
+                AbstractView newView = setupConfirmWindow(SsenateModel);
                 this.currentView = newView;
                 stage.getScene().setRoot(newView.getRoot());
             } else {
@@ -584,11 +594,11 @@ public class Controller {
     }
 
      // Handler for the button presses on the candidate cards
-    private class PrototypeSenateAboveCandidateClickHandler implements EventHandler<MouseEvent> {
+    private class PrototypeSenateCandidateClickHandler implements EventHandler<MouseEvent> {
 
         private Candidate candidate;
 
-        public PrototypeSenateAboveCandidateClickHandler(Candidate candidate) {
+        public PrototypeSenateCandidateClickHandler(Candidate candidate) {
             this.candidate = candidate;
         }
 
@@ -597,9 +607,9 @@ public class Controller {
             // Vote in the model
 
 
-            boolean success = SaboveModel.tryVoteNext(candidate);
+            boolean success = SsenateModel.tryVoteNext(candidate);
             if (!success) {
-                success = SaboveModel.tryDeselectVote(candidate);
+                success = SsenateModel.tryDeselectVote(candidate);
                 if (!success) {
                     // The candidate can't be voted for or deselected.
                     // Do nothing?
@@ -609,33 +619,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SaboveModel.getFullMap());
-        }
-    }
-    // Handler for the button presses on the candidate cards
-    private class PrototypeSenateBelowCandidateClickHandler implements EventHandler<MouseEvent> {
-
-        private Candidate candidate;
-
-        public PrototypeSenateBelowCandidateClickHandler(Candidate candidate) {
-            this.candidate = candidate;
-        }
-
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-            // Vote in the model
-            boolean success = SbelowModel.tryVoteNext(candidate);
-            if (!success) {
-                success = SbelowModel.tryDeselectVote(candidate);
-                if (!success) {
-                    // The candidate can't be voted for or deselected.
-                    // Do nothing?
-                    return;
-                }
-            }
-
-            // Redraw all the candidate preference numbers because why not
-            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SbelowModel.getFullMap());
+            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SsenateModel.getFullMap());
         }
     }
 
@@ -709,14 +693,14 @@ public class Controller {
         }
 
         public SenateCandidateClickHandler(String partyName) {
-            this.candidate = senateModel.partyNameCandidate.get(partyName);
+            this.candidate = senateModel.getPartyNameCandidateMap().get(partyName);
             this.aboveLine = true;
         }
 
         @Override
         public void handle(MouseEvent mouseEvent) {
             // Vote in the model
-            if (this.aboveLine == senateModel.isAboveLine) {
+            if (this.aboveLine == senateModel.getIsAboveLine()) {
                 boolean success = senateModel.tryVoteNext(candidate);
                 if (!success) {
                     success = senateModel.tryDeselectVote(candidate);

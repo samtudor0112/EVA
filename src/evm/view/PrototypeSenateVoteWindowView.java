@@ -50,7 +50,6 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
 
     /* TODO change this to a Map<evm.Candidate, Integer> ??? */
     private Map<Candidate, Label> preferenceBoxMap;
-    private Map<Candidate, Label> preferenceBoxMapBelow;
 
     private Map<Candidate, HBox> voteCardMap;
 
@@ -386,10 +385,6 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
      */
     public Map<Candidate, Label> getpreferenceBoxMap() {
         return preferenceBoxMap;
-    }
-
-    public Map<Candidate, Label> getPreferenceBoxMapBelow() {
-        return preferenceBoxMapBelow;
     }
 
 

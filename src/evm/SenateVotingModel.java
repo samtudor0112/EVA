@@ -3,31 +3,31 @@ package evm;
 import java.util.*;
 
 public class SenateVotingModel extends VotingModel {
-    Boolean isAboveLine;
+    private Boolean isAboveLine;
 
-    Ballot aboveLine;
-    Ballot belowLine;
+    private Ballot aboveLine;
+    private Ballot belowLine;
 
-    Map<String, Candidate> partyNameCandidate;
+    private Map<String, Candidate> partyNameCandidateMap;
 
     /**
      * Creates a new voting model from a given ballot
      *
      * @param ballot The ballot of candidates
      */
-    public SenateVotingModel(Ballot ballot) {
+    public SenateVotingModel(Ballot ballot, int numVotesParties) {
         super(ballot);
-        partyNameCandidate = new HashMap<>();
+        partyNameCandidateMap = new HashMap<>();
 
         belowLine = ballot;
-        aboveLine = makePartyBallot();
+        aboveLine = makePartyBallot(numVotesParties);
 
         isAboveLine = true;
         setBallot(aboveLine);
     }
 
 
-    private Ballot makePartyBallot() {
+    private Ballot makePartyBallot(int numVotesParties) {
         List<String> parties = this.getParties();
 
         List<Candidate> candidates = new ArrayList<>();
@@ -35,10 +35,10 @@ public class SenateVotingModel extends VotingModel {
         for (String party : parties) {
             Candidate partyCandidate = new Candidate(party, "");
             candidates.add(partyCandidate);
-            partyNameCandidate.put(party, partyCandidate);
+            partyNameCandidateMap.put(party, partyCandidate);
         }
 
-        return new Ballot("Above Line", candidates.size(), candidates.size(), candidates);
+        return new Ballot("Above Line", candidates.size(), numVotesParties, candidates);
     }
 
     public void switchBallot() {
@@ -96,4 +96,11 @@ public class SenateVotingModel extends VotingModel {
         this.belowLine = belowLine;
     }
 
+    public Boolean getIsAboveLine() {
+        return isAboveLine;
+    }
+
+    public Map<String, Candidate> getPartyNameCandidateMap() {
+        return partyNameCandidateMap;
+    }
 }
