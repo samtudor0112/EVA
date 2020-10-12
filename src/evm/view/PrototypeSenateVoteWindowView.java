@@ -295,12 +295,11 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
                 partyPreferenceBoxMap.put(candidateList.get(i), preferenceLabel);
             }
 //
-//            Text candidateName = new Text(candidateList.get(i).getName());
-            Text candidateParty = new Text(candidateList.get(i).getParty());
+            Text candidateName = new Text(candidateList.get(i).getName());
+//            Text candidateParty = new Text(candidateList.get(i).getParty());
 
-            // Note this is reversed
 //            candidateName.getStyleClass().add("candidate-name");
-            candidateParty.getStyleClass().add("candidate-name");
+            candidateName.getStyleClass().add("candidate-name");
 
             /* TODO check wrapping for longer party names */
             // Wrap the name and party text labels so it doesn't squash other vote card elements
@@ -309,7 +308,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
             //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
-            candidateVbox.getChildren().addAll(candidateParty);
+            candidateVbox.getChildren().addAll(candidateName);
             candidateVbox.getStyleClass().add("vote-candidate-display");
             candidateVbox.setPadding(new Insets(0, 10, 0, 10));
 
@@ -338,7 +337,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
 
             // each column is a party
             // each row is a candidate
-            String party = candidateList.get(i).getParty();
+            String party = candidateList.get(i).getName();
             int col = partyPositions.get(party);
             partyPane.add(voteCard, col, 0);
 
