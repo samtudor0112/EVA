@@ -1,14 +1,8 @@
 package evm;
 
 import evm.view.*;
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -243,7 +237,7 @@ public class Controller {
 
     private AbstractView setupPrototypeSenateUpperVoteWindow(int state) {
 
-        PrototypeSenateVoteWindowView uw = new PrototypeSenateVoteWindowView(stage.getWidth(), stage.getHeight());
+        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
             uw.drawCandidateCards(SsenateModel.getBelowLine().getCandidateList(), false);
@@ -377,7 +371,7 @@ public class Controller {
 
     private AbstractView setupUpperVoteWindow(int state) {
 
-        UpperVoteWindowView uw = new UpperVoteWindowView(stage.getWidth(), stage.getHeight());
+        SenateViewHamishDeprecated uw = new SenateViewHamishDeprecated(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
             uw.drawCandidateCards(aboveModel.getCandidateList());
@@ -488,7 +482,7 @@ public class Controller {
     }
 
     private AbstractView setupSenateWindow() {
-        SenateView view = new SenateView(stage.getWidth(), stage.getHeight(), senateModel.getParties());
+        SenateViewEllaDeprecated view = new SenateViewEllaDeprecated(stage.getWidth(), stage.getHeight(), senateModel.getParties());
         view.drawCandidateMenus(senateModel.getCandidatesByParty());
 
 
@@ -619,7 +613,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((PrototypeSenateVoteWindowView)currentView).setCandidatePreferences(SsenateModel.getFullMap());
+            ((SenateView)currentView).setCandidatePreferences(SsenateModel.getFullMap());
         }
     }
 
@@ -649,7 +643,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((UpperVoteWindowView)currentView).setCandidatePreferences(aboveModel.getFullMap());
+            ((SenateViewHamishDeprecated)currentView).setCandidatePreferences(aboveModel.getFullMap());
         }
     }
     // Handler for the button presses on the candidate cards
@@ -675,7 +669,7 @@ public class Controller {
             }
 
             // Redraw all the candidate preference numbers because why not
-            ((UpperVoteWindowView)currentView).setCandidatePreferences(belowModel.getFullMap());
+            ((SenateViewHamishDeprecated)currentView).setCandidatePreferences(belowModel.getFullMap());
         }
     }
 
@@ -712,11 +706,11 @@ public class Controller {
                 }
 
                 if (senateModel.checkValidVote()) {
-                    ((SenateView) currentView).setConfirmButtonColor();
+                    ((SenateViewEllaDeprecated) currentView).setConfirmButtonColor();
                 }
 
                 // Redraw all the candidate preference numbers because why not
-                ((SenateView) currentView).setCandidatePreferences(senateModel.getFullMap());
+                ((SenateViewEllaDeprecated) currentView).setCandidatePreferences(senateModel.getFullMap());
             }
         }
     }
