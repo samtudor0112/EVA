@@ -23,6 +23,20 @@
     -fx-width: 50px;
 }
 
+.preference-style-greyed {
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-align: center;
+    -fx-padding: 10px;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+    -fx-border-color: #c6c6c6;
+    -fx-background-color: #c6c6c6;
+    -fx-width: 50px;
+}
+
+
 /* The confirm button style */
 .confirm-button {
     -fx-background-color:
