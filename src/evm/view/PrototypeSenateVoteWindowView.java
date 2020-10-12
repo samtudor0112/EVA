@@ -150,7 +150,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
         scrolly = new ScrollPane();
         scrolly.setContent(vbox);
         scrolly.pannableProperty().set(true);
-        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrolly.setStyle("-fx-font-size: 50px;");
 
@@ -188,7 +188,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
 
             Collections.shuffle(parties);
 
-            double newWidth = Math.max(parties.size() * 0.5, 1.0);
+            double newWidth = Math.max(parties.size() * 0.4, 1.0);
             newWidth = newWidth * width;
             votePane.setPrefWidth(newWidth);
         }
