@@ -87,20 +87,28 @@ public class SenateView extends AbstractView {
 //        });
 
         // create hbox with above/below options at top of page
-        HBox optionBox = new HBox(aboveButton, belowButton);
+        /*HBox optionBox = new HBox(aboveButton, belowButton);
         optionBox.setPrefWidth(width);
         optionBox.setSpacing(5);
         optionBox.setPadding(new Insets(0, 5, 0, 5));
+
+         */
+
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
-        titleLabel.setFill(Color.WHITE);
 
-        HBox titleBox = new HBox(titleLabel);
+
+        HBox padBox = new HBox();
+        padBox.setPrefWidth(0.66 * width);
+        HBox titleBox = new HBox(titleLabel, padBox, aboveButton, belowButton);
+
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
-        VBox topBox = new VBox(optionBox, titleBox);
+
+        VBox topBox = new VBox(titleBox);
         topBox.setPrefWidth(width);
+
 
         votePane = new GridPane();
         votePane.setPrefWidth(width);
