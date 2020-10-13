@@ -7,8 +7,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
@@ -40,6 +46,32 @@ public class Main extends Application {
             System.out.println("Invalid ballot config");
             Platform.exit();
             System.exit(1);
+        }
+
+        HashMap<String, Object> extraData = new HashMap<>();
+        extraData.put("Ballot1Type", SenateVotingModel.class);
+        extraData.put("Ballot2Type", SenateVotingModel.class);
+        extraData.put("Ballot3Type", SenateVotingModel.class);
+        extraData.put("Ballot4Type", SenateVotingModel.class);
+        extraData.put("Ballot2PartyVotesRequired", 3);
+        extraData.put("Ballot3PartyVotesRequired", 3);
+        extraData.put("Ballot4PartyVotesRequired", 3);
+
+        Config config = new Config();
+
+        config.setBallots(ballots);
+        config.setExtraData(extraData);
+
+        // Test
+        Yaml yaml = new Yaml();
+        StringWriter writer = new StringWriter();
+        yaml.dump(config, writer);
+        try {
+            PrintWriter out = new PrintWriter("test.yaml");
+            out.write(writer.toString());
+            out.close();
+        } catch (IOException e) {
+            System.out.println("yeet");
         }
 
         /** TEMP REPLACE THIS SHIT */
