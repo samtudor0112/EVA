@@ -1,15 +1,14 @@
 package evm;
 
+import evm.YAMLpublic.PublicBallot;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +58,13 @@ public class Main extends Application {
 
         Config config = new Config();
 
-        config.setBallots(ballots);
+//        List<PublicBallot> publicBallots = Stream.of(ballots).map(ballot -> new PublicBallot(ballot)).toArray();
+        List<PublicBallot> publicBallots = new ArrayList<>();
+        for (Ballot ballot: ballots) {
+            publicBallots.add(new PublicBallot(ballot));
+        }
+
+        config.setBallots(publicBallots);
         config.setExtraData(extraData);
 
         // Test

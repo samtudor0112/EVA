@@ -1,49 +1,73 @@
 !!evm.Config
 ballots:
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: Scott Morrison, party: Liberal National Party}
+  - {name: Anthony Albanese, party: Australian Labour Party}
+  - {name: Adam Bandt, party: Australian Greens}
+  - {name: Pauline Hanson, party: Pauline Hanson's One Nation}
+  - {name: Robbie Katter, party: Katter's Australia Party}
+  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
+  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
+  name: House of Representatives
+  numCandidates: 7
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: ' ', party: CCP}
+  - {name: ' ', party: Broscience party}
+  - {name: ' ', party: Open Borders Party}
+  - {name: ' ', party: 5% Party}
+  name: Senate above line
+  numCandidates: 4
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: Sum Ting Wong, party: CCP}
+  - {name: Chad Thundercock, party: CCP}
+  - {name: Brad Bradford, party: CCP}
+  - {name: Fred, party: Broscience party}
+  - {name: Abraham Goldstein, party: Open Borders Party}
+  - {name: Rich Piana, party: 5% Party}
+  - {name: Zyzz, party: Broscience party}
+  name: Senate below line
+  numCandidates: 7
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: ' ', party: CCP}
+  - {name: ' ', party: Broscience party}
+  - {name: ' ', party: Open Borders Party}
+  - {name: ' ', party: 5% Party}
+  name: Senate above line
+  numCandidates: 4
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: Sum Ting Wong, party: CCP}
+  - {name: Chad Thundercock, party: CCP}
+  - {name: Brad Bradford, party: CCP}
+  - {name: Fred, party: Broscience party}
+  - {name: Abraham Goldstein, party: Open Borders Party}
+  - {name: Rich Piana, party: 5% Party}
+  - {name: Zyzz, party: Broscience party}
+  name: Senate below line
+  numCandidates: 7
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
-  - {}
+  - {name: Sco Mo, party: Liberal National Party}
+  - {name: Christopher Pyne, party: Liberal National Party}
+  - {name: Bill Shorten, party: Australian Labour Party}
+  - {name: Anthony Albanese, party: Australian Labour Party}
+  - {name: Richard Di Natale, party: Australian Greens}
+  - {name: Malcom Roberts, party: Pauline Hanson's One Nation}
+  - {name: Kit Katter, party: Katter's Australia Party}
+  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
+  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
+  name: Senate above line
+  numCandidates: 9
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
 extraData:
   Ballot3PartyVotesRequired: 3
   Ballot4Type: &id001 !!java.lang.Class {}
