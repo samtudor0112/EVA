@@ -44,7 +44,7 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
 
     private double height;
 
-
+    ArrayList<String> parties = null;
 
     public ScrollPane scrolly;
 
@@ -170,12 +170,17 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
         // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
-
+        ArrayList<String> sortedParties = null;
+        boolean sorted = false;
+        if(parties != null) {
+            sorted = true;
+            sortedParties = (ArrayList<String>) this.parties.clone();
+        }
         // number of candidates written to screen for each party
         Map<String, Integer> partyCandidates = new HashMap<>();
         partyPositions = new TreeMap<>();
 
-        ArrayList<String> parties = new ArrayList<>();
+        parties = new ArrayList<>();
 
         // get and sort parties
         for(int i = 0; i < candidateList.size(); i++) {
@@ -186,13 +191,19 @@ public class PrototypeSenateVoteWindowView extends AbstractView {
             }
 
 
-            Collections.shuffle(parties);
-
             double newWidth = Math.max(parties.size() * 0.4, 1.0);
             newWidth = newWidth * width;
             votePane.setPrefWidth(newWidth);
         }
         // sort maybe (if u want)
+
+        if(sorted) {
+
+            this.parties = sortedParties;
+        } else {
+
+            Collections.shuffle(this.parties);
+        }
 
         // get position of each party
         for(int i = 0; i < parties.size(); i++) {

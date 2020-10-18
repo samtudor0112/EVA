@@ -44,6 +44,9 @@ public class UpperVoteWindowView extends AbstractView {
 
     private double height;
 
+    private ArrayList<String> parties = null;
+    Map<String, Integer> partyCandidates = null;
+    TreeMap<String, Integer> partyPositions = null;
 
 
     public ScrollPane scrolly;
@@ -161,38 +164,49 @@ public class UpperVoteWindowView extends AbstractView {
         // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
+        ArrayList<String> sortedParties = null;
+        boolean sorted = false;
+        if(parties != null) {
+            sorted = true;
+            sortedParties = (ArrayList<String>) this.parties.clone();
+        }
 
         // number of candidates written to screen for each party
-        Map<String, Integer> partyCandidates = new HashMap<>();
-        TreeMap<String, Integer> partyPositions = new TreeMap<>();
+        this.partyCandidates = new HashMap<>();
+        this.partyPositions = new TreeMap<>();
 
         if(getCurrentState() == 1) {
 
             // we are below the line
-
-            ArrayList<String> parties = new ArrayList<>();
+            this.parties = new ArrayList<>();
 
             // get and sort parties
             for(int i = 0; i < candidateList.size(); i++) {
 
-                if(!parties.contains(candidateList.get(i).getParty())) {
+                if(!this.parties.contains(candidateList.get(i).getParty())) {
                     partyCandidates.put(candidateList.get(i).getParty(), 0);
-                    parties.add(candidateList.get(i).getParty());
+                    this.parties.add(candidateList.get(i).getParty());
                 }
 
-
-                Collections.shuffle(parties);
-
-                double newWidth = Math.max(parties.size() * 0.5, 1.0);
+                double newWidth = Math.max(this.parties.size() * 0.5, 1.0);
                 newWidth = newWidth * width;
                 votePane.setPrefWidth(newWidth);
             }
-            // sort maybe (if u want)
+
+
+            if(sorted) {
+
+                this.parties = sortedParties;
+            } else {
+
+                Collections.shuffle(this.parties);
+            }
+
 
             // get position of each party
-            for(int i = 0; i < parties.size(); i++) {
+            for(int i = 0; i < this.parties.size(); i++) {
 
-                partyPositions.put(parties.get(i), i);
+                partyPositions.put(this.parties.get(i), i);
             }
 
 
