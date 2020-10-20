@@ -52,15 +52,47 @@ public class Main extends Application {
             input = new FileInputStream(new File("test.yaml"));
         } catch (Exception e) {
             e.printStackTrace();
+            Platform.exit();
+            System.exit(1);
         }
         Config config = yaml.load(input);
 
+        // Make the voting models from the config
+        List<VotingModel> models = new ArrayList<>();
+        // We can't do a foreach here since we need to access the extraData
+        for (int i = 0; i < config.getBallots().size(); i++) {
+            VotingModel model = null;
+            // Check the type of the model
+            String typeProperty = "Ballot" + i + "Type";
+            String type = (String)config.getExtraData().get(typeProperty);
+            if (type == null) {
+                type = "";
+            }
+
+            switch (type) {
+                case "Lower House":
+                    model = new VotingModel(config.getBallots().get(i).getBallot());
+                    break;
+                case "Upper House":
+                    // Need to get the number of parties required
+                    String partyProperty = "Ballot" + i + "PartyVotesRequired";
+                    int numPartyVotesRequired = (int)config.getExtraData().get(partyProperty);
+                    model = new SenateVotingModel(config.getBallots().get(i).getBallot(), numPartyVotesRequired);
+                    break;
+                default:
+                    // By default it can be Lower House, why not
+                    model = new VotingModel(config.getBallots().get(i).getBallot());
+                    break;
+            }
+            models.add(model);
+        }
+
 
         /** TEMP REPLACE THIS SHIT */
-        List<VotingModel> models = new ArrayList<>();
-        for (Ballot ballot : ballots) {
-            models.add(new VotingModel(ballot));
-        }
+//        List<VotingModel> models = new ArrayList<>();
+//        for (Ballot ballot : ballots) {
+//            models.add(new VotingModel(ballot));
+//        }
 
         Controller controller = new Controller(stage, models);
         controller.getStage().show();

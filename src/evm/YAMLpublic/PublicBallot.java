@@ -18,8 +18,6 @@ public class PublicBallot {
     public List<PublicCandidate> candidateList;
     public String printMsg = "Lower house ballot complete, ballot printing...";
 
-    private List<Candidate> originalCandidateList;
-
     // "unused" constructor for YAML instantiation - do not remove!
     public PublicBallot(){}
 
@@ -34,13 +32,16 @@ public class PublicBallot {
             candidateList.add(new PublicCandidate(candidate));
         }
 
-        originalCandidateList = ballot.getCandidateList();
-
         this.printMsg = ballot.getPrintMsg();
     }
 
     public Ballot getBallot() {
         // Get back
+        // We have to construct the original candidate list
+        List<Candidate> originalCandidateList = new ArrayList<>();
+        for (PublicCandidate candidate: candidateList) {
+            originalCandidateList.add(candidate.getCandidate());
+        }
         return new Ballot(name, numCandidates, numVotesNeeded, originalCandidateList);
     }
 }

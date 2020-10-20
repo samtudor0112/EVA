@@ -26,13 +26,13 @@ public class Admin {
         }
 
         HashMap<String, Object> extraData = new HashMap<>();
-        extraData.put("Ballot1Type", "Lower House");
+        extraData.put("Ballot0Type", "Lower House");
+        extraData.put("Ballot1Type", "Upper House");
         extraData.put("Ballot2Type", "Upper House");
         extraData.put("Ballot3Type", "Upper House");
-        extraData.put("Ballot4Type", "Upper House");
+        extraData.put("Ballot1PartyVotesRequired", 3);
         extraData.put("Ballot2PartyVotesRequired", 3);
         extraData.put("Ballot3PartyVotesRequired", 3);
-        extraData.put("Ballot4PartyVotesRequired", 3);
 
         Config config = new Config();
 
