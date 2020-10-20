@@ -68,11 +68,5 @@ ballots:
   numCandidates: 9
   numVotesNeeded: 3
   printMsg: Lower house ballot complete, ballot printing...
-extraData:
-  Ballot3PartyVotesRequired: 3
-  Ballot4Type: &id001 !!java.lang.Class {}
-  Ballot2PartyVotesRequired: 3
-  Ballot3Type: *id001
-  Ballot2Type: *id001
-  Ballot1Type: *id001
-  Ballot4PartyVotesRequired: 3
+extraData: {Ballot3PartyVotesRequired: 3, Ballot4Type: Upper House, Ballot2PartyVotesRequired: 3,
+  Ballot3Type: Upper House, Ballot2Type: Upper House, Ballot1Type: Lower House, Ballot4PartyVotesRequired: 3}

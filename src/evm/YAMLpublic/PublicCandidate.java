@@ -11,6 +11,9 @@ public class PublicCandidate {
     public String name;
     public String party;
 
+    // "unused" constructor for YAML instantiation - do not remove!
+    public PublicCandidate(){}
+
     public PublicCandidate(Candidate candidate) {
         this.name = candidate.getName();
         this.party = candidate.getParty();

@@ -13,11 +13,11 @@ public class Config {
     private List<PublicBallot> ballots;
     private Map<String, Object> extraData;
 
-    public Config(String filepath) throws IOException {
-        // TODO
-    }
-
     public Config(){}
+
+//    public Config(Object test){
+//        System.out.println(test);
+//    }
 
     public List<PublicBallot> getBallots() {
         return ballots;

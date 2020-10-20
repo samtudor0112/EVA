@@ -6,14 +6,13 @@ import javafx.application.Platform;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
 /**
  * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
@@ -47,37 +46,15 @@ public class Main extends Application {
             System.exit(1);
         }
 
-        HashMap<String, Object> extraData = new HashMap<>();
-        extraData.put("Ballot1Type", SenateVotingModel.class);
-        extraData.put("Ballot2Type", SenateVotingModel.class);
-        extraData.put("Ballot3Type", SenateVotingModel.class);
-        extraData.put("Ballot4Type", SenateVotingModel.class);
-        extraData.put("Ballot2PartyVotesRequired", 3);
-        extraData.put("Ballot3PartyVotesRequired", 3);
-        extraData.put("Ballot4PartyVotesRequired", 3);
-
-        Config config = new Config();
-
-//        List<PublicBallot> publicBallots = Stream.of(ballots).map(ballot -> new PublicBallot(ballot)).toArray();
-        List<PublicBallot> publicBallots = new ArrayList<>();
-        for (Ballot ballot: ballots) {
-            publicBallots.add(new PublicBallot(ballot));
-        }
-
-        config.setBallots(publicBallots);
-        config.setExtraData(extraData);
-
-        // Test
-        Yaml yaml = new Yaml();
-        StringWriter writer = new StringWriter();
-        yaml.dump(config, writer);
+        Yaml yaml = new Yaml(new Constructor(Config.class));
+        InputStream input = null;
         try {
-            PrintWriter out = new PrintWriter("test.yaml");
-            out.write(writer.toString());
-            out.close();
-        } catch (IOException e) {
-            System.out.println("yeet");
+            input = new FileInputStream(new File("test.yaml"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Config config = yaml.load(input);
+
 
         /** TEMP REPLACE THIS SHIT */
         List<VotingModel> models = new ArrayList<>();

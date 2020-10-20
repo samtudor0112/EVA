@@ -20,6 +20,9 @@ public class PublicBallot {
 
     private List<Candidate> originalCandidateList;
 
+    // "unused" constructor for YAML instantiation - do not remove!
+    public PublicBallot(){}
+
     public PublicBallot(Ballot ballot) {
         this.name = ballot.getName();
         this.numCandidates = ballot.getNumCandidates();
