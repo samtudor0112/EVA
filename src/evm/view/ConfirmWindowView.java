@@ -64,7 +64,7 @@ public class ConfirmWindowView extends evm.view.AbstractView {
 
     /**
      * Draw the candidate list
-     * @param data the observableList of candidates
+     * @param data the List of candidates
      * @param preferences the preference map
      */
     public void updateList(List<Candidate> data, Map<Candidate, Integer> preferences) {
@@ -95,7 +95,12 @@ public class ConfirmWindowView extends evm.view.AbstractView {
             if (candidate == null) {
                 setText("");
             } else {
-                this.setText(candidate.getName() + ", " + candidate.getParty());
+                if (!candidate.getParty().equals("")) {
+                    this.setText(candidate.getName() + ", " + candidate.getParty());
+                } else {
+                    this.setText(candidate.getName());
+                }
+
                 int preference = preferences.get(candidate);
                 String preferenceText;
                 if (preference == Integer.MAX_VALUE) {

@@ -47,7 +47,7 @@ public class Admin {
                     candidates.add(new Candidate(candidateName, candidateParty));
                 }
 
-                // We're done with the ballot, we can construct it, then construct the wrapper then add it to the list
+                // We're done with the ballot, we can construct it, then construct the wrapper, then add it to the list
                 Ballot ballot = new Ballot(ballotName, numCandidates, numCandidatesRequired, candidates, printMsg);
                 PublicBallot publicBallot = new PublicBallot(ballot);
                 ballots.add(publicBallot);
@@ -55,9 +55,9 @@ public class Admin {
         writeConfigToYaml(filePath, new Config(ballots, extraData));
     }
 
+    // Prints a message and gets 1 user input line from scanner
     private static String getInput(Scanner scanner, String msg, String defaultVal) {
         System.out.println(String.format("%s (default: %s): ", msg, defaultVal));
-        while(!scanner.hasNextLine()) {}
         String out = scanner.nextLine();
         return out.equals("") ? defaultVal : out;
     }

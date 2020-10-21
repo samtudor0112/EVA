@@ -1,8 +1,10 @@
 package evm;
 
 import evm.YAMLpublic.PublicBallot;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +14,12 @@ import java.util.Map;
 public class Config {
     private List<PublicBallot> ballots;
     private Map<String, Object> extraData;
+
+    public static Config readConfig(String filePath) throws FileNotFoundException {
+        Yaml yaml = new Yaml(new Constructor(Config.class));
+        InputStream input = new FileInputStream(new File(filePath));
+        return yaml.load(input);
+    }
 
     public Config(){}
 
