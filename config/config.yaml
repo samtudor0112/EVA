@@ -1,0 +1,29 @@
+!!evm.Config
+ballots:
+- candidateList:
+  - {name: Scott Morrison, party: Liberal National Party}
+  - {name: Anthony Albanese, party: Australian Labour Party}
+  - {name: Adam Bandt, party: Australian Greens}
+  - {name: Pauline Hanson, party: Pauline Hanson's One Nation}
+  - {name: Robbie Katter, party: Katter's Australia Party}
+  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
+  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
+  name: House of Representatives
+  numCandidates: 7
+  numVotesNeeded: 3
+  printMsg: Lower house ballot complete, ballot printing...
+- candidateList:
+  - {name: Sco Mo, party: Liberal National Party}
+  - {name: Christopher Pyne, party: Liberal National Party}
+  - {name: Bill Shorten, party: Australian Labour Party}
+  - {name: Anthony Albanese, party: Australian Labour Party}
+  - {name: Richard Di Natale, party: Australian Greens}
+  - {name: Malcom Roberts, party: Pauline Hanson's One Nation}
+  - {name: Kit Katter, party: Katter's Australia Party}
+  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
+  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
+  name: Senate
+  numCandidates: 9
+  numVotesNeeded: 3
+  printMsg: Upper house ballot complete, ballot printing...
+extraData: {Ballot1Type: Upper House,  Ballot0Type: Lower House, Ballot1PartyVotesRequired: 3}
