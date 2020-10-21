@@ -53,7 +53,9 @@ public class ConfigReader {
             candidates.add(readCandidate(candidatesRaw[i]));
         }
 
-        return new Ballot(name, numCandidates ,minPrefs, candidates);
+        // Default print msg
+        String defaultMsg = "Lower house ballot complete, ballot printing...";
+        return new Ballot(name, numCandidates ,minPrefs, candidates, defaultMsg);
     }
 
     private static Candidate readCandidate(String candidate) {

@@ -14,30 +14,46 @@ import java.util.List;
 public class Admin {
 
     public static void main(String[] args) {
-        List<Ballot> ballots = null;
+        // TODO
+    }
+
+    /**
+     * Converts an old config file into a new config file
+     * This function is for "backwards compatibility" for our old config format
+     * It will assume that every 2nd ballot is an upper house ballot, where
+     * the voter only has to vote for 1 party
+     * Note: every ballot has the same default print msg
+     * @param oldFilePath the file path of the old format config
+     * @param newFilePath the file path to write the new format config
+     */
+    public static void convertOldConfig(String oldFilePath, String newFilePath) {
+
+        // Read the old config
+        List<Ballot> ballots;
         try {
             // get ballots
-            ballots = ConfigReader.read("config/config.txt.old");
+            ballots = ConfigReader.read(oldFilePath);
 
         } catch (IOException | IndexOutOfBoundsException e) {
-            System.out.println("Invalid ballot config");
-            Platform.exit();
-            System.exit(1);
+            System.out.println("Invalid old ballot");
+            return;
         }
 
+        // Guess some info
         HashMap<String, Object> extraData = new HashMap<>();
-        extraData.put("Ballot0Type", "Lower House");
-        extraData.put("Ballot1Type", "Lower House");
-        extraData.put("Ballot2Type", "Lower House");
-        extraData.put("Ballot3Type", "Lower House");
-        extraData.put("Ballot4Type", "Upper House");
-        extraData.put("Ballot5Type", "Upper House");
-        extraData.put("Ballot4PartyVotesRequired", 3);
-        extraData.put("Ballot5PartyVotesRequired", 3);
+        for (int i = 0; i < ballots.size(); i++) {
+            if (i % 2 == 0) {
+                extraData.put("Ballot" + i + "Type", "Lower House");
+            } else {
+                extraData.put("Ballot" + i + "Type", "Upper House");
+                extraData.put("Ballot" + i + "PartyVotesRequired", 1);
+            }
 
+        }
+
+        // Create the Config instance storing the config
         Config config = new Config();
 
-//        List<PublicBallot> publicBallots = Stream.of(ballots).map(ballot -> new PublicBallot(ballot)).toArray();
         List<PublicBallot> publicBallots = new ArrayList<>();
         for (Ballot ballot: ballots) {
             publicBallots.add(new PublicBallot(ballot));
@@ -46,16 +62,16 @@ public class Admin {
         config.setBallots(publicBallots);
         config.setExtraData(extraData);
 
-        // Test
+        // Write the Config instance to the Yaml output file
         Yaml yaml = new Yaml();
         StringWriter writer = new StringWriter();
         yaml.dump(config, writer);
         try {
-            PrintWriter out = new PrintWriter("config/config.yaml");
+            PrintWriter out = new PrintWriter(newFilePath);
             out.write(writer.toString());
             out.close();
         } catch (IOException e) {
-            System.out.println("yeet");
+            System.out.println("Invalid new ballot");
         }
     }
 }

@@ -13,48 +13,6 @@ ballots:
   numVotesNeeded: 3
   printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {name: ' ', party: CCP}
-  - {name: ' ', party: Broscience party}
-  - {name: ' ', party: Open Borders Party}
-  - {name: ' ', party: 5% Party}
-  name: Senate above line
-  numCandidates: 4
-  numVotesNeeded: 3
-  printMsg: Lower house ballot complete, ballot printing...
-- candidateList:
-  - {name: Sum Ting Wong, party: CCP}
-  - {name: Chad Thundercock, party: CCP}
-  - {name: Brad Bradford, party: CCP}
-  - {name: Fred, party: Broscience party}
-  - {name: Abraham Goldstein, party: Open Borders Party}
-  - {name: Rich Piana, party: 5% Party}
-  - {name: Zyzz, party: Broscience party}
-  name: Senate below line
-  numCandidates: 7
-  numVotesNeeded: 3
-  printMsg: Lower house ballot complete, ballot printing...
-- candidateList:
-  - {name: ' ', party: CCP}
-  - {name: ' ', party: Broscience party}
-  - {name: ' ', party: Open Borders Party}
-  - {name: ' ', party: 5% Party}
-  name: Senate above line
-  numCandidates: 4
-  numVotesNeeded: 3
-  printMsg: Lower house ballot complete, ballot printing...
-- candidateList:
-  - {name: Sum Ting Wong, party: CCP}
-  - {name: Chad Thundercock, party: CCP}
-  - {name: Brad Bradford, party: CCP}
-  - {name: Fred, party: Broscience party}
-  - {name: Abraham Goldstein, party: Open Borders Party}
-  - {name: Rich Piana, party: 5% Party}
-  - {name: Zyzz, party: Broscience party}
-  name: Senate below line
-  numCandidates: 7
-  numVotesNeeded: 3
-  printMsg: Lower house ballot complete, ballot printing...
-- candidateList:
   - {name: Sco Mo, party: Liberal National Party}
   - {name: Christopher Pyne, party: Liberal National Party}
   - {name: Bill Shorten, party: Australian Labour Party}
@@ -64,10 +22,8 @@ ballots:
   - {name: Kit Katter, party: Katter's Australia Party}
   - {name: Jacqui Lambie, party: Jacqui Lambie Network}
   - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
-  name: Senate above line
+  name: Senate
   numCandidates: 9
   numVotesNeeded: 3
-  printMsg: Lower house ballot complete, ballot printing...
-extraData: {Ballot4Type: Upper House, Ballot5Type: Upper House, Ballot5PartyVotesRequired: 3,
-  Ballot3Type: Lower House, Ballot2Type: Lower House, Ballot0Type: Lower House, Ballot1Type: Lower
-    House, Ballot4PartyVotesRequired: 3}
+  printMsg: Upper house ballot complete, ballot printing...
+extraData: {Ballot1Type: Upper House,  Ballot0Type: Lower House, Ballot1PartyVotesRequired: 3}

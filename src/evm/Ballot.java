@@ -20,11 +20,8 @@ public class Ballot {
     // The list of candidates on the ballot
     private List<Candidate> candidateList;
 
-    /*
-    TODO: instead of having separate classes for RepAcceptBox, SenateAcceptBox etc,
-     just have one class that displays a printing msg according to the ballot
-     */
-    private String printMsg = "Lower house ballot complete, ballot printing...";
+    // The string to print on the accept screen
+    private String printMsg;
 
     /**
      * Create a new Ballot
@@ -32,11 +29,12 @@ public class Ballot {
      * @param votesNeeded the number of votes needed for a vote on this ballot to be legal
      * @param candidates the list of candidates on the ballot
      */
-    public Ballot(String name, int numCandidates, int votesNeeded, List<Candidate> candidates) {
+    public Ballot(String name, int numCandidates, int votesNeeded, List<Candidate> candidates, String printMsg) {
         this.name = name;
         this.numCandidates = numCandidates;
         this.numVotesNeeded = votesNeeded;
         this.candidateList = candidates;
+        this.printMsg = printMsg;
     }
 
     /**
