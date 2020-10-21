@@ -75,11 +75,13 @@ public class Controller {
             entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
         }
 
+        vw.setConfirmButtonColoured(currentModel.checkValidVote());
+
         // Set up the button handlers
         vw.getClearButton().setOnAction(actionEvent -> {
             currentModel.deselectAll();
             vw.setCandidatePreferences(currentModel.getFullMap());
-            vw.setConfirmButtonGrey();
+            vw.setConfirmButtonColoured(false);
         });
 
         vw.getConfirmButton().setOnAction(actionEvent -> {
@@ -87,7 +89,7 @@ public class Controller {
                 AbstractView newView = setupConfirmWindow();
                 changeView(newView);
             } else {
-                // TODO - maybe grey out button until valid ??
+                // TODO - animation or something
                 System.out.println("Not enough candidates voted for");
             }
         });
@@ -199,6 +201,8 @@ public class Controller {
             }
         }
 
+        uw.setConfirmButtonColoured(senateModel.checkValidVote());
+
         uw.getAboveButton().setOnAction(actionEvent -> {
             uw.setAboveLine();
             uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false);
@@ -213,6 +217,8 @@ public class Controller {
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
             }
+
+            uw.setConfirmButtonColoured(senateModel.checkValidVote());
         });
 
         uw.getBelowButton().setOnAction(actionEvent -> {
@@ -229,6 +235,8 @@ public class Controller {
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
                 entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
             }
+
+            uw.setConfirmButtonColoured(senateModel.checkValidVote());
         });
 
         uw.getClearButton().setOnAction(actionEvent -> {
@@ -249,6 +257,7 @@ public class Controller {
             }
             senateModel.deselectAll();
             uw.setCandidatePreferences(senateModel.getFullMap());
+            uw.setConfirmButtonColoured(false);
 
             // this version deselects everything from both ballots
             /*
@@ -321,9 +330,8 @@ public class Controller {
                 }
             }
 
-            if (currentModel.checkValidVote()) {
-                ((VoteWindowView)currentView).setConfirmButtonColor();
-            }
+            // Grey out or un-grey out the confirm button
+            ((VoteWindowView)currentView).setConfirmButtonColoured(currentModel.checkValidVote());
 
             // Redraw all the candidate preference numbers because why not
             ((VoteWindowView)currentView).setCandidatePreferences(currentModel.getFullMap());
@@ -348,10 +356,12 @@ public class Controller {
                 if (!success) {
                     // The candidate can't be voted for or deselected.
                     // Do nothing?
-
                     return;
                 }
             }
+
+            // Grey out or un-grey out the confirm button
+            ((SenateView)currentView).setConfirmButtonColoured(currentModel.checkValidVote());
 
             // Redraw all the candidate preference numbers because why not
             ((SenateView)currentView).setCandidatePreferences(currentModel.getFullMap());

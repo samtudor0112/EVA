@@ -218,13 +218,12 @@ public class VoteWindowView extends AbstractView {
         return confirmButton;
     }
 
-    public void setConfirmButtonColor() {
+    public void setConfirmButtonColoured(boolean coloured) {
         confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button");
-    }
-
-    public void setConfirmButtonGrey() {
-        confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button-grey");
+        if (coloured) {
+            confirmButton.getStyleClass().add("confirm-button");
+        } else {
+            confirmButton.getStyleClass().add("confirm-button-grey");
+        }
     }
 }

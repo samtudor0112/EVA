@@ -76,23 +76,11 @@ public class SenateView extends AbstractView {
         aboveButton = new Button("Above line");
         belowButton = new Button("Below line");
 
-//        aboveButton.setOnAction(actionEvent -> {
-//
-//            setAboveLine();
-//        });
-//
-//        belowButton.setOnAction(actionEvent -> {
-//
-//            setBelowLine();
-//        });
-
         // create hbox with above/below options at top of page
-        /*HBox optionBox = new HBox(aboveButton, belowButton);
-        optionBox.setPrefWidth(width);
-        optionBox.setSpacing(5);
-        optionBox.setPadding(new Insets(0, 5, 0, 5));
-
-         */
+//        HBox optionBox = new HBox(aboveButton, belowButton);
+//        optionBox.setPrefWidth(width);
+//        optionBox.setSpacing(5);
+//        optionBox.setPadding(new Insets(0, 5, 0, 5));
 
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
@@ -132,7 +120,7 @@ public class SenateView extends AbstractView {
         confirmButton = new Button("Confirm");
 
         clearButton.getStyleClass().add("cancel-button");
-        confirmButton.getStyleClass().add("confirm-button");
+        confirmButton.getStyleClass().add("confirm-button-grey");
 
         HBox buttonRow = new HBox(clearButton, confirmButton);
         buttonRow.setPrefWidth(200);
@@ -287,6 +275,7 @@ public class SenateView extends AbstractView {
 
     /**
      * Draws the party cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * Note: MUST be called after drawCandidateCards, otherwise the parties field will be null
      * @param candidateList the list of candidates to draw
      */
     public void drawPartyCards(List<Candidate> candidateList, boolean canVoteFor) {
@@ -461,5 +450,14 @@ public class SenateView extends AbstractView {
     public Button getBelowButton() {
 
         return belowButton;
+    }
+
+    public void setConfirmButtonColoured(boolean coloured) {
+        confirmButton.getStyleClass().clear();
+        if (coloured) {
+            confirmButton.getStyleClass().add("confirm-button");
+        } else {
+            confirmButton.getStyleClass().add("confirm-button-grey");
+        }
     }
 }
