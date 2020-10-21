@@ -17,7 +17,7 @@ public class Admin {
         List<Ballot> ballots = null;
         try {
             // get ballots
-            ballots = ConfigReader.read("config/config.txt");
+            ballots = ConfigReader.read("config/config.txt.old");
 
         } catch (IOException | IndexOutOfBoundsException e) {
             System.out.println("Invalid ballot config");
@@ -51,7 +51,7 @@ public class Admin {
         StringWriter writer = new StringWriter();
         yaml.dump(config, writer);
         try {
-            PrintWriter out = new PrintWriter("test.yaml");
+            PrintWriter out = new PrintWriter("config/config.yaml");
             out.write(writer.toString());
             out.close();
         } catch (IOException e) {

@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 /**
  * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
- * (in our case, config/config.txt should be good)
+ * (in our case, config/config.txt.old should be good)
  */
 public class Main extends Application {
 
@@ -35,21 +35,21 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
-        List<Ballot> ballots = null;
-        try {
-            // get ballots
-            ballots = ConfigReader.read(getParameters().getRaw().get(1));
-
-        } catch (IOException | IndexOutOfBoundsException e) {
-            System.out.println("Invalid ballot config");
-            Platform.exit();
-            System.exit(1);
-        }
+//        List<Ballot> ballots = null;
+//        try {
+//            // get ballots
+//            ballots = ConfigReader.read(getParameters().getRaw().get(1));
+//
+//        } catch (IOException | IndexOutOfBoundsException e) {
+//            System.out.println("Invalid ballot config");
+//            Platform.exit();
+//            System.exit(1);
+//        }
 
         Yaml yaml = new Yaml(new Constructor(Config.class));
         InputStream input = null;
         try {
-            input = new FileInputStream(new File("test.yaml"));
+            input = new FileInputStream(new File(getParameters().getRaw().get(1)));
         } catch (Exception e) {
             e.printStackTrace();
             Platform.exit();
@@ -61,7 +61,7 @@ public class Main extends Application {
         List<VotingModel> models = new ArrayList<>();
         // We can't do a foreach here since we need to access the extraData
         for (int i = 0; i < config.getBallots().size(); i++) {
-            VotingModel model = null;
+            VotingModel model;
             // Check the type of the model
             String typeProperty = "Ballot" + i + "Type";
             String type = (String)config.getExtraData().get(typeProperty);
