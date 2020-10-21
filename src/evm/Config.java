@@ -15,9 +15,10 @@ public class Config {
 
     public Config(){}
 
-//    public Config(Object test){
-//        System.out.println(test);
-//    }
+    public Config(List<PublicBallot> ballots, Map<String, Object> extraData) {
+        this.ballots = ballots;
+        this.extraData = extraData;
+    }
 
     public List<PublicBallot> getBallots() {
         return ballots;

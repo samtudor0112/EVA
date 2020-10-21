@@ -1,42 +1,87 @@
 package evm;
 
 import evm.YAMLpublic.PublicBallot;
-import javafx.application.Platform;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Admin {
 
     public static void main(String[] args) {
-        // TODO
+        readAndWriteUserInputBallot();
     }
 
     /**
-     * Converts an old config file into a new config file
+     * Scan stdin and instruct stdout to create a Config instance
+     * @return the Config instance to be printed
+     */
+    private static void readAndWriteUserInputBallot() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the config file maker. For a default value, type nothing then enter.");
+        String filePath = getInput(scanner, "Enter a directory for the config file", "config/config.yaml");
+        List<PublicBallot> ballots = new ArrayList<>();
+            Map<String, Object> extraData = new HashMap<>();
+            int numBallots = Integer.parseInt(getInput(scanner, "Enter the number of ballots for the election", "2"));
+
+            // While going through the loop, we'll enter the extra data as soon as we get it but not enter the ballots until they're done
+            for (int ballotNum = 0; ballotNum < numBallots; ballotNum++) {
+                String ballotName = getInput(scanner, String.format("Enter the name of ballot %d", ballotNum + 1), String.format("Ballot%d", ballotNum + 1));
+                String ballotType = getInput(scanner, String.format("Enter the type of %s (\"Lower House\" or \"Upper House\")", ballotName), "Lower House");
+                extraData.put("Ballot" + ballotNum + "Type", ballotType);
+                int numCandidates = Integer.parseInt(getInput(scanner, String.format("Enter the number of candidates on %s", ballotName), "1"));
+                int numCandidatesRequired = Integer.parseInt(getInput(scanner, String.format("Enter the number of candidates required for a valid vote on %s", ballotName), "1"));
+                if (ballotType.equals("Upper House")) {
+                    int numPartiesRequired = Integer.parseInt(getInput(scanner, String.format("Enter the number of parties required for a valid vote above the line on %s", ballotName), "1"));
+                    extraData.put("Ballot" + ballotNum + "PartyVotesRequired", numPartiesRequired);
+                }
+                String printMsg = getInput(scanner, String.format("Enter the print message of %s", ballotName), "Lower house ballot complete, ballot printing...");
+
+                // Get the candidates
+                List<Candidate> candidates = new ArrayList<>();
+                for (int candidateNum = 0; candidateNum < numCandidates; candidateNum++) {
+                    String candidateName = getInput(scanner, String.format("Enter the name of candidate %d", candidateNum + 1), "Jim Bob");
+                    String candidateParty = getInput(scanner, String.format("Enter %s's party", candidateName), "Labour");
+                    candidates.add(new Candidate(candidateName, candidateParty));
+                }
+
+                // We're done with the ballot, we can construct it, then construct the wrapper then add it to the list
+                Ballot ballot = new Ballot(ballotName, numCandidates, numCandidatesRequired, candidates, printMsg);
+                PublicBallot publicBallot = new PublicBallot(ballot);
+                ballots.add(publicBallot);
+        }
+        writeConfigToYaml(filePath, new Config(ballots, extraData));
+    }
+
+    private static String getInput(Scanner scanner, String msg, String defaultVal) {
+        System.out.println(String.format("%s (default: %s): ", msg, defaultVal));
+        while(!scanner.hasNextLine()) {}
+        String out = scanner.nextLine();
+        return out.equals("") ? defaultVal : out;
+    }
+
+    /**
+     * Converts an old config file into a new Config instance
      * This function is for "backwards compatibility" for our old config format
      * It will assume that every 2nd ballot is an upper house ballot, where
      * the voter only has to vote for 1 party
      * Note: every ballot has the same default print msg
-     * @param oldFilePath the file path of the old format config
-     * @param newFilePath the file path to write the new format config
+     * @param filePath the file path of the old format config
+     * @return the Config instance to be printed
      */
-    public static void convertOldConfig(String oldFilePath, String newFilePath) {
+    private static Config readOldConfig(String filePath) {
 
         // Read the old config
         List<Ballot> ballots;
         try {
             // get ballots
-            ballots = ConfigReader.read(oldFilePath);
+            ballots = ConfigReader.read(filePath);
 
         } catch (IOException | IndexOutOfBoundsException e) {
             System.out.println("Invalid old ballot");
-            return;
+            return null;
         }
 
         // Guess some info
@@ -62,12 +107,16 @@ public class Admin {
         config.setBallots(publicBallots);
         config.setExtraData(extraData);
 
-        // Write the Config instance to the Yaml output file
+        return config;
+    }
+
+    // Write a Config instance to the Yaml output file at filePath
+    private static void writeConfigToYaml(String filePath, Config config) {
         Yaml yaml = new Yaml();
         StringWriter writer = new StringWriter();
         yaml.dump(config, writer);
         try {
-            PrintWriter out = new PrintWriter(newFilePath);
+            PrintWriter out = new PrintWriter(filePath);
             out.write(writer.toString());
             out.close();
         } catch (IOException e) {
