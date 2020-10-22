@@ -121,11 +121,10 @@ public class Controller {
             if (currentModel instanceof SenateVotingModel) {
                 // Some BallotPrinter call for a senate print
                 // Something like this, idk
-                //BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, currentModel.getCandidatesByParty());
-                // TODO
+                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty());
             } else {
                 // Some BallotPrinter call for a regular print
-                // TODO
+                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), true, new HashMap<>());
             }
 
         });
