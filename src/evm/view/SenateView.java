@@ -1,6 +1,10 @@
 package evm.view;
 
+import evm.Arrow;
 import evm.Candidate;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -11,6 +15,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
@@ -39,6 +44,12 @@ public class SenateView extends AbstractView {
     private Button confirmButton;
 
     private Button clearButton;
+
+    private StackPane stack;
+
+    private Arrow leftArrow;
+
+    private Arrow rightArrow;
 
     private double width;
 
@@ -150,7 +161,29 @@ public class SenateView extends AbstractView {
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrolly.setStyle("-fx-font-size: 50px;");
 
-        root.setCenter(scrolly);
+        leftArrow = new Arrow();
+        rightArrow = new Arrow();
+
+        rightArrow.setStartX(width - 200);
+        rightArrow.setEndX(width - 100);
+
+        rightArrow.setStartY(height/2);
+        rightArrow.setEndY(height/2);
+
+        leftArrow.setStartX(200);
+        leftArrow.setEndX(100);
+
+        leftArrow.setStartY(height/2);
+        leftArrow.setEndY(height/2);
+
+        scrolly.hvalueProperty().addListener(observable -> checkArrowVisibility());
+        checkArrowVisibility();
+
+        stack = new StackPane();
+        stack.setPrefSize(width, height);
+        stack.getChildren().addAll(scrolly, rightArrow, leftArrow);
+
+        root.setCenter(stack);
     }
 
     /**
@@ -368,6 +401,22 @@ public class SenateView extends AbstractView {
             }
 
 
+        }
+    }
+
+    private void checkArrowVisibility() {
+        double hval = scrolly.getHvalue();
+        if (hval != scrolly.getHmax()) {
+            // hide right arrow
+            rightArrow.setVisible(true);
+        } else {
+            rightArrow.setVisible(false);
+        }
+        if (hval != scrolly.getHmin()) {
+            // hide left arrow
+            leftArrow.setVisible(true);
+        } else {
+            leftArrow.setVisible(false);
         }
     }
 
