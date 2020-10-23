@@ -24,7 +24,7 @@ public class BallotPrinter {
      * @param candidates a list of candidates that can be sorted into alphabetical order
      * @param currentVotes a mapping of candidates to how they've been preferenced by the voter
      */
-    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties) {
+    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, boolean senateModel, boolean aboveLine, String template) {
         PDDocument doc = new PDDocument();
         PDPage page;
         if (portrait) {
@@ -40,7 +40,6 @@ public class BallotPrinter {
             BufferedReader reader;
             PDFont font = PDType1Font.HELVETICA;
             try {
-                String template = "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt";
                 reader = new BufferedReader(new FileReader(template));
                 String line = reader.readLine();
                 while (line != null) {
@@ -159,7 +158,7 @@ public class BallotPrinter {
                                         contents.setFont(font, 30);
                                         contents.beginText();
                                         contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pheight4 - (pbox6 + pspac7) * c - 15);
-                                        contents.showText("1");
+                                        contents.showText(vote + "");
                                         contents.endText();
                                     }
                                 } catch (NullPointerException ne) {

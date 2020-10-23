@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -121,10 +122,14 @@ public class Controller {
             if (currentModel instanceof SenateVotingModel) {
                 // Some BallotPrinter call for a senate print
                 // Something like this, idk
-                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty());
+                if (((SenateVotingModel) currentModel).getIsAboveLine()) {
+                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), true, true, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                } else {
+                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), true, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                }
             } else {
                 // Some BallotPrinter call for a regular print
-                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), true, new HashMap<>());
+                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), true, new HashMap<>(), false, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "default.txt");
             }
 
         });
