@@ -48,7 +48,7 @@ public class VoteWindowView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public VoteWindowView(double width, double height, String ballotName) {
+    public VoteWindowView(double width, double height, String ballotName, Integer minPrefs) {
 
         this.width = width;
         this.height = height;
@@ -61,7 +61,8 @@ public class VoteWindowView extends AbstractView {
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
-        topLabel = new Text(ballotName);
+        String topLabelText = ballotName + " - please place at least " + minPrefs.toString() + " preferences";
+        topLabel = new Text(topLabelText);
         HBox ballotNameBox = new HBox(topLabel);
 
         HBox titleBox = new HBox(titleLabel);

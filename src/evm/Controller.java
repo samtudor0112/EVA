@@ -67,7 +67,7 @@ public class Controller {
      * the new VoteWindowView.
      */
     private AbstractView setupVoteWindow() {
-        VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName());
+        VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), currentModel.getBallot().getNumVotesNeeded());
         vw.drawCandidateCards(currentModel.getCandidateList());
         vw.setCandidatePreferences(currentModel.getFullMap());
 
@@ -172,7 +172,7 @@ public class Controller {
         // let's cast it here so we don't cast it everywhere
         SenateVotingModel senateModel = (SenateVotingModel)currentModel;
 
-        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName());
+        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), currentModel.getBallot().getNumVotesNeeded());
 
         if(state == 0) {
             uw.setAboveLine();
