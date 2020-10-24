@@ -38,7 +38,7 @@ public class SenateVotingModel extends VotingModel {
             partyNameCandidateMap.put(party, partyCandidate);
         }
 
-        return new Ballot("Above Line", candidates.size(), numVotesParties, candidates, belowLine.getPrintMsg());
+        return new Ballot(belowLine.getName(), candidates.size(), numVotesParties, candidates, belowLine.getPrintMsg());
     }
 
     public void switchBallot() {

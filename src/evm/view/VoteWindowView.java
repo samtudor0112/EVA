@@ -40,13 +40,15 @@ public class VoteWindowView extends AbstractView {
 
     private Map<Candidate, HBox> voteCardMap;
 
+    public Text topLabel = null;
+
     /**
      * Instantiate the vote window from a stage of size width by height.
      * Sets up some of the ui elements (the static ones), but not the candidate
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public VoteWindowView(double width, double height) {
+    public VoteWindowView(double width, double height, String ballotName) {
 
         this.width = width;
         this.height = height;
@@ -59,9 +61,15 @@ public class VoteWindowView extends AbstractView {
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
+        topLabel = new Text(ballotName);
+        HBox ballotNameBox = new HBox(topLabel);
+
         HBox titleBox = new HBox(titleLabel);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
+
+        VBox topBox = new VBox(ballotNameBox, titleBox);
+        topBox.setPrefWidth(width);
 
         votePane = new GridPane();
         votePane.setPrefWidth(width);
@@ -99,7 +107,7 @@ public class VoteWindowView extends AbstractView {
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().add(votePane);
 
-        root.setTop(titleBox);
+        root.setTop(topBox);
         root.setBottom(buttonRow);
 
         ScrollPane scrolly = new ScrollPane();

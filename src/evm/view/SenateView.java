@@ -70,13 +70,15 @@ public class SenateView extends AbstractView {
 
     private TreeMap<String, Integer> partyPositions;
 
+    public Text topLabel = null;
+
     /**
      * Instantiate the vote window from a stage of size width by height.
      * Sets up some of the ui elements (the static ones), but not the candidate
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public SenateView(double width, double height) {
+    public SenateView(double width, double height, String ballotName) {
 
         this.width = width;
         this.height = height;
@@ -96,19 +98,21 @@ public class SenateView extends AbstractView {
 
         Text titleLabel = new Text("Place vote:");
         titleLabel.getStyleClass().add("text-header-purple");
+        titleLabel.setFill(Color.WHITE);
 
 
         HBox padBox = new HBox();
         padBox.setPrefWidth(0.66 * width);
         HBox titleBox = new HBox(titleLabel, padBox, aboveButton, belowButton);
 
+        topLabel = new Text(ballotName);
+        HBox ballotNameBox = new HBox(topLabel);
+
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
-
-        VBox topBox = new VBox(titleBox);
+        VBox topBox = new VBox(ballotNameBox, titleBox);
         topBox.setPrefWidth(width);
-
 
         votePane = new GridPane();
         votePane.setPrefWidth(width);
