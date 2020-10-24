@@ -24,7 +24,7 @@ public class BallotPrinter {
      * @param candidates a list of candidates that can be sorted into alphabetical order
      * @param currentVotes a mapping of candidates to how they've been preferenced by the voter
      */
-    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, boolean senateModel, boolean aboveLine, String template) {
+    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, List<String> partynames ,boolean senateModel, boolean aboveLine, String template) {
         PDDocument doc = new PDDocument();
         PDPage page;
         if (portrait) {
@@ -125,10 +125,12 @@ public class BallotPrinter {
                             contents.lineTo(x1 + pwidth3 * (partyno + 1), 10);
                             contents.stroke();
                             // draw party name
-                            contents.beginText();
-                            contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pname5);
-                            contents.showText(pair.getKey().toString());
-                            contents.endText();
+                            if (aboveLine) {
+                                contents.beginText();
+                                contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pname5);
+                                contents.showText(pair.getKey().toString());
+                                contents.endText();
+                            }
                             // draw candidates
                             List<Candidate> partycandidates = (List<Candidate>) pair.getValue();
                             for (int c = 0; c < partycandidates.size(); ++c) {
@@ -152,22 +154,51 @@ public class BallotPrinter {
                                 contents.lineTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
                                 contents.stroke();
                                 // write vote number in box
-                                try {
-                                    int vote = currentVotes.get(partycandidates.get(c));
-                                    if (vote != Integer.MAX_VALUE) {
-                                        contents.setFont(font, 30);
-                                        contents.beginText();
-                                        contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pheight4 - (pbox6 + pspac7) * c - 15);
-                                        contents.showText(vote + "");
-                                        contents.endText();
+                                if (!aboveLine) {
+                                    try {
+                                        int vote = currentVotes.get(partycandidates.get(c));
+                                        if (vote != Integer.MAX_VALUE) {
+                                            contents.setFont(font, 30);
+                                            contents.beginText();
+                                            contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pheight4 - (pbox6 + pspac7) * c - 15);
+                                            contents.showText(vote + "");
+                                            contents.endText();
+                                        }
+                                    } catch (NullPointerException ne) {
                                     }
-                                } catch (NullPointerException ne) {
                                 }
                             }
+
 
                             it.remove(); // avoids a ConcurrentModificationException
                             partyno++;
                         }
+                        if (aboveLine) {
+                            for (int i = 0; i < candidates.size(); ++i) {
+                                int vote = currentVotes.get(candidates.get(i));
+                                int c = -2;
+                                contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.stroke();
+                                if (vote != Integer.MAX_VALUE) {
+                                    contents.setFont(font, 30);
+                                    contents.beginText();
+                                    contents.newLineAtOffset(x1 + pwidth3 * i + 10, y2 - pheight4 - (pbox6 + pspac7) * -2 - 15);
+                                    contents.showText(vote + "");
+                                    contents.endText();
+                                }
+                            }
+                        }
+
                     }
                     // read next line
                     line = reader.readLine();
