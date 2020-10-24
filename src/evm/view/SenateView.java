@@ -6,6 +6,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -182,6 +183,8 @@ public class SenateView extends AbstractView {
         stack = new StackPane();
         stack.setPrefSize(width, height);
         stack.getChildren().addAll(scrolly, rightArrow, leftArrow);
+        StackPane.setAlignment(rightArrow, Pos.CENTER_RIGHT);
+        StackPane.setAlignment(leftArrow, Pos.CENTER_LEFT);
 
         root.setCenter(stack);
     }
