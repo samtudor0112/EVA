@@ -78,7 +78,7 @@ public class SenateView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public SenateView(double width, double height, String ballotName, Integer minPrefs) {
+    public SenateView(double width, double height, String ballotName, Integer minPrefsAbove, Integer minPrefsBelow) {
 
         this.width = width;
         this.height = height;
@@ -105,7 +105,7 @@ public class SenateView extends AbstractView {
         padBox.setPrefWidth(0.66 * width);
         HBox titleBox = new HBox(titleLabel, padBox, aboveButton, belowButton);
 
-        String topLabelText = ballotName + " - please place at least " + minPrefs.toString() + " preferences";
+        String topLabelText = ballotName + " - please place at least " + minPrefsAbove.toString() + " preferences above the line or " + minPrefsBelow.toString() + " below the line";
         topLabel = new Text(topLabelText);
         HBox ballotNameBox = new HBox(topLabel);
 

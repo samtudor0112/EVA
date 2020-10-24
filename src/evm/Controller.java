@@ -172,7 +172,7 @@ public class Controller {
         // let's cast it here so we don't cast it everywhere
         SenateVotingModel senateModel = (SenateVotingModel)currentModel;
 
-        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), currentModel.getBallot().getNumVotesNeeded());
+        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), ((SenateVotingModel) currentModel).getAboveLine().getNumVotesNeeded(), ((SenateVotingModel) currentModel).getBelowLine().getNumVotesNeeded());
 
         if(state == 0) {
             uw.setAboveLine();
