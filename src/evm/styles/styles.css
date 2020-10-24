@@ -49,6 +49,7 @@
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
     -fx-font-size: 40px;
+    -fx-alignment: CENTER;
 }
 
 .confirm-button-grey {
@@ -62,6 +63,7 @@
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
     -fx-font-size: 40px;
+    -fx-alignment: CENTER;
 }
 
 /* The "cancel" / "clear current vote" style */
