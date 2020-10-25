@@ -35,7 +35,11 @@ public class BallotPrinter {
         doc.addPage(page);
         PDPageContentStream contents;
         try {
-            Collections.sort(candidates);
+            candidates.sort(Comparator.comparing(candidate -> candidate.getName()));
+            if (!aboveLine) {
+                candidates.sort(Comparator.comparing(candidate -> candidate.getParty()));
+            }
+
             contents = new PDPageContentStream(doc, page);
             BufferedReader reader;
             PDFont font = PDType1Font.HELVETICA;
@@ -103,7 +107,6 @@ public class BallotPrinter {
                         }
                     } else if (seg[0].equals("senate")) {
                         // map for parties
-                        Iterator it = parties.entrySet().iterator();
                         int x1 = Integer.parseInt(seg[1]);
                         int y2 = Integer.parseInt(seg[2]);
                         int pwidth3 = Integer.parseInt(seg[3]);
@@ -116,10 +119,15 @@ public class BallotPrinter {
                         contents.moveTo(x1, y2);
                         contents.lineTo(x1, 10);
                         contents.stroke();
-                        while (it.hasNext()) {
+                        int doubleuprem = 0;
+                        //draw below line stuff
+                        while (partyno + doubleuprem < candidates.size()) {
                             contents.setFont(font, 10);
-                            Map.Entry pair = (Map.Entry) it.next();
-                            System.out.println(pair.getKey() + " = " + pair.getValue());
+                            System.out.println(candidates.get(partyno + doubleuprem) + " = " + parties.get(candidates.get(partyno + doubleuprem).getParty()));
+                            if (!aboveLine) {
+                                doubleuprem += parties.get(candidates.get(partyno + doubleuprem).getParty()).size() - 1;
+                            }
+                            System.out.println(doubleuprem);
                             // draw right column
                             contents.moveTo(x1 + pwidth3 * (partyno + 1), y2);
                             contents.lineTo(x1 + pwidth3 * (partyno + 1), 10);
@@ -128,17 +136,31 @@ public class BallotPrinter {
                             if (aboveLine) {
                                 contents.beginText();
                                 contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pname5);
-                                contents.showText(pair.getKey().toString());
+                                contents.showText(candidates.get(partyno).getName());
+                                contents.endText();
+                            } else {
+                                contents.beginText();
+                                contents.newLineAtOffset(x1 + pwidth3 * partyno + 10, y2 - pname5);
+                                contents.showText(candidates.get(partyno + doubleuprem).getParty());
                                 contents.endText();
                             }
                             // draw candidates
-                            List<Candidate> partycandidates = (List<Candidate>) pair.getValue();
+                            List<Candidate> partycandidates;
+                            if (aboveLine) {
+                                partycandidates = (List<Candidate>) parties.get(candidates.get(partyno).getName());
+                            } else {
+                                partycandidates = (List<Candidate>) parties.get(candidates.get(partyno + doubleuprem).getParty());
+                            }
                             for (int c = 0; c < partycandidates.size(); ++c) {
                                 contents.setFont(font, 10);
                                 // draw candidate name
                                 contents.beginText();
                                 contents.newLineAtOffset(x1 + pwidth3 * partyno + pbox6 + 4, y2 - pheight4 - (pbox6 + pspac7) * c);
-                                contents.showText(partycandidates.get(c).getName());
+                                contents.showText(partycandidates.get(c).getName().split(" ")[0]);
+                                contents.endText();
+                                contents.beginText();
+                                contents.newLineAtOffset(x1 + pwidth3 * partyno + pbox6 + 4, y2 - pheight4 - (pbox6 + pspac7) * c - 15);
+                                contents.showText(partycandidates.get(c).getName().split(" ")[1]);
                                 contents.endText();
                                 // draw box (end me)
                                 contents.moveTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
@@ -168,33 +190,61 @@ public class BallotPrinter {
                                     }
                                 }
                             }
-
-
-                            it.remove(); // avoids a ConcurrentModificationException
+                            if (!aboveLine) {
+                                // draw above line box but leave blank
+                                int c = -2;
+                                contents.moveTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.lineTo(x1 + pwidth3 * partyno + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * partyno + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.lineTo(x1 + pwidth3 * partyno + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * partyno + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.lineTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.stroke();
+                                contents.moveTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                contents.lineTo(x1 + pwidth3 * partyno + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                contents.stroke();
+                            }
                             partyno++;
                         }
+                        //draw above line stuff
                         if (aboveLine) {
-                            for (int i = 0; i < candidates.size(); ++i) {
-                                int vote = currentVotes.get(candidates.get(i));
-                                int c = -2;
-                                contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
-                                contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
-                                contents.stroke();
-                                contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
-                                contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
-                                contents.stroke();
-                                contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
-                                contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
-                                contents.stroke();
-                                contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
-                                contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
-                                contents.stroke();
-                                if (vote != Integer.MAX_VALUE) {
-                                    contents.setFont(font, 30);
-                                    contents.beginText();
-                                    contents.newLineAtOffset(x1 + pwidth3 * i + 10, y2 - pheight4 - (pbox6 + pspac7) * -2 - 15);
-                                    contents.showText(vote + "");
-                                    contents.endText();
+                            Iterator prtys = parties.entrySet().iterator();
+                            int i = 0;
+                            while (prtys.hasNext()) {
+                                int vote = 0;
+                                Map.Entry pair = (Map.Entry) prtys.next();
+                                int x = 0;
+                                while (candidates.get(x).getName() != pair.getKey()) {
+                                    x++;
+                                    if (x >= candidates.size()) {
+                                        break;
+                                    }
+                                }
+                                if (x < candidates.size()) {
+                                    vote = currentVotes.get(candidates.get(x));
+                                    int c = -2;
+                                    contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                    contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                    contents.stroke();
+                                    contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                    contents.lineTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                    contents.stroke();
+                                    contents.moveTo(x1 + pwidth3 * i + pbox6, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                    contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                    contents.stroke();
+                                    contents.moveTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10 - pbox6);
+                                    contents.lineTo(x1 + pwidth3 * i + 2, y2 - pheight4 - (pbox6 + pspac7) * c + 10);
+                                    contents.stroke();
+                                    if (vote != Integer.MAX_VALUE) {
+                                        contents.setFont(font, 30);
+                                        contents.beginText();
+                                        contents.newLineAtOffset(x1 + pwidth3 * x + 10, y2 - pheight4 - (pbox6 + pspac7) * -2 - 15);
+                                        contents.showText(vote + "");
+                                        contents.endText();
+                                    }
+                                    i++;
                                 }
                             }
                         }
