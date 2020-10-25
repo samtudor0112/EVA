@@ -27,6 +27,7 @@ public class BallotPrinter {
     public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, List<String> partynames ,boolean senateModel, boolean aboveLine, String template) {
         PDDocument doc = new PDDocument();
         PDPage page;
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
         if (portrait) {
             page = new PDPage();
         } else {
@@ -132,6 +133,12 @@ public class BallotPrinter {
                             contents.moveTo(x1 + pwidth3 * (partyno + 1), y2);
                             contents.lineTo(x1 + pwidth3 * (partyno + 1), 10);
                             contents.stroke();
+                            // draw letters
+                            contents.beginText();
+                            contents.newLineAtOffset(x1 + 5 + pwidth3 * (partyno), y2 - 10);
+                            contents.showText(String.valueOf(alphabet.charAt(partyno)) + ".");
+                            contents.endText();
+
                             // draw party name
                             if (aboveLine) {
                                 contents.beginText();

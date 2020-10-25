@@ -1,6 +1,6 @@
 font,helvetica
 fsize,10
-senate,10,350,117,42,8,34,10
+senate,10,450,117,142,108,34,10
 image,650,450,src\evm\img\commonwealth-trans-bw-full.jpg
 line,0,356,900,356
 line,0,357,900,357
