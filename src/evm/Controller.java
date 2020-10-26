@@ -206,6 +206,7 @@ public class Controller {
         }
 
         uw.setConfirmButtonColoured(senateModel.checkValidVote());
+        uw.setAboveBelowColoured(senateModel.getIsAboveLine());
 
         uw.getAboveButton().setOnAction(actionEvent -> {
             uw.setAboveLine();
@@ -223,6 +224,7 @@ public class Controller {
             }
 
             uw.setConfirmButtonColoured(senateModel.checkValidVote());
+            uw.setAboveBelowColoured(true);
         });
 
         uw.getBelowButton().setOnAction(actionEvent -> {
@@ -241,6 +243,7 @@ public class Controller {
             }
 
             uw.setConfirmButtonColoured(senateModel.checkValidVote());
+            uw.setAboveBelowColoured(false);
         });
 
         uw.getClearButton().setOnAction(actionEvent -> {

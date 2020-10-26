@@ -90,6 +90,9 @@ public class SenateView extends AbstractView {
         aboveButton = new Button("Above line");
         belowButton = new Button("Below line");
 
+        aboveButton.getStyleClass().add("confirm-button");
+        belowButton.getStyleClass().add("confirm-button");
+
         // create hbox with above/below options at top of page
 //        HBox optionBox = new HBox(aboveButton, belowButton);
 //        optionBox.setPrefWidth(width);
@@ -181,6 +184,9 @@ public class SenateView extends AbstractView {
 
         leftArrow.setStartY(height/2);
         leftArrow.setEndY(height/2);
+
+        leftArrow.setStrokeWidth(5);
+        rightArrow.setStrokeWidth(5);
 
         scrolly.hvalueProperty().addListener(observable -> checkArrowVisibility());
         checkArrowVisibility();
@@ -515,6 +521,18 @@ public class SenateView extends AbstractView {
             confirmButton.getStyleClass().add("confirm-button");
         } else {
             confirmButton.getStyleClass().add("confirm-button-grey");
+        }
+    }
+
+    public void setAboveBelowColoured(boolean aboveTheLine) {
+        aboveButton.getStyleClass().clear();
+        belowButton.getStyleClass().clear();
+        if (aboveTheLine) {
+            aboveButton.getStyleClass().add("confirm-button-grey");
+            belowButton.getStyleClass().add("confirm-button");
+        } else {
+            aboveButton.getStyleClass().add("confirm-button");
+            belowButton.getStyleClass().add("confirm-button-grey");
         }
     }
 }

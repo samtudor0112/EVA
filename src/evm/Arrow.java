@@ -33,6 +33,9 @@ public class Arrow extends Group {
             arrow2.setEndX(ex);
             arrow2.setEndY(ey);
 
+            arrow1.setStrokeWidth(getStrokeWidth());
+            arrow2.setStrokeWidth(getStrokeWidth());
+
             if (ex == sx && ey == sy) {
                 // arrow parts of length 0
                 arrow1.setStartX(ex);
@@ -63,6 +66,7 @@ public class Arrow extends Group {
         startYProperty().addListener(updater);
         endXProperty().addListener(updater);
         endYProperty().addListener(updater);
+        strokeWidthProperty().addListener(updater);
         updater.invalidated(null);
     }
 
@@ -114,6 +118,18 @@ public class Arrow extends Group {
 
     public final DoubleProperty endYProperty() {
         return line.endYProperty();
+    }
+
+    public final void setStrokeWidth(double width) {
+        line.setStrokeWidth(width);
+    }
+
+    public final double getStrokeWidth() {
+        return line.getStrokeWidth();
+    }
+
+    public final DoubleProperty strokeWidthProperty() {
+        return line.strokeWidthProperty();
     }
 
 }
