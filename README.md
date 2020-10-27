@@ -1,4 +1,4 @@
-![EVA Logo](https://imgur.com/a/oBjuJLU)
+![EVA Logo](https://imgur.com/yU7Gy0B)
 
 # EVA
 Eva, or Electrify Voting Australia, is a flexible and secure electronic voting system designed specifically for Australia. It focuses on providing an intuitive and convenient voting system aimed at reducing rates of informal (cannot be counted for reasons such as not numbering all preferences) voting in Australia.
