@@ -1,10 +1,10 @@
-# studio-test
-repo test
+![EVA Logo](https://imgur.com/a/oBjuJLU)
 
-Lets make the blind hat instead.
-___
-[When u learn the drums](https://youtu.be/mL-LyKcFE5c)
-![](https://i.imgur.com/43URU7D.gif)
+# EVA
+Eva, or Electrify Voting Australia, is a flexible and secure electronic voting system designed specifically for Australia. It focuses on providing an intuitive and convenient voting system aimed at reducing rates of informal (cannot be counted for reasons such as not numbering all preferences) voting in Australia.
 
+## Source Code
+Source code is provided to the public to examine and identify that there are no security vulnerabilities.
 
-no blind hat
+## Configuration
+The program is compiled specifically on each machine with a YAML configuration file describing the members and the types of each ballot.
