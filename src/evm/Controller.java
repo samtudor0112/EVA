@@ -139,13 +139,13 @@ public class Controller {
             if (currentModel instanceof SenateVotingModel) {
                 // BallotPrinter call for a senate print
                 if (((SenateVotingModel) currentModel).getIsAboveLine()) {
-                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "src/evm/templates/other.txt");
                 } else {
-                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "src/evm/templates/other.txt");
                 }
             } else {
                 // BallotPrinter call for a regular print
-                BallotPrinter.createPDF(currentModel, true, new HashMap<>(), new ArrayList<>(),false, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "default.txt");
+                BallotPrinter.createPDF(currentModel, true, new HashMap<>(), new ArrayList<>(),false, false, "src/evm/templates/default.txt");
             }
 
         });
