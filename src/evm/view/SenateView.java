@@ -528,11 +528,11 @@ public class SenateView extends AbstractView {
         aboveButton.getStyleClass().clear();
         belowButton.getStyleClass().clear();
         if (aboveTheLine) {
-            aboveButton.getStyleClass().add("confirm-button-grey");
-            belowButton.getStyleClass().add("confirm-button");
+            aboveButton.getStyleClass().add("line-button-grey");
+            belowButton.getStyleClass().add("line-button");
         } else {
-            aboveButton.getStyleClass().add("confirm-button");
-            belowButton.getStyleClass().add("confirm-button-grey");
+            aboveButton.getStyleClass().add("line-button");
+            belowButton.getStyleClass().add("line-button-grey");
         }
     }
 }

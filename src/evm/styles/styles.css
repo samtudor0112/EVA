@@ -36,6 +36,34 @@
     -fx-width: 50px;
 }
 
+/* The above/below button style */
+.line-button {
+    -fx-background-color:
+        #000000,
+        linear-gradient(#a1009e, #590058),
+        linear-gradient(#970094, #4f004E),
+        linear-gradient(#8D008A, #590044);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-alignment: CENTER;
+}
+
+.line-button-grey {
+    -fx-background-color:
+            #000000,
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-alignment: CENTER;
+}
 
 /* The confirm button style */
 .confirm-button {
