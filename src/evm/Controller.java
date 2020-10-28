@@ -39,6 +39,7 @@ public class Controller {
         this.stage = stage;
         this.currentModel = models.get(0);
         this.models = models;
+        currentModelIndex = 0;
 
         AbstractView start = setupLoginWindow();
         this.currentView = start;
@@ -52,14 +53,7 @@ public class Controller {
 
         LoginView lv = new LoginView(stage.getWidth(), stage.getHeight(), currentModel.getBallotString());
 
-        lv.getConfirmButton().setOnAction(actionEvent -> {
-
-            // goto above/below the line vote ballot
-            AbstractView newView;
-
-            newView = setupVoteWindow();
-            changeView(newView);
-        });
+        lv.getConfirmButton().setOnAction(actionEvent -> changeToNextBallot());
         return lv;
     }
 
@@ -72,7 +66,16 @@ public class Controller {
         stage.getScene().setRoot(view.getRoot());
     }
 
-
+    public void changeToNextBallot() {
+        // goto above/below the line vote ballot
+        AbstractView newView;
+        if (currentModel instanceof SenateVotingModel) {
+            newView = setupSenateVoteWindow(0);
+        } else {
+            newView = setupVoteWindow();
+        }
+        changeView(newView);
+    }
 
     public void nextModel() {
         currentModelIndex++;
@@ -163,22 +166,28 @@ public class Controller {
             // We change to the next voting model here, very important
             if (currentModelIndex != models.size() - 1) {
                 nextModel();
+                changeToNextBallot();
             } else {
                 // We've finished the last ballot
-                // Exits for now
-                // TODO
-                Platform.exit();
-                System.exit(1);
+                // We can reset to the first model like this
+                currentModelIndex = -1;
+                nextModel();
+                // clear all the models
+                for (VotingModel model: models) {
+                    model.deselectAll();
+                    if (model instanceof SenateVotingModel) {
+                        // A cheeky way to reset the SenateVotingModel;
+                        ((SenateVotingModel) model).switchBallot();
+                        ((SenateVotingModel) model).switchBallot();
+                        if (!((SenateVotingModel) model).getIsAboveLine()) {
+                            // Set to above line
+                            ((SenateVotingModel) model).switchBallot();
+                        }
+                    }
+                }
+                AbstractView newView = setupLoginWindow();
+                changeView(newView);
             }
-
-             // goto above/below the line vote ballot
-            AbstractView newView;
-            if (currentModel instanceof SenateVotingModel) {
-                newView = setupSenateVoteWindow(0);
-            } else {
-                newView = setupVoteWindow();
-            }
-            changeView(newView);
         });
         return av;
     }
