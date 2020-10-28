@@ -133,12 +133,23 @@
 }
 
 /* Vote screen candidate "card" card style */
-.vote-card {
+.vote-card-candidate {
     -fx-padding: 10px;
     -fx-border-style: solid inside;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
     -fx-background-color: #eeeeee;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Vote screen party "card" card style. Currently the same as candidate */
+.vote-card-party {
+    -fx-padding: 10px;
+    -fx-border-style: solid inside;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #eeeeee;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .focus-vote-card {

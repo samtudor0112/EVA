@@ -164,7 +164,7 @@ public class VoteWindowView extends AbstractView {
 
             HBox voteCard = new HBox();
             voteCard.setPrefWidth(width/2);
-            voteCard.getStyleClass().add("vote-card");
+            voteCard.getStyleClass().add("vote-card-candidate");
             voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
 
             // Shadow to make the cards look a bit more pretty and professional

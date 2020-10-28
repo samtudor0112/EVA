@@ -258,14 +258,15 @@ public class SenateView extends AbstractView {
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < candidateList.size(); i++) {
             Label preferenceLabel = new Label();
+            preferenceLabel.getStyleClass().add("preference-label");
+            preferenceLabel.setPrefSize(50, 50);
             if (canVoteFor) {
-                //preferenceLabel.setText("1");
-                preferenceLabel.getStyleClass().add("preference-label");
-                preferenceLabel.setPrefSize(50, 50);
 
                 // Here, the evm.Candidate is assigned a TextArea
                 // (the box with the preference number inside)
                 preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
+            } else {
+                preferenceLabel.setVisible(false);
             }
 
             Text candidateName = new Text(candidateList.get(i).getName());
@@ -287,12 +288,14 @@ public class SenateView extends AbstractView {
 
             HBox voteCard = new HBox();
             voteCard.setPrefWidth(width/2);
-            voteCard.getStyleClass().add("vote-card");
+            voteCard.getStyleClass().add("vote-card-candidate");
+
             if (canVoteFor) {
                 voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
             } else {
-                voteCard.getChildren().addAll(candidateVbox);
+                voteCard.getChildren().addAll(candidateVbox, preferenceLabel);
             }
+
 
 
             // Shadow to make the cards look a bit more pretty and professional
@@ -341,14 +344,15 @@ public class SenateView extends AbstractView {
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < candidateList.size(); i++) {
             Label preferenceLabel = new Label();
+            preferenceLabel.getStyleClass().add("preference-label");
+            preferenceLabel.setPrefSize(50, 50);
             if (canVoteFor) {
-                preferenceLabel.setText("1");
-                preferenceLabel.getStyleClass().add("preference-label");
-                preferenceLabel.setPrefSize(50, 50);
 
 //              Here, the evm.Candidate is assigned a TextArea
 //              (the box with the preference number inside)
                 partyPreferenceBoxMap.put(candidateList.get(i), preferenceLabel);
+            } else {
+                preferenceLabel.setVisible(false);
             }
 //
             Text candidateName = new Text(candidateList.get(i).getName());
@@ -367,14 +371,15 @@ public class SenateView extends AbstractView {
             candidateVbox.getChildren().addAll(candidateName);
             candidateVbox.getStyleClass().add("vote-candidate-display");
             candidateVbox.setPadding(new Insets(0, 10, 0, 10));
+            candidateVbox.setAlignment(Pos.CENTER_LEFT);
 
             HBox voteCard = new HBox();
             voteCard.setPrefWidth(width/2);
-            voteCard.getStyleClass().add("vote-card");
+            voteCard.getStyleClass().add("vote-card-party");
             if (canVoteFor) {
                 voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
             } else {
-                voteCard.getChildren().addAll(candidateVbox);
+                voteCard.getChildren().addAll(candidateVbox, preferenceLabel);
             }
 
             // Shadow to make the cards look a bit more pretty and professional
