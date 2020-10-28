@@ -5,5 +5,10 @@ image,650,450,src\evm\img\commonwealth-trans-bw-full.jpg
 line,10,356,829,356
 line,10,357,829,357
 line,10,358,829,358
+font,helvetica
 fsize,20
 text,10,500,Australian Senate Ballot
+// print area
+font,helvetica_bold
+fsize,15
+area,10,483

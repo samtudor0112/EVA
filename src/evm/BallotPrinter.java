@@ -24,7 +24,7 @@ public class BallotPrinter {
      * @param candidates a list of candidates that can be sorted into alphabetical order
      * @param currentVotes a mapping of candidates to how they've been preferenced by the voter
      */
-    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, List<String> partynames ,boolean senateModel, boolean aboveLine, String template) {
+    public static void createPDF(List<Candidate> candidates, Map<Candidate, Integer> currentVotes, Boolean portrait, Map<String, List<Candidate>> parties, List<String> partynames ,boolean senateModel, boolean aboveLine, String template, VotingModel currentmodel) {
         PDDocument doc = new PDDocument();
         PDPage page;
         String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -106,6 +106,11 @@ public class BallotPrinter {
                                 contents.endText();
                             }
                         }
+                    } else if (seg[0].equals("area")) {
+                        contents.beginText();
+                        contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
+                        contents.showText(currentmodel.getBallot().getName().toString());
+                        contents.endText();
                     } else if (seg[0].equals("senate")) {
                         // map for parties
                         int x1 = Integer.parseInt(seg[1]);

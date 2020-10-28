@@ -140,13 +140,13 @@ public class Controller {
                 // Some BallotPrinter call for a senate print
                 // Something like this, idk
                 if (((SenateVotingModel) currentModel).getIsAboveLine()) {
-                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt", currentModel);
                 } else {
-                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt");
+                    BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "other.txt", currentModel);
                 }
             } else {
                 // Some BallotPrinter call for a regular print
-                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), true, new HashMap<>(), new ArrayList<String>(),false, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "default.txt");
+                BallotPrinter.createPDF(currentModel.getCandidateList(), currentModel.getFullMap(), true, new HashMap<>(), new ArrayList<String>(),false, false, "src" + File.separator + "evm" + File.separator + "templates" + File.separator + "default.txt", currentModel);
             }
 
         });
