@@ -40,12 +40,27 @@ public class Controller {
         this.currentModel = models.get(0);
         this.models = models;
 
-        AbstractView start = setupVoteWindow();
+        AbstractView start = setupLoginWindow();
         this.currentView = start;
         stage.setScene(initialise(start));
         stage.getScene().getStylesheets().add("evm/styles/styles.css");
         this.stage.setFullScreenExitHint("");
         this.stage.setFullScreen(true);
+    }
+
+    private AbstractView setupLoginWindow() {
+
+        LoginView lv = new LoginView(stage.getWidth(), stage.getHeight(), currentModel.getBallotString());
+
+        lv.getConfirmButton().setOnAction(actionEvent -> {
+
+            // goto above/below the line vote ballot
+            AbstractView newView;
+
+            newView = setupVoteWindow();
+            changeView(newView);
+        });
+        return lv;
     }
 
     private Scene initialise(AbstractView start) {
@@ -56,6 +71,8 @@ public class Controller {
         this.currentView = view;
         stage.getScene().setRoot(view.getRoot());
     }
+
+
 
     public void nextModel() {
         currentModelIndex++;
