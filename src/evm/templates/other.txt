@@ -2,8 +2,8 @@ font,helvetica
 fsize,10
 senate,10,450,117,142,108,34,10
 image,650,450,src\evm\img\commonwealth-trans-bw-full.jpg
-line,0,356,900,356
-line,0,357,900,357
-line,0,358,900,358
+line,10,356,829,356
+line,10,357,829,357
+line,10,358,829,358
 fsize,20
 text,10,500,Australian Senate Ballot
