@@ -93,7 +93,7 @@ public class Controller {
 
         // Draw the candidate boxes
         for (Map.Entry<Candidate, HBox> entry : vw.getVoteCardMap().entrySet()) {
-            entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey()));
+            entry.getValue().setOnMouseClicked(new CandidateClickHandler(entry.getKey(), entry.getValue()));
         }
 
         vw.setConfirmButtonColoured(currentModel.checkValidVote());
@@ -110,7 +110,8 @@ public class Controller {
                 AbstractView newView = setupConfirmWindow();
                 changeView(newView);
             } else {
-                // TODO - animation or something
+                ShakeTransition anim = new ShakeTransition(vw.getConfirmButton());
+                anim.playFromStart();
                 System.out.println("Not enough candidates voted for");
             }
         });
@@ -212,7 +213,7 @@ public class Controller {
 
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey(), entry.getValue()));
             }
         } else {
             uw.setBelowLine();
@@ -226,7 +227,7 @@ public class Controller {
             uw.setCandidatePreferences(senateModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey(), entry.getValue()));
             }
         }
 
@@ -245,7 +246,7 @@ public class Controller {
             uw.setCandidatePreferences(senateModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getPartyVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey(), entry.getValue()));
             }
 
             uw.setConfirmButtonColoured(senateModel.checkValidVote());
@@ -264,7 +265,7 @@ public class Controller {
             uw.setCandidatePreferences(senateModel.getFullMap());
 
             for (Map.Entry<Candidate, HBox> entry : uw.getVoteCardMap().entrySet()) {
-                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey()));
+                entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey(), entry.getValue()));
             }
 
             uw.setConfirmButtonColoured(senateModel.checkValidVote());
@@ -309,6 +310,8 @@ public class Controller {
                 AbstractView newView = setupConfirmWindow();
                 changeView(newView);
             } else {
+                ShakeTransition anim = new ShakeTransition(uw.getConfirmButton());
+                anim.playFromStart();
                 System.out.println("Not enough candidates voted for");
             }
         });
@@ -345,8 +348,11 @@ public class Controller {
 
         private Candidate candidate;
 
-        public CandidateClickHandler(Candidate candidate) {
+        private HBox voteCard;
+
+        public CandidateClickHandler(Candidate candidate, HBox voteCard) {
             this.candidate = candidate;
+            this.voteCard = voteCard;
         }
 
         @Override
@@ -357,7 +363,9 @@ public class Controller {
                 success = currentModel.tryDeselectVote(candidate);
                 if (!success) {
                     // The candidate can't be voted for or deselected.
-                    // Do nothing?
+                    // Shake the voteCard
+                    ShakeTransition anim = new ShakeTransition(voteCard);
+                    anim.playFromStart();
                     return;
                 }
             }
@@ -375,8 +383,11 @@ public class Controller {
 
         private Candidate candidate;
 
-        public SenateCandidateClickHandler(Candidate candidate) {
+        private HBox voteCard;
+
+        public SenateCandidateClickHandler(Candidate candidate, HBox voteCard) {
             this.candidate = candidate;
+            this.voteCard = voteCard;
         }
 
         @Override
@@ -387,7 +398,9 @@ public class Controller {
                 success = currentModel.tryDeselectVote(candidate);
                 if (!success) {
                     // The candidate can't be voted for or deselected.
-                    // Do nothing?
+                    // Shake the voteCard
+                    ShakeTransition anim = new ShakeTransition(voteCard);
+                    anim.playFromStart();
                     return;
                 }
             }
