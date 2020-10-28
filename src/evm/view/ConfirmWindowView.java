@@ -135,7 +135,7 @@ public class ConfirmWindowView extends evm.view.AbstractView {
      */
     private void addButtons(BorderPane root) {
         backButton = new Button("Back");
-        confirmButton = new Button("Confirm");
+        confirmButton = new Button("Print");
 
         backButton.getStyleClass().add("cancel-button");
         confirmButton.getStyleClass().add("confirm-button");
