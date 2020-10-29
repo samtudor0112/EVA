@@ -4,7 +4,7 @@ text,200,750,House of Representatives
 //create top text stuff
 text,200,720,Ballot Paper
 //add images (may need double slash)
-image,10,660,src\evm\img\commonwealth-trans-bw-full.jpg
+image,10,660,img\commonwealth-trans-bw-full.jpg
 fsize,25
 text,70,630,Number the boxes from 1 to 8 in
 text,70,600,the order of your choice

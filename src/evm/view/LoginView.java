@@ -9,6 +9,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.File;
+
 /**
  * A generic accept view for any given string s.
  */
@@ -33,7 +35,7 @@ public class LoginView extends AbstractView {
         Button confirmButton = new Button("Begin voting");
         confirmButton.setFont(Font.font("Roboto", FontWeight.BOLD, 30));
 
-        Image image = new Image("evm/img/e34.png");
+        Image image = new Image(new File("img/e34.png").toURI().toString());
         ImageView iv = new ImageView(image);
 
         ((Group) root).getChildren().addAll(confirmButton, iv);

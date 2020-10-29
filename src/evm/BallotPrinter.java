@@ -228,11 +228,11 @@ public class BallotPrinter {
                                     // draw candidate name
                                     contents.beginText();
                                     contents.newLineAtOffset(x1 + pWidth3 * partyNo + pBox6 + 8, y2 - pHeight4 - (pBox6 + pSpac7) * c);
-                                    contents.showText(partyCandidates.get(c).getName().split(" ")[0]);
+                                    contents.showText(partyCandidates.get(c).getName().split(" ", 2)[0]);
                                     contents.endText();
                                     contents.beginText();
                                     contents.newLineAtOffset(x1 + pWidth3 * partyNo + pBox6 + 8, y2 - pHeight4 - (pBox6 + pSpac7) * c - 15);
-                                    contents.showText(partyCandidates.get(c).getName().split(" ")[1]);
+                                    contents.showText(partyCandidates.get(c).getName().split(" ", 2)[1]);
                                     contents.endText();
                                     // draw box (end me)
                                     contents.moveTo(x1 + pWidth3 * partyNo + 6, y2 - pHeight4 - (pBox6 + pSpac7) * c + 10);
@@ -312,7 +312,7 @@ public class BallotPrinter {
                                         if (vote != Integer.MAX_VALUE) {
                                             contents.setFont(font, 30);
                                             contents.beginText();
-                                            contents.newLineAtOffset(x1 + pWidth3 * x + 14, y2 - pHeight4 - (pBox6 + pSpac7) * -2 + 5);
+                                            contents.newLineAtOffset(x1 + pWidth3 * x + 14, y2 - pHeight4 - (pBox6 + pSpac7) * -2 + 8);
                                             contents.showText(vote + "");
                                             contents.endText();
                                         }

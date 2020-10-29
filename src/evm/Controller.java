@@ -47,7 +47,7 @@ public class Controller {
         AbstractView start = setupLoginWindow();
         this.currentView = start;
         stage.setScene(initialise(start));
-        stage.getScene().getStylesheets().add("evm/styles/styles.css");
+        stage.getScene().getStylesheets().add(new File("styles/styles.css").toURI().toString());
         this.stage.setFullScreenExitHint("");
         this.stage.setFullScreen(true);
     }
@@ -181,13 +181,13 @@ public class Controller {
             if (currentModel instanceof SenateVotingModel) {
                 // BallotPrinter call for a senate print
                 if (((SenateVotingModel) currentModel).getIsAboveLine()) {
-                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "src/evm/templates/other.txt");
+                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),  true, true, "templates/other.txt");
                 } else {
-                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "src/evm/templates/other.txt");
+                    BallotPrinter.createPDF(currentModel, false, ((SenateVotingModel) currentModel).getCandidatesByParty(), ((SenateVotingModel) currentModel).getParties(),true, false, "templates/other.txt");
                 }
             } else {
                 // BallotPrinter call for a regular print
-                BallotPrinter.createPDF(currentModel, true, new HashMap<>(), new ArrayList<>(),false, false, "src/evm/templates/default.txt");
+                BallotPrinter.createPDF(currentModel, true, new HashMap<>(), new ArrayList<>(),false, false, "templates/default.txt");
             }
 
         });
