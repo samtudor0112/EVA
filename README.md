@@ -27,5 +27,22 @@ Voters can place votes in on a digital upper house and lower house ballot, both 
 Electoral Commission officials can generate ballots with a separate program that is used in command line form.
 
 
+## Voting Program Screens
+Opening screen:
+
+Lower house voting screen:
+
+Lower house confirmation screen:
+
+Accept screen:
+
+Upper house voting screen (above the line):
+
+Upper house voting screen (below the line):
+
+Upper house confirmation screen:
+
+Final accept screen:
+
 ## Credits
 Original proposal by [Cofveve-19](https://www.youtube.com/watch?v=gg6glENUHLQ&feature=emb_title&ab_channel=JamesDearlove)
