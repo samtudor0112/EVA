@@ -28,26 +28,26 @@ Electoral Commission officials can generate ballots with a separate program that
 
 
 ## Voting Program Screens
-# Opening screen 
+### Opening screen 
 Shows before and after user has voted 
 ![Opening Screen](https://i.imgur.com/BHmmp0u.png)
 
-# Lower house voting screen
+### Lower house voting screen
 Allows the user to vote on a simple ballot like the one used for the upper house. Provides a help message, a clear all button for the user to restart voting and clear indication when the user makes errors such as deselecting a preference that isn't their lowest.
 ![Lower house help message](https://i.imgur.com/Q5oSSiq.png)
 ![Lower house voting](https://i.imgur.com/OIKM3jq.png)
 
-# Upper house voting screen
+### Upper house voting screen
 A voter can choose to vote above the line for parties or below the line for specific individuals in the senate. It also has the same help abilities as the lower house ballot.
 ![Upper house help](https://i.imgur.com/ovZgC5J.png)
 ![Upper house ATL](https://i.imgur.com/DSUZFDl.png)
 ![Upper house BTL](https://i.imgur.com/jA5Qp4j.png)
 
-# Confirmation screen
+### Confirmation screen
 After placing preferences, the program asks the user to confirm that their preferences are correct before printing. If there are candidates they have not preferenced they are greyed out to indicate this.
 ![Confirmation screen](https://i.imgur.com/MzelUCl.png)
 
-# Printing screen
+### Printing screen
 Shows after the voter has confirmed their preferences are correct to indicate that the ballot is printing.
 ![Printing Screen](https://i.imgur.com/Ltmxnql.png)
 
