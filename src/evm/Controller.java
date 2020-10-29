@@ -13,6 +13,7 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The Controller class of MVC. Controls the whole application.
@@ -37,6 +38,8 @@ public class Controller {
     /* The javafx stage */
     private Stage stage;
 
+    private long seed;
+
     /** ABSOLUTELY BEAUTIFUL PERMANENT CONSTRUCTOR */
     public Controller(Stage stage, List<VotingModel> models) {
         this.stage = stage;
@@ -50,9 +53,16 @@ public class Controller {
         stage.getScene().getStylesheets().add(new File("styles/styles.css").toURI().toString());
         this.stage.setFullScreenExitHint("");
         this.stage.setFullScreen(true);
+
+
     }
 
     private AbstractView setupLoginWindow() {
+        // Generate the seed we'll use for the shuffling
+        // Here we generate a random seed, so between vote runs the shuffling is random,
+        // but every time we shuffle we get the first random number using the seed so we always shuffle the same way
+        // (within one vote run)
+        seed = ThreadLocalRandom.current().nextLong();
 
         LoginView lv = new LoginView(stage.getWidth(), stage.getHeight(), currentModel.getBallotString());
 
@@ -124,7 +134,8 @@ public class Controller {
      */
     private AbstractView setupVoteWindow() {
         VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), currentModel.getBallot().getNumVotesNeeded());
-        vw.drawCandidateCards(currentModel.getCandidateList());
+
+        vw.drawCandidateCards(currentModel.getCandidateList(), seed);
         vw.setCandidatePreferences(currentModel.getFullMap());
 
         // Draw the candidate boxes
@@ -241,7 +252,7 @@ public class Controller {
 
         if(state == 0) {
             uw.setAboveLine(senateModel.getAboveLine().getNumVotesNeeded());
-            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false);
+            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false, seed);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), true);
 
             if(!senateModel.getIsAboveLine()) {
@@ -256,7 +267,7 @@ public class Controller {
             }
         } else {
             uw.setBelowLine(senateModel.getBelowLine().getNumVotesNeeded());
-            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true);
+            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true, seed);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), false);
 
             if(senateModel.getIsAboveLine()) {
@@ -275,7 +286,7 @@ public class Controller {
 
         uw.getAboveButton().setOnAction(actionEvent -> {
             uw.setAboveLine(senateModel.getAboveLine().getNumVotesNeeded());
-            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false);
+            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false, seed);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), true);
 
             if(!senateModel.getIsAboveLine()) {
@@ -294,7 +305,7 @@ public class Controller {
 
         uw.getBelowButton().setOnAction(actionEvent -> {
             uw.setBelowLine(senateModel.getBelowLine().getNumVotesNeeded());
-            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true);
+            uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true, seed);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), false);
 
             if(senateModel.getIsAboveLine()) {

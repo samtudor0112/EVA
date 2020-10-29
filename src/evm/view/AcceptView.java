@@ -12,16 +12,16 @@ import javafx.scene.text.TextAlignment;
 import java.io.File;
 
 /**
- * A generic accept view for any given string s.
+ * A generic View which displays the logo, a given string s and an OK button.
  */
 public class AcceptView extends AbstractView {
 
     private Button confirmButton;
     /**
-     * Constructor for the evm.view
+     * Constructor for the accept view
      * @param width width of the stage
      * @param height height of the stage
-     * @param s the name of the ballot/the message to show while the ballot is printing
+     * @param s the message to display in the view
      */
     public AcceptView(double width, double height, String s) {
         /* set the root node */
@@ -31,11 +31,10 @@ public class AcceptView extends AbstractView {
         titleLabel.setTextAlignment(TextAlignment.CENTER);
         titleLabel.setFont(new Font(30));
 
-
         Button confirmButton = new Button("OK");
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 
-        Image image = new Image(new File("img/e34.png").toURI().toString());
+        Image image = new Image(new File("img/our-logo.png").toURI().toString());
         ImageView iv = new ImageView(image);
 
         ((Group) root).getChildren().addAll(confirmButton, titleLabel, iv);

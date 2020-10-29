@@ -38,14 +38,6 @@ public class Ballot {
     }
 
     /**
-     * Randomizes order of candidates on ballot
-     */
-    public void randomize() {
-
-        Collections.shuffle(candidateList);
-    }
-
-    /**
      * Getter for name
      * @return name of the ballot
      */

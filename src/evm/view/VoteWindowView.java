@@ -14,9 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The view implementing the main voting screen.
@@ -131,7 +129,7 @@ public class VoteWindowView extends AbstractView {
      * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
      * @param candidateList the list of candidates to draw
      */
-    public void drawCandidateCards(List<Candidate> candidateList) {
+    public void drawCandidateCards(List<Candidate> candidateList, long seed) {
         // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
@@ -140,9 +138,12 @@ public class VoteWindowView extends AbstractView {
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
+        List<Candidate> shuffledCandidates = new ArrayList<>(candidateList);
+        Collections.shuffle(shuffledCandidates, new Random(seed));
+
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
-        for (int i = 0; i < candidateList.size(); i++) {
+        for (int i = 0; i < shuffledCandidates.size(); i++) {
             Label preferenceLabel = new Label();
             //preferenceLabel.setText("1");
             preferenceLabel.getStyleClass().add("preference-label");
@@ -150,10 +151,10 @@ public class VoteWindowView extends AbstractView {
 
             // Here, the Candidate is assigned a TextArea
             // (the box with the preference number inside)
-            preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
+            preferenceBoxMap.put(shuffledCandidates.get(i), preferenceLabel);
 
-            Text candidateName = new Text(candidateList.get(i).getName());
-            Text candidateParty = new Text(candidateList.get(i).getParty());
+            Text candidateName = new Text(shuffledCandidates.get(i).getName());
+            Text candidateParty = new Text(shuffledCandidates.get(i).getParty());
 
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
@@ -183,7 +184,7 @@ public class VoteWindowView extends AbstractView {
             voteCard.setEffect(cardShadow);
 
             // We also assign each candidate a vote "card" (just an HBox)
-            voteCardMap.put(candidateList.get(i), voteCard);
+            voteCardMap.put(shuffledCandidates.get(i), voteCard);
 
             // This is why we need the numeric index, every other candidate is put onto a new line
             votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);

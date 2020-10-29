@@ -228,7 +228,7 @@ public class SenateView extends AbstractView {
      * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
      * @param candidateList the list of candidates to draw
      */
-    public void drawCandidateCards(List<Candidate> candidateList, boolean canVoteFor) {
+    public void drawCandidateCards(List<Candidate> candidateList, boolean canVoteFor, long seed) {
         votePane.getChildren().clear();
         // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
         // user changes their vote
@@ -237,12 +237,7 @@ public class SenateView extends AbstractView {
         // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
-        ArrayList<String> sortedParties = null;
-        boolean sorted = false;
-        if(parties != null) {
-            sorted = true;
-            sortedParties = (ArrayList<String>) this.parties.clone();
-        }
+
         // number of candidates written to screen for each party
         Map<String, Integer> partyCandidates = new HashMap<>();
         partyPositions = new TreeMap<>();
@@ -262,15 +257,9 @@ public class SenateView extends AbstractView {
             newWidth = newWidth * width;
             votePane.setPrefWidth(newWidth);
         }
-        // sort maybe (if u want)
 
-        if(sorted) {
 
-            this.parties = sortedParties;
-        } else {
-
-            Collections.shuffle(this.parties);
-        }
+        Collections.shuffle(parties, new Random(seed));
 
         // get position of each party
         for(int i = 0; i < parties.size(); i++) {
