@@ -28,7 +28,8 @@ Electoral Commission officials can generate ballots with a separate program that
 
 
 ## Voting Program Screens
-Opening screen:
+Opening screen: shows before and after user has voted 
+[Opening Screen](https://imgur.com/BHmmp0u)
 
 Lower house voting screen:
 
