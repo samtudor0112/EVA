@@ -26,4 +26,4 @@ ballots:
   numCandidates: 9
   numVotesNeeded: 3
   printMsg: Upper house ballot complete, ballot printing...
-extraData: {Ballot1Type: Upper House,  Ballot0Type: Lower House, Ballot1PartyVotesRequired: 3}
+extraData: {Ballot1Type: Upper House,  Ballot0Type: Lower House, Ballot1PartyVotesRequired: 5}

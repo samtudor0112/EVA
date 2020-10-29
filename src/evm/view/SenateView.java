@@ -56,6 +56,11 @@ public class SenateView extends AbstractView {
 
     private double height;
 
+    private Text titleLabel;
+
+    private int belowPrefs;
+    private int abovePrefs; //bad design? yes. I don't care
+
     ArrayList<String> parties = null;
 
     public ScrollPane scrolly;
@@ -99,23 +104,27 @@ public class SenateView extends AbstractView {
 //        optionBox.setSpacing(5);
 //        optionBox.setPadding(new Insets(0, 5, 0, 5));
 
-        Text titleLabel = new Text("Place vote:");
+        belowPrefs = minPrefsBelow;
+        abovePrefs = minPrefsAbove;
+
+        titleLabel = new Text("Voting above the line: place at least " + abovePrefs + " preferences");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
 
         HBox padBox = new HBox();
-        padBox.setPrefWidth(0.66 * width);
+        padBox.setPrefWidth(0.2 * width);
         HBox titleBox = new HBox(titleLabel, padBox, aboveButton, belowButton);
 
-        String topLabelText = ballotName + " - please place at least " + minPrefsAbove.toString() + " preferences above the line or " + minPrefsBelow.toString() + " below the line";
+        /*String topLabelText = ballotName + " - please place at least " + minPrefsAbove.toString()
+                + " preferences above the line or " + minPrefsBelow.toString() + " below the line";
         topLabel = new Text(topLabelText);
-        HBox ballotNameBox = new HBox(topLabel);
+        HBox ballotNameBox = new HBox(topLabel); */
 
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
-        VBox topBox = new VBox(ballotNameBox, titleBox);
+        VBox topBox = new VBox(titleBox);
         topBox.setPrefWidth(width);
 
         votePane = new GridPane();
@@ -491,6 +500,7 @@ public class SenateView extends AbstractView {
      */
     public void setBelowLine() {
 
+        titleLabel.setText("Voting below the line: place at least " + belowPrefs + " preferences");
 
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
@@ -502,6 +512,7 @@ public class SenateView extends AbstractView {
      * Swaps to showing above the line voting
      */
     public void setAboveLine() {
+        titleLabel.setText("Voting above the line: place at least " + abovePrefs + " preferences");
 
         // set the displayed voting model as
 

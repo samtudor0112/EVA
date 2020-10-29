@@ -2,6 +2,7 @@
 .root{
     -fx-background-color: #EEEEEE;
     -fx-font-size: 20px;
+    -fx-font-family: "Roboto", sans-serif;
 }
 
 /* Make the list look less ugly */

@@ -57,19 +57,19 @@ public class VoteWindowView extends AbstractView {
         BorderPane root = new BorderPane();
         this.root = root;
 
-        Text titleLabel = new Text("Place vote:");
+        Text titleLabel = new Text("Voting for " + ballotName +  ": place at least " + minPrefs.toString() + " preferences");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
-        String topLabelText = ballotName + " - please place at least " + minPrefs.toString() + " preferences";
+        /*String topLabelText = ballotName + " - please place at least " + minPrefs.toString() + " preferences";
         topLabel = new Text(topLabelText);
-        HBox ballotNameBox = new HBox(topLabel);
+        HBox ballotNameBox = new HBox(topLabel);*/
 
         HBox titleBox = new HBox(titleLabel);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
 
-        VBox topBox = new VBox(ballotNameBox, titleBox);
+        VBox topBox = new VBox(titleBox);
         topBox.setPrefWidth(width);
 
         votePane = new GridPane();
