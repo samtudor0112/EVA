@@ -19,5 +19,13 @@ ballots:
     numVotesNeeded: _
     printMsg: Lower house ballot complete, ballot printing...
 ```
+
+## Usage
+
+Voters can place votes in on a digital upper house and lower house ballot, both of which will then be printed. At each stage, users are instructed on how to place their preferences. 
+
+Electoral Commission officials can generate ballots with a separate program that is used in command line form.
+
+
 ## Credits
 Original proposal by [Cofveve-19](https://www.youtube.com/watch?v=gg6glENUHLQ&feature=emb_title&ab_channel=JamesDearlove)
