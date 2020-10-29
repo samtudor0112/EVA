@@ -1,15 +1,8 @@
 package evm.view;
 
-import evm.Arrow;
 import evm.Candidate;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -18,16 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import evm.view.AbstractView;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
- * The evm.view implementing the main voting screen.
+ * The view implementing the Senate voting screen.
  */
 public class SenateView extends AbstractView {
 
@@ -35,58 +25,41 @@ public class SenateView extends AbstractView {
     // currentState == 1 : below line
     private int currentState = 0;
 
-    private int VOTE_TABLE_COLUMNS = 2;
-
+    /* The UI elements */
     public GridPane votePane;
-
     public GridPane partyPane;
-
     private Button aboveButton;
-
     private Button belowButton;
-
     private Button confirmButton;
-
     private Button clearButton;
-
     private Button helpButton;
-
     private StackPane stack;
-
     private ImageView leftArrow;
-
     private ImageView rightArrow;
-
-    private double width;
-
-    private double height;
-
     private Text titleLabel;
-
-    ArrayList<String> parties = null;
-
     public ScrollPane scrolly;
 
-    /* TODO change this to a Map<evm.Candidate, Integer> ??? */
+    private double width;
+    private double height;
+
+    private ArrayList<String> parties = null;
+
+    /* The maps of candidates/parties to their voting cards and labels */
     private Map<Candidate, Label> preferenceBoxMap;
-
     private Map<Candidate, HBox> voteCardMap;
-
     private Map<Candidate, Label> partyPreferenceBoxMap;
     private Map<Candidate, HBox> partyVoteCardMap;
 
     private TreeMap<String, Integer> partyPositions;
 
-    public Text topLabel = null;
-
     /**
      * Instantiate the vote window from a stage of size width by height.
-     * Sets up some of the ui elements (the static ones), but not the candidate
+     * Sets up some of the ui elements (the static ones), but not the
+     * candidate or party cards.
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public SenateView(double width, double height, String ballotName) {
-
+    public SenateView(double width, double height) {
         this.width = width;
         this.height = height;
 
@@ -100,25 +73,13 @@ public class SenateView extends AbstractView {
         aboveButton.getStyleClass().add("confirm-button");
         belowButton.getStyleClass().add("confirm-button");
 
-        // create hbox with above/below options at top of page
-//        HBox optionBox = new HBox(aboveButton, belowButton);
-//        optionBox.setPrefWidth(width);
-//        optionBox.setSpacing(5);
-//        optionBox.setPadding(new Insets(0, 5, 0, 5));
-
         titleLabel = new Text("");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
-
         HBox padBox = new HBox();
         padBox.setPrefWidth(0.2 * width);
         HBox titleBox = new HBox(titleLabel, padBox, aboveButton, belowButton);
-
-        /*String topLabelText = ballotName + " - please place at least " + minPrefsAbove.toString()
-                + " preferences above the line or " + minPrefsBelow.toString() + " below the line";
-        topLabel = new Text(topLabelText);
-        HBox ballotNameBox = new HBox(topLabel); */
 
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
@@ -138,7 +99,8 @@ public class SenateView extends AbstractView {
         partyPane.setVgap(5);
         partyPane.setPadding(new Insets(0, 5, 0, 5));
 
-        // Populating the votePane now occurs in drawCandidateCards
+        // Populating the votePane and partyPane occurs in drawCandidateCards
+        // and drawPartyCards respectively
 
         // Spacer between vote options and buttons
         Region spacer = new Region();
@@ -181,37 +143,19 @@ public class SenateView extends AbstractView {
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrolly.getStyleClass().add("scrolly-pane");
-//        scrolly.setStyle("-fx-font-size: 50px;");
 
-        Image image = new Image(new File("img/arrow.png").toURI().toString());
+        Image arrow = new Image(new File("img/arrow.png").toURI().toString());
 
-        rightArrow = new ImageView(image);
+        rightArrow = new ImageView(arrow);
         rightArrow.setPreserveRatio(true);
         rightArrow.setFitWidth(150);
 
-        leftArrow = new ImageView(image);
+        leftArrow = new ImageView(arrow);
         leftArrow.setRotate(180);
         leftArrow.setPreserveRatio(true);
         leftArrow.setFitWidth(150);
 
-//        leftArrow = new Arrow();
-//        rightArrow = new Arrow();
-//
-//        rightArrow.setStartX(width - 200);
-//        rightArrow.setEndX(width - 100);
-//
-//        rightArrow.setStartY(height/2);
-//        rightArrow.setEndY(height/2);
-//
-//        leftArrow.setStartX(200);
-//        leftArrow.setEndX(100);
-//
-//        leftArrow.setStartY(height/2);
-//        leftArrow.setEndY(height/2);
-//
-//        leftArrow.setStrokeWidth(5);
-//        rightArrow.setStrokeWidth(5);
-
+        // Set the listener to show and hide the arrows correctly
         scrolly.hvalueProperty().addListener(observable -> checkArrowVisibility());
         checkArrowVisibility();
 
@@ -225,16 +169,19 @@ public class SenateView extends AbstractView {
     }
 
     /**
-     * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * Draws the candidate cards from a list of candidates.
+     * Also populates the voteCardMap, preferenceBoxMap and parties maps.
      * @param candidateList the list of candidates to draw
+     * @param canVoteFor whether we can vote for candidates
+     * @param seed the seed to shuffle the candidates with before displaying
      */
     public void drawCandidateCards(List<Candidate> candidateList, boolean canVoteFor, long seed) {
         votePane.getChildren().clear();
-        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
+        // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
 
-        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
+        // Each Candidate object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
@@ -242,28 +189,26 @@ public class SenateView extends AbstractView {
         Map<String, Integer> partyCandidates = new HashMap<>();
         partyPositions = new TreeMap<>();
 
+        // List of all parties without duplicates
         parties = new ArrayList<>();
 
-        // get and sort parties
+        // Populate parties
         for(int i = 0; i < candidateList.size(); i++) {
-
-            if(!parties.contains(candidateList.get(i).getParty())) {
+            if (!parties.contains(candidateList.get(i).getParty())) {
                 partyCandidates.put(candidateList.get(i).getParty(), 0);
                 parties.add(candidateList.get(i).getParty());
             }
-
-
-            double newWidth = Math.max(parties.size() * 0.4, 1.0);
-            newWidth = newWidth * width;
-            votePane.setPrefWidth(newWidth);
         }
 
+        double newWidth = Math.max(parties.size() * 0.4, 1.0);
+        newWidth = newWidth * width;
+        votePane.setPrefWidth(newWidth);
 
+        // See comment in Controller.setUpLoginWindow
         Collections.shuffle(parties, new Random(seed));
 
-        // get position of each party
+        // Get position of each party
         for(int i = 0; i < parties.size(); i++) {
-
             partyPositions.put(parties.get(i), i);
         }
 
@@ -274,11 +219,12 @@ public class SenateView extends AbstractView {
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
             if (canVoteFor) {
-
-                // Here, the evm.Candidate is assigned a TextArea
+                // Here, the Candidate is assigned a TextArea
                 // (the box with the preference number inside)
                 preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
             } else {
+                // Hide the label, but don't remove it, so the card is
+                // still the right size
                 preferenceLabel.setVisible(false);
             }
 
@@ -287,12 +233,6 @@ public class SenateView extends AbstractView {
 
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
-
-            /* TODO check wrapping for longer party names */
-            // Wrap the name and party text labels so it doesn't squash other vote card elements
-            // MaGiC NuMbErS, just leave these,
-            //candidateName.setWrappingWidth(200);
-            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
@@ -306,10 +246,10 @@ public class SenateView extends AbstractView {
             if (canVoteFor) {
                 voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
             } else {
+                // They're in the other order so the candidate text isn't
+                // blocked by an invisible box
                 voteCard.getChildren().addAll(candidateVbox, preferenceLabel);
             }
-
-
 
             // Shadow to make the cards look a bit more pretty and professional
             DropShadow cardShadow = new DropShadow();
@@ -319,13 +259,11 @@ public class SenateView extends AbstractView {
             cardShadow.setColor(Color.color(0.5, 0.5, 0.5));
             voteCard.setEffect(cardShadow);
 
-            // We also assign each candidate a vote "card" (just an HBox)
+            // We also assign each Candidate a vote "card" (just an HBox)
             voteCardMap.put(candidateList.get(i), voteCard);
-            //VOTE_TABLE_COLUMNS = 3;
-            //votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
 
-            // each column is a party
-            // each row is a candidate
+            // Each column is a party
+            // Each row is a candidate
             String party = candidateList.get(i).getParty();
             int col = partyPositions.get(party);
             int row = partyCandidates.get(party);
@@ -337,48 +275,44 @@ public class SenateView extends AbstractView {
     }
 
     /**
-     * Draws the party cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
-     * Note: MUST be called after drawCandidateCards, otherwise the parties field will be null
-     * @param candidateList the list of candidates to draw
+     * Draws the party cards from a list of candidates.
+     * Also populates the voteCardMap and preferenceBoxMap.
+     * Note: MUST be called after drawCandidateCards,
+     * otherwise the parties field will be null
+     * @param candidateList the list of parties to draw (Candidates with
+     *                      field name=party name and filed party blank)
+     * @param canVoteFor whether we can vote for parties
      */
     public void drawPartyCards(List<Candidate> candidateList, boolean canVoteFor) {
         partyPane.getChildren().clear();
-        // Each "evm.Candidate" object is assigned a TextArea, which can be changed when
+        // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         partyPreferenceBoxMap = new HashMap<>();
 
-        // Each "evm.Candidate" object is also assigned a box that, when clicked, will register
+        // Each Candidate object is also assigned a box that, when clicked, will register
         // a vote for that candidate
         partyVoteCardMap = new HashMap<>();
 
         partyPane.setPrefWidth(votePane.getWidth());
 
-        // Iterates through all the candidates and displays them on the screen
+        // Iterates through all the parties and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < candidateList.size(); i++) {
             Label preferenceLabel = new Label();
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
             if (canVoteFor) {
-
-//              Here, the evm.Candidate is assigned a TextArea
-//              (the box with the preference number inside)
+                // Here, the Candidate is assigned a TextArea
+                // (the box with the preference number inside)
                 partyPreferenceBoxMap.put(candidateList.get(i), preferenceLabel);
             } else {
+                // Hide the label, but don't remove it, so the card is
+                // still the right size
                 preferenceLabel.setVisible(false);
             }
-//
+
             Text candidateName = new Text(candidateList.get(i).getName());
-//            Text candidateParty = new Text(candidateList.get(i).getParty());
-
-//            candidateName.getStyleClass().add("candidate-name");
             candidateName.getStyleClass().add("candidate-name");
-
-            /* TODO check wrapping for longer party names */
-            // Wrap the name and party text labels so it doesn't squash other vote card elements
-            // MaGiC NuMbErS, just leave these,
-            //candidateName.setWrappingWidth(200);
-            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName);
@@ -392,6 +326,8 @@ public class SenateView extends AbstractView {
             if (canVoteFor) {
                 voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
             } else {
+                // They're in the other order so the candidate text isn't
+                // blocked by an invisible box
                 voteCard.getChildren().addAll(candidateVbox, preferenceLabel);
             }
 
@@ -406,11 +342,7 @@ public class SenateView extends AbstractView {
             // We also assign each candidate a vote "card" (just an HBox)
             partyVoteCardMap.put(candidateList.get(i), voteCard);
 
-            //VOTE_TABLE_COLUMNS = 3;
-            //votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
-
-            // each column is a party
-            // each row is a candidate
+            // Each column is a party
             String party = candidateList.get(i).getName();
             int col = partyPositions.get(party);
             partyPane.add(voteCard, col, 0);
@@ -420,7 +352,9 @@ public class SenateView extends AbstractView {
     }
 
     /**
-     * Sets the text of each candidate's label according to the preferences map
+     * Sets the text of each candidate's label according to the preferences map.
+     * Depending on the state (above/below the line), will set the preferences
+     * of the parties or the candidates
      * @param preferences the map of preferences
      */
     public void setCandidatePreferences(Map<Candidate, Integer> preferences) {
@@ -436,18 +370,19 @@ public class SenateView extends AbstractView {
         }
     }
 
+    // Checks if either or both arrows should be drawn
     private void checkArrowVisibility() {
         double hval = scrolly.getHvalue();
         if (hval != scrolly.getHmax()) {
-            // hide right arrow
             rightArrow.setVisible(true);
         } else {
+            // hide right arrow
             rightArrow.setVisible(false);
         }
         if (hval != scrolly.getHmin()) {
-            // hide left arrow
             leftArrow.setVisible(true);
         } else {
+            // hide left arrow
             leftArrow.setVisible(false);
         }
     }
@@ -493,12 +428,24 @@ public class SenateView extends AbstractView {
         return confirmButton;
     }
 
+    /**
+     * Getter for the help button
+     * @return the help button
+     */
     public Button getHelpButton() {
         return helpButton;
     }
 
+    /**
+     * Getter for the current state
+     * @return the current state
+     */
     public int getCurrentState() { return this.currentState; }
 
+    /**
+     * Setter for the current state
+     * @param newState the new state
+     */
     private void setCurrentState(int newState) {
 
         this.currentState = newState;
@@ -507,11 +454,8 @@ public class SenateView extends AbstractView {
      * Swaps to showing below the line voting
      */
     public void setBelowLine(int numPrefs) {
-
         titleLabel.setText("Voting below the line: place at least " + numPrefs + " preferences");
-
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
         // below the line is state 1
         setCurrentState(1);
     }
@@ -521,24 +465,31 @@ public class SenateView extends AbstractView {
      */
     public void setAboveLine(int numPrefs) {
         titleLabel.setText("Voting above the line: place at least " + numPrefs + " preferences");
-
-        // set the displayed voting model as
-
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         // above the line is state 0
         setCurrentState(0);
     }
 
+    /**
+     * Getter for the above button
+     * @return the above button
+     */
     public Button getAboveButton() {
-
         return aboveButton;
     }
 
+    /**
+     * Getter for the below button
+     * @return the below button
+     */
     public Button getBelowButton() {
-
         return belowButton;
     }
 
+    /**
+     * Set the confirm button to be either greyed out or normal purple
+     * @param coloured whether the confirm button should be purple
+     */
     public void setConfirmButtonColoured(boolean coloured) {
         confirmButton.getStyleClass().clear();
         if (coloured) {
@@ -548,6 +499,10 @@ public class SenateView extends AbstractView {
         }
     }
 
+    /**
+     * Set the above and below buttons to be either greyed out or normal purple
+     * @param aboveTheLine whether we're above the line
+     */
     public void setAboveBelowColoured(boolean aboveTheLine) {
         aboveButton.getStyleClass().clear();
         belowButton.getStyleClass().clear();

@@ -19,13 +19,14 @@ import java.util.Map;
 /**
  * The view implementing the confirm screen.
  */
-public class ConfirmWindowView extends evm.view.AbstractView {
+public class ConfirmWindowView extends AbstractView {
 
     /* allows us to display a list of the candidates on screen */
     private ListView<Candidate> list;
 
     private Button backButton;
     private Button confirmButton;
+
     private double width;
     private double height;
 
@@ -104,16 +105,19 @@ public class ConfirmWindowView extends evm.view.AbstractView {
                 int preference = preferences.get(candidate);
                 String preferenceText;
                 if (preference == Integer.MAX_VALUE) {
+                    // This candidate hasn't been voted for
                     preferenceText = "";
                 } else {
                     preferenceText = Integer.toString(preference);
                 }
+
                 Label pref = new Label(preferenceText);
                 pref.getStyleClass().add("preference-style");
                 this.setGraphic(pref);
                 this.getStyleClass().add("candidate-style");
 
                 if (preference == Integer.MAX_VALUE) {
+                    // This candidate hasn't been voted for
                     pref.getStyleClass().add("preference-style-greyed");
                     this.setTextFill(Color.LIGHTGRAY);
                 }
@@ -154,13 +158,13 @@ public class ConfirmWindowView extends evm.view.AbstractView {
     }
 
     /**
-     * A getter for the back button
+     * Getter for the back button
      * @return the back button
      */
     public Button getBackButton() { return this.backButton; }
 
     /**
-     * A getter for the confirm button
+     * Getter for the confirm button
      * @return the confirm button
      */
     public Button getConfirmButton() { return this.confirmButton; }

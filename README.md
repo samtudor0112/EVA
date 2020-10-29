@@ -16,7 +16,7 @@ ballots:
     - {name: Tom Brown, party: Example Party}
     name: House of Representatives
     numCandidates: 1
-    numVotesNeeded: _
+    numVotesNeeded: 1
     printMsg: Lower house ballot complete, ballot printing...
 ```
 
@@ -24,7 +24,7 @@ ballots:
 
 Voters can place votes in on a digital upper house and lower house ballot, both of which will then be printed. At each stage, users are instructed on how to place their preferences. 
 
-Electoral Commission officials can generate ballots with a separate program that is used in command line form.
+A separate command line application can be used to generate ballots.
 
 
 ## Voting Program Screens

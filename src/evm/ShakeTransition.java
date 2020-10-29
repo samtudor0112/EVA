@@ -1,16 +1,12 @@
 package evm;
 
 import javafx.animation.*;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
 /**
- * Sources:
+ * Based off:
  * https://github.com/fxexperience/code/blob/master/FXExperienceControls/src/com/fxexperience/javafx/animation/ShakeTransition.java
  * https://stackoverflow.com/a/29922415
  *
@@ -18,12 +14,6 @@ import javafx.util.Duration;
  *
  * Based on CachedTimelineTransition, a Transition that uses a Timeline internally
  * and turns SPEED caching on for the animated node during the animation.
- *
- * https://github.com/fxexperience/code/blob/master/FXExperienceControls/src/com/fxexperience/javafx/animation/CachedTimelineTransition.java
- *
- * and ShakeTransition
- *
- * https://github.com/fxexperience/code/blob/master/FXExperienceControls/src/com/fxexperience/javafx/animation/ShakeTransition.java
  *
  * @author Jasper Potts
  */
@@ -35,8 +25,6 @@ class ShakeTransition extends Transition {
     private boolean oldCache = false;
     private CacheHint oldCacheHint = CacheHint.DEFAULT;
     private final boolean useCache=true;
-
-
 
     /**
      * Create new ShakeTransition

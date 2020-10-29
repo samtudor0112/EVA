@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * ConfigReader is a class that reader the config text file and loads the
  * ballots and candidates in to program.
+ * !!! MOSTLY DEPRECATED !!! - This class is only used in an unused function in the admin software
  */
 public class ConfigReader {
 
@@ -36,8 +37,7 @@ public class ConfigReader {
         return ballots;
     }
 
-
-    // Private, no javadoc needed ;)
+    // Reads a single ballot
     private static Ballot readBallot(String line) {
         int numCandidates, minPrefs;
         List<Candidate> candidates = new ArrayList<>();
@@ -58,6 +58,7 @@ public class ConfigReader {
         return new Ballot(name, numCandidates ,minPrefs, candidates, defaultMsg);
     }
 
+    // Reads a single candidate
     private static Candidate readCandidate(String candidate) {
         String[] parts = candidate.split("~");
         if (parts.length != 2) {

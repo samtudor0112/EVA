@@ -1,6 +1,5 @@
 package evm;
 
-import evm.YAMLpublic.PublicBallot;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Screen;
@@ -8,24 +7,26 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-
 /**
- * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
- * (in our case, config/config.txt.old should be good)
+ * The main entry point to the voting application. Should be called with
+ * java Main /path/to/config/file
+ * (in our case, config/config.yaml should be good)
  */
 public class Main extends Application {
 
+    /**
+     * Starts the main javafx application. Instantiates the Controller, which
+     * manages the main program flow
+     * @param stage the javafx stage
+     */
     @Override
     public void start(Stage stage) {
 
-        // TEMPORARY
-        stage.setTitle("Printing...");
+        stage.setTitle("I can't think of a joke");
 
+        // Set up the javajx stage
         int width = (int) Screen.getPrimary().getBounds().getWidth();
         int height = (int) Screen.getPrimary().getBounds().getHeight();
 
@@ -35,6 +36,7 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
+        // Read the config
         Config config;
         try {
             config = Config.readConfig(getParameters().getRaw().get(1));
@@ -81,6 +83,10 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Javafx app start
+     * @param args commandline args
+     */
     public static void main(String[] args) {
         launch(args);
     }

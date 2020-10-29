@@ -23,7 +23,6 @@ public class Controller {
     /* The current model of the MVC */
     private VotingModel currentModel;
 
-
     // The list of all the models to go through
     private List<VotingModel> models;
 
@@ -40,7 +39,12 @@ public class Controller {
 
     private long seed;
 
-    /** ABSOLUTELY BEAUTIFUL PERMANENT CONSTRUCTOR */
+    /**
+     * ABSOLUTELY BEAUTIFUL PERMANENT CONSTRUCTOR
+     * Starts the application flow by instantiating the login view
+     * @param stage the javafx stage
+     * @param models the list of VotingModels the user has to fill out
+     */
     public Controller(Stage stage, List<VotingModel> models) {
         this.stage = stage;
         this.currentModel = models.get(0);
@@ -53,34 +57,21 @@ public class Controller {
         stage.getScene().getStylesheets().add(new File("styles/styles.css").toURI().toString());
         this.stage.setFullScreenExitHint("");
         this.stage.setFullScreen(true);
-
-
     }
 
-    private AbstractView setupLoginWindow() {
-        // Generate the seed we'll use for the shuffling
-        // Here we generate a random seed, so between vote runs the shuffling is random,
-        // but every time we shuffle we get the first random number using the seed so we always shuffle the same way
-        // (within one vote run)
-        seed = ThreadLocalRandom.current().nextLong();
-
-        LoginView lv = new LoginView(stage.getWidth(), stage.getHeight(), currentModel.getBallotString());
-
-        lv.getConfirmButton().setOnAction(actionEvent -> changeToNextBallot());
-        return lv;
-    }
-
+    // Helper to make scene from view
     private Scene initialise(AbstractView start) {
         return new Scene(start.getRoot());
     }
 
-    public void changeView(AbstractView view) {
+    // Change the view to another view
+    private void changeView(AbstractView view) {
         this.currentView = view;
         stage.getScene().setRoot(view.getRoot());
     }
 
-    public void changeToNextBallot() {
-        // goto above/below the line vote ballot
+    // Change to the next ballot in the list of ballots to vote on
+    private void changeToNextBallot() {
         AbstractView newView;
         if (currentModel instanceof SenateVotingModel) {
             newView = setupSenateVoteWindow(0);
@@ -91,12 +82,16 @@ public class Controller {
         showHelpMessage();
     }
 
-    public void nextModel() {
+    // Go to the next model in the list of models
+    private void nextModel() {
         currentModelIndex++;
         currentModel = models.get(currentModelIndex);
     }
 
-    public void showHelpMessage() {
+    /**
+     * Show the help info message in an Alert box
+     */
+    private void showHelpMessage() {
         Alert alert = new Alert(AlertType.INFORMATION);
         if (currentModel instanceof SenateVotingModel) {
             alert.setContentText(genSenateHelpMsg((SenateVotingModel)currentModel));
@@ -112,6 +107,7 @@ public class Controller {
         alert.showAndWait();
     }
 
+    // Generates the text of the help message for the senate
     private String genSenateHelpMsg(SenateVotingModel s) {
         StringBuilder sb = new StringBuilder();
         sb.append("You can vote one of two ways: ");
@@ -123,14 +119,33 @@ public class Controller {
         return sb.toString();
     }
 
+    // Generates the text of the normal help message
     private String genVoteHelpMsg(VotingModel s) {
         return "Vote by numbering at least " + s.getBallot().getNumVotesNeeded() +
                 " candidates in the order of your choice with 1 as your highest preference.";
     }
 
     /**
+     * Creates a new LoginView, sets up event handlers and then sets the current view to
+     * the new view.
+     */
+    private AbstractView setupLoginWindow() {
+        // Generate the seed we'll use for the shuffling
+        // Here we generate a random seed, so between vote runs
+        // (i.e. one user voting on every ballot) the shuffling is random,
+        // but every time we shuffle we get the first random number using the
+        // seed so we always shuffle the same way (within one vote run)
+        seed = ThreadLocalRandom.current().nextLong();
+
+        LoginView lv = new LoginView(stage.getWidth(), stage.getHeight());
+
+        lv.getConfirmButton().setOnAction(actionEvent -> changeToNextBallot());
+        return lv;
+    }
+
+    /**
      * Creates a new VoteWindowView, sets up event handlers and then sets the current view to
-     * the new VoteWindowView.
+     * the new view.
      */
     private AbstractView setupVoteWindow() {
         VoteWindowView vw = new VoteWindowView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), currentModel.getBallot().getNumVotesNeeded());
@@ -164,16 +179,20 @@ public class Controller {
         });
 
         vw.getHelpButton().setOnAction(actionEvent -> showHelpMessage());
+
         return vw;
     }
 
     /**
-     * sets up a new ConfirmWindowView and sets the stage to the new view.
+     * Creates a new ConfirmWindowView, sets up event handlers and then sets the current view to
+     * the new view.
      */
     private AbstractView setupConfirmWindow() {
         ConfirmWindowView cw = new ConfirmWindowView(stage.getWidth(),
                 stage.getHeight(), "");
+
         cw.updateList(currentModel.orderedList(), currentModel.getFullMap());
+
         // Set up the button handlers
         cw.getBackButton().setOnAction(actionEvent -> {
              AbstractView nextView;
@@ -202,19 +221,19 @@ public class Controller {
             }
 
         });
+
         return cw;
     }
 
     /**
-     * sets up a new AcceptWindow and then sets the stage to the new view
+     * Creates a new AcceptWindowView, sets up event handlers and then sets the current view to
+     * the new view.
      */
     private AbstractView setupAcceptWindow() {
 
         AcceptView av = new AcceptView(stage.getWidth(), stage.getHeight(), currentModel.getBallotString());
 
         av.getConfirmButton().setOnAction(actionEvent -> {
-            // We change to the next voting model here, very important
-            //nextModel();
             if (currentModelIndex != models.size() - 1) {
                 nextModel();
                 changeToNextBallot();
@@ -240,15 +259,21 @@ public class Controller {
                 changeView(newView);
             }
         });
+
         return av;
     }
 
+    /**
+     * Creates a new SenateView, sets up event handlers and then sets the current view to
+     * the new view.
+     * @param state the state to start the senateView in (0 == above line, 1 == below line)
+     */
     private AbstractView setupSenateVoteWindow(int state) {
         // We're pretty sure that our currentModel is a SenateVotingModel, so
         // let's cast it here so we don't cast it everywhere
         SenateVotingModel senateModel = (SenateVotingModel)currentModel;
 
-        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName());
+        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight());
 
         if(state == 0) {
             uw.setAboveLine(senateModel.getAboveLine().getNumVotesNeeded());
@@ -323,8 +348,6 @@ public class Controller {
         });
 
         uw.getClearButton().setOnAction(actionEvent -> {
-            // this version deselects everything from currently
-            // viewed ballot
             if(uw.getCurrentState() == 0) {
                 // currently viewing above the line ballot
                 if(!senateModel.getIsAboveLine()) {
@@ -341,18 +364,6 @@ public class Controller {
             senateModel.deselectAll();
             uw.setCandidatePreferences(senateModel.getFullMap());
             uw.setConfirmButtonColoured(false);
-
-            // this version deselects everything from both ballots
-            /*
-            aboveModel.deselectAll();
-            belowModel.deselectAll();
-
-            if(uw.getCurrentState() == 0) {
-                uw.setCandidatePreferences(aboveModel.getFullMap());
-            } else {
-                uw.setCandidatePreferences(belowModel.getFullMap());
-            }
-            */
         });
 
         uw.getConfirmButton().setOnAction(actionEvent -> {
@@ -369,30 +380,6 @@ public class Controller {
         uw.getHelpButton().setOnAction(actionEvent -> showHelpMessage());
 
         return uw;
-    }
-
-    /**
-     * Getter for the current view
-     * @return the current view
-     */
-    public AbstractView getCurrentView() {
-        return currentView;
-    }
-
-    /**
-     * Getter for the javafx stage
-     * @return the javafx stage
-     */
-    public Stage getStage() {
-        return stage;
-    }
-
-    /**
-     * Getter for the voting model
-     * @return the voting model
-     */
-    public VotingModel getModel() {
-        return currentModel;
     }
 
     // Handler for the button presses on the candidate cards
@@ -430,7 +417,7 @@ public class Controller {
         }
     }
 
-     // Handler for the button presses on the candidate cards
+    // Handler for the button presses on the candidate cards
     private class SenateCandidateClickHandler implements EventHandler<MouseEvent> {
 
         private Candidate candidate;
@@ -463,6 +450,30 @@ public class Controller {
             // Redraw all the candidate preference numbers because why not
             ((SenateView)currentView).setCandidatePreferences(currentModel.getFullMap());
         }
+    }
+
+    /**
+     * Getter for the current view
+     * @return the current view
+     */
+    public AbstractView getCurrentView() {
+        return currentView;
+    }
+
+    /**
+     * Getter for the javafx stage
+     * @return the javafx stage
+     */
+    public Stage getStage() {
+        return stage;
+    }
+
+    /**
+     * Getter for the voting model
+     * @return the voting model
+     */
+    public VotingModel getModel() {
+        return currentModel;
     }
 
 }

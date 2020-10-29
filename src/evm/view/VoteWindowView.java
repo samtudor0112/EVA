@@ -23,24 +23,18 @@ public class VoteWindowView extends AbstractView {
 
     private final int VOTE_TABLE_COLUMNS = 2;
 
+    /* The UI elements */
     private GridPane votePane;
-
     private Button confirmButton;
-
     private Button clearButton;
-
     private Button helpButton;
 
     private double width;
-
     private double height;
 
-    /* TODO change this to a Map<evm.Candidate, Integer> ??? */
+    /* The maps of candidates to their voting cards and labels */
     private Map<Candidate, Label> preferenceBoxMap;
-
     private Map<Candidate, HBox> voteCardMap;
-
-    public Text topLabel = null;
 
     /**
      * Instantiate the vote window from a stage of size width by height.
@@ -49,7 +43,6 @@ public class VoteWindowView extends AbstractView {
      * @param height the height of the javafx stage
      */
     public VoteWindowView(double width, double height, String ballotName, Integer minPrefs) {
-
         this.width = width;
         this.height = height;
 
@@ -60,10 +53,6 @@ public class VoteWindowView extends AbstractView {
         Text titleLabel = new Text("Voting for " + ballotName +  ": place at least " + minPrefs.toString() + " preferences");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
-
-        /*String topLabelText = ballotName + " - please place at least " + minPrefs.toString() + " preferences";
-        topLabel = new Text(topLabelText);
-        HBox ballotNameBox = new HBox(topLabel);*/
 
         HBox titleBox = new HBox(titleLabel);
         titleBox.getStyleClass().add("purple-header");
@@ -89,9 +78,7 @@ public class VoteWindowView extends AbstractView {
         helpButton = new Button("?");
 
         clearButton.getStyleClass().add("cancel-button");
-
         confirmButton.getStyleClass().add("confirm-button-grey");
-
         helpButton.getStyleClass().add("help-button");
 
 
@@ -126,7 +113,8 @@ public class VoteWindowView extends AbstractView {
     }
 
     /**
-     * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * Draws the candidate cards from a list of candidates.
+     * Also populates the voteCardMap and preferenceBoxMap.
      * @param candidateList the list of candidates to draw
      */
     public void drawCandidateCards(List<Candidate> candidateList, long seed) {
@@ -138,6 +126,7 @@ public class VoteWindowView extends AbstractView {
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
+        // See comment in Controller.setUpLoginWindow
         List<Candidate> shuffledCandidates = new ArrayList<>(candidateList);
         Collections.shuffle(shuffledCandidates, new Random(seed));
 
@@ -145,7 +134,6 @@ public class VoteWindowView extends AbstractView {
         // Do not use a for-each loop here, we need a numeric index
         for (int i = 0; i < shuffledCandidates.size(); i++) {
             Label preferenceLabel = new Label();
-            //preferenceLabel.setText("1");
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
@@ -158,12 +146,6 @@ public class VoteWindowView extends AbstractView {
 
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
-
-            /* TODO check wrapping for longer party names */
-            // Wrap the name and party text labels so it doesn't squash other vote card elements
-            // MaGiC NuMbErS, just leave these,
-            //candidateName.setWrappingWidth(200);
-            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
@@ -235,10 +217,18 @@ public class VoteWindowView extends AbstractView {
         return confirmButton;
     }
 
+    /**
+     * Getter for the help button
+     * @return the help button
+     */
     public Button getHelpButton() {
         return helpButton;
     }
 
+    /**
+     * Set the confirm button to be either greyed out or normal purple
+     * @param coloured whether the confirm button should be purple
+     */
     public void setConfirmButtonColoured(boolean coloured) {
         confirmButton.getStyleClass().clear();
         if (coloured) {

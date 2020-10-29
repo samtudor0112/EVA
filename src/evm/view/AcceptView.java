@@ -12,15 +12,15 @@ import javafx.scene.text.TextAlignment;
 import java.io.File;
 
 /**
- * A generic View which displays the logo, a given string s and an OK button.
+ * A generic view which displays the logo, a given string s and an OK button.
  */
 public class AcceptView extends AbstractView {
 
     private Button confirmButton;
     /**
-     * Constructor for the accept view
-     * @param width width of the stage
-     * @param height height of the stage
+     * Instantiate the accept view
+     * @param width width of the javafx stage
+     * @param height height of the javafx stage
      * @param s the message to display in the view
      */
     public AcceptView(double width, double height, String s) {
@@ -34,8 +34,8 @@ public class AcceptView extends AbstractView {
         Button confirmButton = new Button("OK");
         confirmButton.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
 
-        Image image = new Image(new File("img/our-logo.png").toURI().toString());
-        ImageView iv = new ImageView(image);
+        Image logo = new Image(new File("img/our-logo.png").toURI().toString());
+        ImageView iv = new ImageView(logo);
 
         ((Group) root).getChildren().addAll(confirmButton, titleLabel, iv);
 
@@ -59,8 +59,11 @@ public class AcceptView extends AbstractView {
         this.confirmButton = confirmButton;
     }
 
+    /**
+     * Getter for the confirm button
+     * @return the confirm button
+     */
     public Button getConfirmButton() {
-
         return this.confirmButton;
     }
 }

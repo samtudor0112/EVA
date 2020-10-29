@@ -1,8 +1,5 @@
 package evm;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,8 +48,6 @@ public class VotingModel {
             return false;
         }
 
-        // Do we need more checks?
-
         deselectVote(candidate);
         return true;
     }
@@ -82,13 +77,11 @@ public class VotingModel {
             return false;
         }
 
-        // Do we need more checks?
-
         setVote(candidate, vote);
         return true;
     }
 
-    /*
+    /**
      * Vote for the candidate as the next non-voted-for vote
      * (e.g. if 3 candidates have been voted for as 1,2,3, vote for this candidate as 4).
      * @param candidate The candidate to vote for
@@ -207,36 +200,6 @@ public class VotingModel {
         }
     }
 
-//    private Map<Integer, Candidate> orderMap() {
-//        Map<Integer, Candidate> output = new TreeMap<>();
-//
-//        Set<Candidate> candidates = currentVotes.keySet();
-//
-//        for (Candidate c : candidates) {
-//            if (currentVotes.get(c) == Integer.MAX_VALUE) {
-//                continue;
-//            }
-//            output.put(currentVotes.get(c), c);
-//        }
-//
-//        return output;
-//    }
-//
-//    public ObservableList<Candidate> orderedList() {
-//        ObservableList<Candidate> candidates = FXCollections.observableArrayList();
-//        Map<Integer, Candidate> order = orderMap();
-//        ArrayList<Candidate> allCandidates = new ArrayList<>(currentVotes.keySet());
-//
-//        for (int index : order.keySet()) {
-//            Candidate c = order.get(index);
-//            candidates.add(c);
-//            allCandidates.remove(c);
-//        }
-//
-//        candidates.addAll(allCandidates);
-//
-//        return candidates;
-//    }
 
     /**
      * Returns a list of the candidates sorted by their current preference, ascending
@@ -249,21 +212,25 @@ public class VotingModel {
     }
 
     /**
-     * A way to differentiate ballots (Lower house, upper house etc)
-     * Not really relevant right now but will be used later on.
-     * TODO add multiple ballots - this can be used to store the name of the ballot
-     * @return a string message to be displayed when the ballot is confirmed
+     * The string message to print when the ballot is confirmed
+     * @return the string message
      */
     public String getBallotString() { return ballot.getPrintMsg(); }
 
-
-
+    /**
+     * Set the ballot to a new ballot
+     * @param ballot the new ballot
+     */
     public void setBallot(Ballot ballot) {
         this.ballot = ballot;
         currentVotes.clear();
         deselectAll();
     }
 
+    /**
+     * Getter for the ballot
+     * @return the ballot
+     */
     public Ballot getBallot() {
         return ballot;
     }

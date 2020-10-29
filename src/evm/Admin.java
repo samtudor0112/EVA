@@ -8,6 +8,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 
+/**
+ * A simple commandline application which can be used to create config files
+ * for the main application
+ */
 public class Admin {
 
     public static void main(String[] args) {
