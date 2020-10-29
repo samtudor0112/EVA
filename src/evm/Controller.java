@@ -237,10 +237,10 @@ public class Controller {
         // let's cast it here so we don't cast it everywhere
         SenateVotingModel senateModel = (SenateVotingModel)currentModel;
 
-        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName(), ((SenateVotingModel) currentModel).getAboveLine().getNumVotesNeeded(), ((SenateVotingModel) currentModel).getBelowLine().getNumVotesNeeded());
+        SenateView uw = new SenateView(stage.getWidth(), stage.getHeight(), currentModel.getBallot().getName());
 
         if(state == 0) {
-            uw.setAboveLine();
+            uw.setAboveLine(senateModel.getAboveLine().getNumVotesNeeded());
             uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), true);
 
@@ -255,7 +255,7 @@ public class Controller {
                 entry.getValue().setOnMouseClicked(new SenateCandidateClickHandler(entry.getKey(), entry.getValue()));
             }
         } else {
-            uw.setBelowLine();
+            uw.setBelowLine(senateModel.getBelowLine().getNumVotesNeeded());
             uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), false);
 
@@ -274,7 +274,7 @@ public class Controller {
         uw.setAboveBelowColoured(senateModel.getIsAboveLine());
 
         uw.getAboveButton().setOnAction(actionEvent -> {
-            uw.setAboveLine();
+            uw.setAboveLine(senateModel.getAboveLine().getNumVotesNeeded());
             uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), false);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), true);
 
@@ -293,7 +293,7 @@ public class Controller {
         });
 
         uw.getBelowButton().setOnAction(actionEvent -> {
-            uw.setBelowLine();
+            uw.setBelowLine(senateModel.getBelowLine().getNumVotesNeeded());
             uw.drawCandidateCards(senateModel.getBelowLine().getCandidateList(), true);
             uw.drawPartyCards(senateModel.getAboveLine().getCandidateList(), false);
 

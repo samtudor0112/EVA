@@ -217,3 +217,16 @@
     -fx-font-style: italic;
     -fx-font-size: 2em;
 }
+
+.scrolly-pane {
+    -fx-font-size: 50px;
+}
+
+/*.scrolly-pane .scroll-bar:horizontal .scroll-bar:vertical {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#a1009e, #590058),
+            linear-gradient(#970094, #4f004E),
+            linear-gradient(#8D008A, #590044);50px;
+    -fx-font-size: 50px;
+}*/

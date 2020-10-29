@@ -14,12 +14,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
+import java.io.File;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -50,18 +53,15 @@ public class SenateView extends AbstractView {
 
     private StackPane stack;
 
-    private Arrow leftArrow;
+    private ImageView leftArrow;
 
-    private Arrow rightArrow;
+    private ImageView rightArrow;
 
     private double width;
 
     private double height;
 
     private Text titleLabel;
-
-    private int belowPrefs;
-    private int abovePrefs; //bad design? yes. I don't care
 
     ArrayList<String> parties = null;
 
@@ -85,7 +85,7 @@ public class SenateView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public SenateView(double width, double height, String ballotName, Integer minPrefsAbove, Integer minPrefsBelow) {
+    public SenateView(double width, double height, String ballotName) {
 
         this.width = width;
         this.height = height;
@@ -106,10 +106,7 @@ public class SenateView extends AbstractView {
 //        optionBox.setSpacing(5);
 //        optionBox.setPadding(new Insets(0, 5, 0, 5));
 
-        belowPrefs = minPrefsBelow;
-        abovePrefs = minPrefsAbove;
-
-        titleLabel = new Text("Voting above the line: place at least " + abovePrefs + " preferences");
+        titleLabel = new Text("");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
@@ -183,25 +180,37 @@ public class SenateView extends AbstractView {
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        scrolly.getStyleClass().add(".scrolly-pane");
         scrolly.setStyle("-fx-font-size: 50px;");
 
-        leftArrow = new Arrow();
-        rightArrow = new Arrow();
+        Image image = new Image(new File("img/arrow.png").toURI().toString());
 
-        rightArrow.setStartX(width - 200);
-        rightArrow.setEndX(width - 100);
+        rightArrow = new ImageView(image);
+        rightArrow.setPreserveRatio(true);
+        rightArrow.setFitWidth(150);
 
-        rightArrow.setStartY(height/2);
-        rightArrow.setEndY(height/2);
+        leftArrow = new ImageView(image);
+        leftArrow.setRotate(180);
+        leftArrow.setPreserveRatio(true);
+        leftArrow.setFitWidth(150);
 
-        leftArrow.setStartX(200);
-        leftArrow.setEndX(100);
-
-        leftArrow.setStartY(height/2);
-        leftArrow.setEndY(height/2);
-
-        leftArrow.setStrokeWidth(5);
-        rightArrow.setStrokeWidth(5);
+//        leftArrow = new Arrow();
+//        rightArrow = new Arrow();
+//
+//        rightArrow.setStartX(width - 200);
+//        rightArrow.setEndX(width - 100);
+//
+//        rightArrow.setStartY(height/2);
+//        rightArrow.setEndY(height/2);
+//
+//        leftArrow.setStartX(200);
+//        leftArrow.setEndX(100);
+//
+//        leftArrow.setStartY(height/2);
+//        leftArrow.setEndY(height/2);
+//
+//        leftArrow.setStrokeWidth(5);
+//        rightArrow.setStrokeWidth(5);
 
         scrolly.hvalueProperty().addListener(observable -> checkArrowVisibility());
         checkArrowVisibility();
@@ -508,9 +517,9 @@ public class SenateView extends AbstractView {
     /**
      * Swaps to showing below the line voting
      */
-    public void setBelowLine() {
+    public void setBelowLine(int numPrefs) {
 
-        titleLabel.setText("Voting below the line: place at least " + belowPrefs + " preferences");
+        titleLabel.setText("Voting below the line: place at least " + numPrefs + " preferences");
 
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
@@ -521,8 +530,8 @@ public class SenateView extends AbstractView {
     /**
      * Swaps to showing above the line voting
      */
-    public void setAboveLine() {
-        titleLabel.setText("Voting above the line: place at least " + abovePrefs + " preferences");
+    public void setAboveLine(int numPrefs) {
+        titleLabel.setText("Voting above the line: place at least " + numPrefs + " preferences");
 
         // set the displayed voting model as
 
