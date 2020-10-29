@@ -217,3 +217,41 @@
     -fx-font-style: italic;
     -fx-font-size: 2em;
 }
+
+.scrolly-pane {
+    -fx-font-size: 50px;
+}
+
+.scrolly-pane .scroll-bar:horizontal .track,
+.scrolly-pane .scroll-bar:vertical .track {
+    /*-fx-background-color:
+            #000000,
+            linear-gradient(#a1009e, #590058),
+            linear-gradient(#970094, #4f004E),
+            linear-gradient(#8D008A, #590044);*/
+}
+
+.scrolly-pane .scroll-bar:horizontal .thumb,
+.scrolly-pane .scroll-bar:vertical .thumb {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6C0B94, #4e066b);
+}
+
+/*.scrolly-pane .scroll-bar:horizontal .increment-arrow,
+.scrolly-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}*/
+
+/*.scrolly-pane .scroll-bar:horizontal .increment-button,
+.scrolly-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+
+.scrolly-pane .scroll-bar:vertical .increment-button,
+.scrolly-pane .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+}*/

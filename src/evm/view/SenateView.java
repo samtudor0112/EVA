@@ -180,8 +180,8 @@ public class SenateView extends AbstractView {
         scrolly.pannableProperty().set(true);
         scrolly.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrolly.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-//        scrolly.getStyleClass().add(".scrolly-pane");
-        scrolly.setStyle("-fx-font-size: 50px;");
+        scrolly.getStyleClass().add("scrolly-pane");
+//        scrolly.setStyle("-fx-font-size: 50px;");
 
         Image image = new Image(new File("img/arrow.png").toURI().toString());
 
