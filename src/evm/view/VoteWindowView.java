@@ -31,6 +31,8 @@ public class VoteWindowView extends AbstractView {
 
     private Button clearButton;
 
+    private Button helpButton;
+
     private double width;
 
     private double height;
@@ -86,22 +88,27 @@ public class VoteWindowView extends AbstractView {
         // Button pane
         clearButton = new Button("Clear all");
         confirmButton = new Button("Confirm");
+        helpButton = new Button("?");
 
         clearButton.getStyleClass().add("cancel-button");
 
         confirmButton.getStyleClass().add("confirm-button-grey");
 
+        helpButton.getStyleClass().add("help-button");
 
-        HBox buttonRow = new HBox(clearButton, confirmButton);
+
+        HBox buttonRow = new HBox(helpButton, clearButton, confirmButton);
         buttonRow.setPrefWidth(200);
         buttonRow.setSpacing(5);
         buttonRow.setPadding(new Insets(0, 5, 0, 5));
 
-        clearButton.setPrefWidth((width - 20) / 2);
+        clearButton.setPrefWidth(3 * ((width - 20) / 8));
         confirmButton.setPrefWidth((width - 20) / 2);
+        helpButton.setPrefWidth((width - 20) / 8);
 
         clearButton.setPrefHeight(100);
         confirmButton.setPrefHeight(100);
+        helpButton.setPrefHeight(100);
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -225,6 +232,10 @@ public class VoteWindowView extends AbstractView {
      */
     public Button getConfirmButton() {
         return confirmButton;
+    }
+
+    public Button getHelpButton() {
+        return helpButton;
     }
 
     public void setConfirmButtonColoured(boolean coloured) {

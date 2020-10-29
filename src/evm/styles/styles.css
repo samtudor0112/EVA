@@ -109,6 +109,20 @@
     -fx-font-size: 40px;
 }
 
+.help-button {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6C0B94, #4e066b);
+            /*linear-gradient(#970094, #4f004E),
+            linear-gradient(#8D008A, #590044);*/
+        -fx-background-insets: 0, 1, 2, 3;
+        -fx-background-radius: 3, 2, 2, 2;
+        -fx-padding: 12 30 12 30;
+        -fx-text-fill: white;
+        -fx-font-size: 40px;
+        -fx-alignment: CENTER;
+}
+
 /* Header style in accordance with colour scheme */
 .purple-header {
     -fx-background-color: linear-gradient(#6C0B94 0%, #4e066b 100%);
@@ -185,4 +199,21 @@
     /* simply put
        stuff here
      */
+}
+
+.dialog-pane {
+    -fx-background-color: #6C0B94;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: white;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: #6C0B94;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-font-style: italic;
+    -fx-font-size: 2em;
 }

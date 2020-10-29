@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.util.*;
@@ -75,11 +78,44 @@ public class Controller {
             newView = setupVoteWindow();
         }
         changeView(newView);
+        showHelpMessage();
     }
 
     public void nextModel() {
         currentModelIndex++;
         currentModel = models.get(currentModelIndex);
+    }
+
+    public void showHelpMessage() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        if (currentModel instanceof SenateVotingModel) {
+            alert.setContentText(genSenateHelpMsg((SenateVotingModel)currentModel));
+        } else {
+            alert.setContentText(genVoteHelpMsg(currentModel));
+        }
+        alert.setTitle("IMPORTANT INFORMATION");
+        alert.getDialogPane().getStyleClass().add(".dialog-pane");
+        alert.setHeaderText("How to vote");
+        alert.initOwner(stage);
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.showAndWait();
+    }
+
+    private String genSenateHelpMsg(SenateVotingModel s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("You can vote one of two ways: ");
+        sb.append("Above the line by numbering at least " + s.getAboveLine().getNumVotesNeeded() +
+                        " candidates in the order of your choice with 1 as your highest preference.\n");
+        sb.append("OR\n");
+        sb.append("Below the line by numbering at least " + s.getBelowLine().getNumVotesNeeded() +
+                        " candidates in the order of your choice with 1 as your highest preference.\n");
+        return sb.toString();
+    }
+
+    private String genVoteHelpMsg(VotingModel s) {
+        return "Vote by numbering at least " + s.getBallot().getNumVotesNeeded() +
+                " candidates in the order of your choice with 1 as your highest preference.";
     }
 
     /**
@@ -115,6 +151,8 @@ public class Controller {
                 System.out.println("Not enough candidates voted for");
             }
         });
+
+        vw.getHelpButton().setOnAction(actionEvent -> showHelpMessage());
         return vw;
     }
 
@@ -134,7 +172,7 @@ public class Controller {
              } else {
                  nextView = setupVoteWindow();
              }
-            changeView(nextView);
+             changeView(nextView);
         });
 
         cw.getConfirmButton().setOnAction(actionEvent -> {
@@ -165,6 +203,7 @@ public class Controller {
 
         av.getConfirmButton().setOnAction(actionEvent -> {
             // We change to the next voting model here, very important
+            //nextModel();
             if (currentModelIndex != models.size() - 1) {
                 nextModel();
                 changeToNextBallot();
@@ -315,6 +354,8 @@ public class Controller {
                 System.out.println("Not enough candidates voted for");
             }
         });
+
+        uw.getHelpButton().setOnAction(actionEvent -> showHelpMessage());
 
         return uw;
     }
