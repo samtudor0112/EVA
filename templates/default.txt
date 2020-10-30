@@ -13,10 +13,10 @@ line,30,660,580,660
 fsize,30
 // candidate vote stuff
 //drawbox-x1,x2,y1,offset(*i),y2=y1-(x1-x2)
-box,35,85,565,70
+box,35,85,565,55
 //     x , y , (offset) * i
-cname,100,530,70
-cvote,50,530,70
+cname,100,530,55
+cvote,52,530,55
 
 //draw bottom part
 line,30,50,580,50

@@ -117,7 +117,7 @@ public class BallotPrinter {
                                 int vote = currentVotes.get(candidates.get(i));
                                 if (vote != Integer.MAX_VALUE) {
                                     contents.beginText();
-                                    contents.newLineAtOffset(50, 530 - 70 * i);
+                                    contents.newLineAtOffset(Integer.parseInt(seg[1]),  Integer.parseInt(seg[2]) - Integer.parseInt(seg[3]) * i);
                                     contents.showText(vote + "");
                                     contents.endText();
                                 }
