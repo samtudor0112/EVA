@@ -6,9 +6,8 @@ text,200,720,Ballot Paper
 //add images (may need double slash)
 image,10,660,img\gov-logo.jpg
 fsize,25
-text,70,630,Number the boxes from 1 to 8 in
-text,70,600,the order of your choice
-line,30,590,580,590
+area,30,620
+line,30,605,580,605
 line,30,660,580,660
 fsize,30
 // candidate vote stuff
@@ -24,4 +23,4 @@ cvote,52,530,55
 //draw bottom part
 line,30,50,580,50
 fsize,15
-text,100,30,Remember... number every box to make your vote count
+//text,100,30,Remember... number every box to make your vote count

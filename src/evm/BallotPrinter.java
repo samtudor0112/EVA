@@ -134,7 +134,7 @@ public class BallotPrinter {
                         case "area":
                             contents.beginText();
                             contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]));
-                            contents.showText(currentModel.getBallot().getName());
+                            contents.showText("Voting for " + currentModel.getBallot().getName());
                             contents.endText();
                             break;
                         case "senate":
@@ -232,7 +232,7 @@ public class BallotPrinter {
                                     partyCandidates = (List<Candidate>) parties.get(candidates.get(partyNo + doubleUpRem).getParty());
                                 }
                                 for (int c = 0; c < partyCandidates.size(); ++c) {
-                                    contents.setFont(font, 10);
+                                    contents.setFont(font, 7);
                                     // draw candidate name
                                     contents.beginText();
                                     contents.newLineAtOffset(x1 + pWidth3 * partyNo + pBox6 + 8, y2 - pHeight4 - (pBox6 + pSpac7) * c);
@@ -262,7 +262,7 @@ public class BallotPrinter {
                                         try {
                                             int vote = currentVotes.get(partyCandidates.get(c));
                                             if (vote != Integer.MAX_VALUE) {
-                                                contents.setFont(font, 30);
+                                                contents.setFont(font, 20);
                                                 contents.beginText();
                                                 contents.newLineAtOffset(x1 + pWidth3 * partyNo + 14, y2 - pHeight4 - (pBox6 + pSpac7) * c - 17);
                                                 contents.showText(vote + "");

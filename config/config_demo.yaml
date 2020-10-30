@@ -1,0 +1,58 @@
+!!evm.Config
+ballots:
+- candidateList:
+  - {name: Ben, party: Animal Justice Party}
+  - {name: Daniel, party: Informed Medical Opinions Party}
+  - {name: Enrique, party: Pirate Party Australia}
+  - {name: Steven Scott, party: Seniors United Party of Australia}
+  - {name: Jenna, party: Science Party}
+  - {name: Chengyu, party: The Small Business Party}
+  - {name: Michael R, party: VOTEFLUX.ORG | Upgrade Democracy!}
+  - {name: Miguel, party: Transport Matters Party}
+  - {name: Alex B, party: Bullet Trains for Australia}
+  name: Tutors
+  numCandidates: 9
+  numVotesNeeded: 9
+  printMsg: Lower house ballot complete, ballot printing...
+- candidateList:
+  - {name: Walter White, party: Breaking Bad}
+  - {name: Skyler White, party: Breaking Bad}
+  - {name: Jesse Pinkman, party: Breaking Bad}
+  - {name: Saul Goodman, party: Breaking Bad}
+  - {name: Gus Fring, party: Breaking Bad}
+  - {name: Jon Snow, party: Game of Thrones}
+  - {name: Daenerys Targaryen, party: Game of Thrones}
+  - {name: Tyrion Lannister, party: Game of Thrones}
+  - {name: Arya Stark, party: Game of Thrones}
+  - {name: Scott Mccall, party: Teen Wolf}
+  - {name: Stiles Stilinksi, party: Teen Wolf}
+  - {name: Allison Argent, party: Teen Wolf}
+  - {name: Kira Yukimura, party: Teen Wolf}
+  - {name: Lydia Martin, party: Teen Wolf}
+  - {name: Derek Hale, party: Teen Wolf}
+  - {name: Isaac Lahey, party: Teen Wolf}
+  - {name: Jake Peralta, party: Brooklyn Nine Nine}
+  - {name: Amy Santiago, party: Brooklyn Nine Nine}
+  - {name: Raymond Holt, party: Brooklyn Nine Nine}
+  - {name: Cosmo Kramer, party: Seinfeld}
+  - {name: George Constanza, party: Seinfeld}
+  - {name: Elaine Benes, party: Seinfeld}
+  - {name: Jerry Seinfeld, party: Seinfeld}
+  - {name: Jeff Winger, party: Community}
+  - {name: Annie Edison, party: Community}
+  - {name: Britta Perry, party: Community}
+  - {name: Pierce Hawthorne, party: Community}
+  - {name: Troy Barnes, party: Community}
+  - {name: Shirley Bennet, party: Community}
+  - {name: Vanya Hargreeves, party: The Umbrella Academy}
+  - {name: Allison Hargreeves, party: The Umbrella Academy}
+  - {name: Diego Hargreeves, party: The Umbrella Academy}
+  - {name: Klaus Hargreeves, party: The Umbrella Academy}
+  - {name: Luther Hargreeves, party: The Umbrella Academy}
+  - {name: Number Five, party: The Umbrella Academy}
+  name: TV Shows
+  numCandidates: 35
+  numVotesNeeded: 12
+  printMsg: Upper house ballot complete, ballot printing...
+extraData: {Ballot1PartyVotesRequired: 4, Ballot0Type: Lower House, Ballot1Type: Upper
+    House}
