@@ -39,16 +39,19 @@ Allows the user to vote on a simple ballot like the one used for the upper house
 
 ### Upper house voting screen
 A voter can choose to vote above the line for parties or below the line for specific individuals in the senate. It also has the same help abilities as the lower house ballot.
-![Upper house help](https://i.imgur.com/ovZgC5J.png)
-![Upper house ATL](https://i.imgur.com/DSUZFDl.png)
-![Upper house BTL](https://i.imgur.com/jA5Qp4j.png)
+
+![Upper house help](https://i.imgur.com/gJiY2Q3.png)
+![Upper house ATL](https://i.imgur.com/OjXuT0N.png)
+![Upper house BTL](https://i.imgur.com/vxIZMqk.png)
 
 ### Confirmation screen
 After placing preferences, the program asks the user to confirm that their preferences are correct before printing. If there are candidates they have not preferenced they are greyed out to indicate this.
+
 ![Confirmation screen](https://i.imgur.com/MzelUCl.png)
 
 ### Printing screen
 Shows after the voter has confirmed their preferences are correct to indicate that the ballot is printing.
+
 ![Printing Screen](https://i.imgur.com/Ltmxnql.png)
 
 ## Credits
