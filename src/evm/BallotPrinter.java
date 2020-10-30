@@ -112,6 +112,14 @@ public class BallotPrinter {
                                 contents.endText();
                             }
                             break;
+                        case "cparty":
+                            for (int i = 0; i < candidates.size(); i++) {
+                                contents.beginText();
+                                contents.newLineAtOffset(Integer.parseInt(seg[1]), Integer.parseInt(seg[2]) - Integer.parseInt(seg[3]) * i);
+                                contents.showText(candidates.get(i).getParty());
+                                contents.endText();
+                            }
+                            break;
                         case "cvote":
                             for (int i = 0; i < candidates.size(); i++) {
                                 int vote = currentVotes.get(candidates.get(i));
