@@ -1,4 +1,0 @@
-font,helvetica
-fsize,10
-senate,10,350,150,42,8,34,10
-			

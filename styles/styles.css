@@ -2,6 +2,7 @@
 .root{
     -fx-background-color: #EEEEEE;
     -fx-font-size: 20px;
+    -fx-font-family: "Roboto", sans-serif;
 }
 
 /* Make the list look less ugly */
@@ -36,9 +37,8 @@
     -fx-width: 50px;
 }
 
-
-/* The confirm button style */
-.confirm-button {
+/* The above/below button style */
+.line-button {
     -fx-background-color:
         #000000,
         linear-gradient(#a1009e, #590058),
@@ -48,7 +48,37 @@
     -fx-background-radius: 3, 2, 2, 2;
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-alignment: CENTER;
+}
+
+.line-button-grey {
+    -fx-background-color:
+            #000000,
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959),
+        linear-gradient(#878787, #595959);
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-alignment: CENTER;
+}
+
+/* The confirm button style */
+.confirm-button {
+    -fx-background-color:
+        #000000,
+        linear-gradient(#6C0B94, #4e066b);
+        /*linear-gradient(#970094, #4f004E),
+        linear-gradient(#8D008A, #590044);*/
+    -fx-background-insets: 0, 1, 2, 3;
+    -fx-background-radius: 3, 2, 2, 2;
+    -fx-padding: 12 30 12 30;
+    -fx-text-fill: white;
     -fx-font-size: 40px;
+    -fx-alignment: CENTER;
 }
 
 .confirm-button-grey {
@@ -62,6 +92,7 @@
     -fx-padding: 12 30 12 30;
     -fx-text-fill: white;
     -fx-font-size: 40px;
+    -fx-alignment: CENTER;
 }
 
 /* The "cancel" / "clear current vote" style */
@@ -78,9 +109,23 @@
     -fx-font-size: 40px;
 }
 
+.help-button {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6C0B94, #4e066b);
+            /*linear-gradient(#970094, #4f004E),
+            linear-gradient(#8D008A, #590044);*/
+        -fx-background-insets: 0, 1, 2, 3;
+        -fx-background-radius: 3, 2, 2, 2;
+        -fx-padding: 12 30 12 30;
+        -fx-text-fill: white;
+        -fx-font-size: 40px;
+        -fx-alignment: CENTER;
+}
+
 /* Header style in accordance with colour scheme */
 .purple-header {
-    -fx-background-color: linear-gradient(#520051 0%, #690067 100%);
+    -fx-background-color: linear-gradient(#6C0B94 0%, #4e066b 100%);
     -fx-padding: 10px;
     -fx-padding-left: 5px;
     /*-fx-text-fill: white;*/
@@ -99,16 +144,26 @@
 
 /* Vote screen candidate "card" candidate text style */
 .vote-candidate-display {
-    /* TODO Style and align text more desirably */
 }
 
 /* Vote screen candidate "card" card style */
-.vote-card {
+.vote-card-candidate {
     -fx-padding: 10px;
     -fx-border-style: solid inside;
     -fx-border-width: 1px;
     -fx-border-radius: 3px;
     -fx-background-color: #eeeeee;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Vote screen party "card" card style. Currently the same as candidate */
+.vote-card-party {
+    -fx-padding: 10px;
+    -fx-border-style: solid inside;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-color: #eeeeee;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .focus-vote-card {
@@ -144,3 +199,58 @@
        stuff here
      */
 }
+
+.dialog-pane {
+    -fx-background-color: #6C0B94;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: white;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: #6C0B94;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-font-style: italic;
+    -fx-font-size: 2em;
+}
+
+.scrolly-pane {
+    -fx-font-size: 50px;
+}
+
+.scrolly-pane .scroll-bar:horizontal .track,
+.scrolly-pane .scroll-bar:vertical .track {
+    /*-fx-background-color:
+            #000000,
+            linear-gradient(#a1009e, #590058),
+            linear-gradient(#970094, #4f004E),
+            linear-gradient(#8D008A, #590044);*/
+}
+
+.scrolly-pane .scroll-bar:horizontal .thumb,
+.scrolly-pane .scroll-bar:vertical .thumb {
+    -fx-background-color:
+            #000000,
+            linear-gradient(#6C0B94, #4e066b);
+}
+
+/*.scrolly-pane .scroll-bar:horizontal .increment-arrow,
+.scrolly-pane .scroll-bar:horizontal .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}*/
+
+/*.scrolly-pane .scroll-bar:horizontal .increment-button,
+.scrolly-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+
+.scrolly-pane .scroll-bar:vertical .increment-button,
+.scrolly-pane .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+}*/

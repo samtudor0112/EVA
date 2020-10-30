@@ -7,7 +7,7 @@ package evm;
  */
 public class WindowsNein {
     public static void main(String[] args) {
-        String[] a = new String[] {"program_name", "config/config.yaml"};
+        String[] a = {"program_name", "config/config_demo.yaml"};
         Main.main(a);
     }
 }

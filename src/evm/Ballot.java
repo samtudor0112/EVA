@@ -1,6 +1,5 @@
 package evm;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,14 +34,6 @@ public class Ballot {
         this.numVotesNeeded = votesNeeded;
         this.candidateList = candidates;
         this.printMsg = printMsg;
-    }
-
-    /**
-     * Randomizes order of candidates on ballot
-     */
-    public void randomize() {
-
-        Collections.shuffle(candidateList);
     }
 
     /**

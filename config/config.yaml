@@ -1,29 +1,110 @@
 !!evm.Config
 ballots:
 - candidateList:
-  - {name: Scott Morrison, party: Liberal National Party}
-  - {name: Anthony Albanese, party: Australian Labour Party}
-  - {name: Adam Bandt, party: Australian Greens}
-  - {name: Pauline Hanson, party: Pauline Hanson's One Nation}
-  - {name: Robbie Katter, party: Katter's Australia Party}
-  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
-  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
-  name: House of Representatives
-  numCandidates: 7
-  numVotesNeeded: 3
+  - {name: Ben, party: Animal Justice Party}
+  - {name: Daniel, party: Informed Medical Opinions Party}
+  - {name: Enrique, party: Pirate Party Australia}
+  - {name: Steven Scott, party: Seniors United Party of Australia}
+  - {name: Jenna, party: Science Party}
+  - {name: Chengyu, party: The Small Business Party}
+  - {name: Michael R, party: VOTEFLUX.ORG | Upgrade Democracy!}
+  - {name: Miguel, party: Transport Matters Party}
+  - {name: Alex B, party: Bullet Trains for Australia}
+  name: Tutors
+  numCandidates: 9
+  numVotesNeeded: 9
   printMsg: Lower house ballot complete, ballot printing...
 - candidateList:
-  - {name: Sco Mo, party: Liberal National Party}
-  - {name: Christopher Pyne, party: Liberal National Party}
-  - {name: Bill Shorten, party: Australian Labour Party}
-  - {name: Anthony Albanese, party: Australian Labour Party}
-  - {name: Richard Di Natale, party: Australian Greens}
-  - {name: Malcom Roberts, party: Pauline Hanson's One Nation}
-  - {name: Kit Katter, party: Katter's Australia Party}
-  - {name: Jacqui Lambie, party: Jacqui Lambie Network}
-  - {name: Robert Brown, party: 'Shooters, Fishers and Farmers Party'}
-  name: Senate
-  numCandidates: 9
-  numVotesNeeded: 3
+  - {name: 0% Risk, party: S1}
+  - {name: Synergy Labs, party: S1}
+  - {name: Red Panda, party: S1}
+  - {name: Cannoli, party: S1}
+  - {name: Devo3801, party: S1}
+  - {name: PogWare, party: S1}
+  - {name: Cherry Pro Max, party: S1}
+  - {name: Synthesis, party: S1}
+  - {name: GPA Seven, party: S2}
+  - {name: Untitled, party: S2}
+  - {name: Accordion, party: S2}
+  - {name: Diego, party: S2}
+  - {name: No-Name, party: S2}
+  - {name: Cats, party: S2}
+  - {name: Taco Tuesday, party: S2}
+  - {name: Stellaris, party: S2}
+  - {name: Placeholder, party: S2}
+  - {name: Synergistics, party: S2}
+  - {name: Bubble Guys, party: S2}
+  - {name: Indecisive, party: S2}
+  - {name: The Croissant, party: S2}
+  - {name: Strategic Turtles, party: S2}
+  - {name: 404NotFound, party: S2}
+  - {name: We are AWESOME!!!, party: S2}
+  - {name: Coldplay, party: S3}
+  - {name: Clueless, party: S3}
+  - {name: Windows Nein, party: S3}
+  - {name: FF15PLZ, party: S3}
+  - {name: Gents, party: S3}
+  - {name: You Bug No Hug, party: S3}
+  - {name: Prometheans, party: S3}
+  - {name: Who, party: S3}
+  - {name: TBA, party: S3}
+  - {name: Agile, party: S3}
+  - {name: SuperRare, party: S3}
+  - {name: Smart Build, party: S3}
+  - {name: Coding at the Disco, party: S3}
+  - {name: The Dream Team, party: S3}
+  - {name: 7UP, party: S3}
+  - {name: Purple, party: S3}
+  - {name: Segfault, party: S3}
+  - {name: Wasabi, party: S3}
+  - {name: 4 + 2, party: S4}
+  - {name: Lorem Ipsum, party: S4}
+  - {name: 'Quaranteam 2: Electric Boogaloo', party: S4}
+  - {name: Ignite, party: S4}
+  - {name: Rever, party: S4}
+  - {name: 96 Bulls, party: S4}
+  - {name: MEMES, party: S4}
+  - {name: Nintendogs, party: S4}
+  - {name: Dodo Lab, party: S4}
+  - {name: Monkey, party: S4}
+  - {name: M.A., party: S4}
+  - {name: '!Calcan', party: S4}
+  - {name: Friends & Co., party: S4}
+  - {name: Innovate20, party: S4}
+  - {name: Entertainment-04, party: S4}
+  - {name: The Royal Elephants, party: S5}
+  - {name: TMNT, party: S5}
+  - {name: We Showed Up, party: S5}
+  - {name: '//TODO: Team Name', party: S5}
+  - {name: Universally Challenged, party: S5}
+  - {name: Loading, party: S5}
+  - {name: Teddy Bear, party: S5}
+  - {name: Oblong, party: S5}
+  - {name: ION, party: S5}
+  - {name: Zoomie, party: S5}
+  - {name: Seventh Paradigm, party: S5}
+  - {name: Supreme Flex, party: S5}
+  - {name: Zelda, party: S5}
+  - {name: GOGO, party: S5}
+  - {name: Amigos, party: S6}
+  - {name: Newbie, party: S6}
+  - {name: Placeholder Team Name, party: S6}
+  - {name: AoLiGei, party: S6}
+  - {name: Bebop, party: S6}
+  - {name: Corona, party: S6}
+  - {name: Karsus, party: S6}
+  - {name: JK, party: S6}
+  - {name: Non PC, party: S6}
+  - {name: HEJJNT, party: S6}
+  - {name: Doofenshmirtz DECO Incorporated, party: S6}
+  - {name: Jawn, party: S6}
+  - {name: Coding Fish, party: S6}
+  - {name: The Snails, party: S6}
+  - {name: Orange, party: S6}
+  - {name: Bravo, party: S6}
+  name: Projects
+  numCandidates: 87
+  numVotesNeeded: 12
   printMsg: Upper house ballot complete, ballot printing...
-extraData: {Ballot1Type: Upper House,  Ballot0Type: Lower House, Ballot1PartyVotesRequired: 3}
+extraData: {Ballot1PartyVotesRequired: 4, Ballot0Type: Lower House, Ballot1Type: Upper
+    House}

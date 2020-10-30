@@ -1,6 +1,5 @@
 package evm;
 
-import evm.YAMLpublic.PublicBallot;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Screen;
@@ -8,24 +7,26 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-
 /**
- * The main entrypoint to the voting application. Should be called with java Main /path/to/config/file
- * (in our case, config/config.txt.old should be good)
+ * The main entry point to the voting application. Should be called with
+ * java Main /path/to/config/file
+ * (in our case, config/config.yaml should be good)
  */
 public class Main extends Application {
 
+    /**
+     * Starts the main javafx application. Instantiates the Controller, which
+     * manages the main program flow
+     * @param stage the javafx stage
+     */
     @Override
     public void start(Stage stage) {
 
-        // TEMPORARY
-        stage.setTitle("Printing...");
+        stage.setTitle("I can't think of a joke");
 
+        // Set up the javajx stage
         int width = (int) Screen.getPrimary().getBounds().getWidth();
         int height = (int) Screen.getPrimary().getBounds().getHeight();
 
@@ -35,27 +36,17 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
-//        List<Ballot> ballots = null;
-//        try {
-//            // get ballots
-//            ballots = ConfigReader.read(getParameters().getRaw().get(1));
-//
-//        } catch (IOException | IndexOutOfBoundsException e) {
-//            System.out.println("Invalid ballot config");
-//            Platform.exit();
-//            System.exit(1);
-//        }
-
-        Yaml yaml = new Yaml(new Constructor(Config.class));
-        InputStream input = null;
+        // Read the config
+        Config config;
         try {
-            input = new FileInputStream(new File(getParameters().getRaw().get(1)));
-        } catch (Exception e) {
-            e.printStackTrace();
+            config = Config.readConfig(getParameters().getRaw().get(1));
+        } catch (FileNotFoundException e) {
+            System.out.println("Invalid config file.");
             Platform.exit();
             System.exit(1);
+            // for Java's sake
+            return;
         }
-        Config config = yaml.load(input);
 
         // Make the voting models from the config
         List<VotingModel> models = new ArrayList<>();
@@ -87,54 +78,15 @@ public class Main extends Application {
             models.add(model);
         }
 
-
-        /** TEMP REPLACE THIS SHIT */
-//        List<VotingModel> models = new ArrayList<>();
-//        for (Ballot ballot : ballots) {
-//            models.add(new VotingModel(ballot));
-//        }
-
         Controller controller = new Controller(stage, models);
         controller.getStage().show();
-        /*
-        VotingModel model = null;
-        VotingModel aboveModel = null;
-        VotingModel belowModel = null;
-        int index = 0;
-        for (Ballot ballot: ballots) {
-
-            // randomize our ballot
-
-            index += 1;
-
-            if(index == 1) {
-                ballot.randomize();
-                model = new VotingModel(ballot);
-            } else if (index == 2) {
-
-                ballot.randomize();
-                aboveModel = new VotingModel(ballot);
-            } else if (index == 3) {
-                belowModel = new VotingModel(ballot);
-
-                // all ballots are now set
-                // evm.Controller instantiates the evm.view
-                Controller controller = new Controller(stage, model, aboveModel, belowModel);
-
-                // This will only show the last controller I think so that's a problem
-                // We also need a way to change the view to keep going to the next screen
-                controller.getStage().show();
-
-                // restart counter of 3s
-                index = 0;
-            }
-
-        }
-
-         */
 
     }
 
+    /**
+     * Javafx app start
+     * @param args commandline args
+     */
     public static void main(String[] args) {
         launch(args);
     }

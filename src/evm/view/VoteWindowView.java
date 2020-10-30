@@ -14,9 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import evm.view.AbstractView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The view implementing the main voting screen.
@@ -25,19 +23,17 @@ public class VoteWindowView extends AbstractView {
 
     private final int VOTE_TABLE_COLUMNS = 2;
 
+    /* The UI elements */
     private GridPane votePane;
-
     private Button confirmButton;
-
     private Button clearButton;
+    private Button helpButton;
 
     private double width;
-
     private double height;
 
-    /* TODO change this to a Map<evm.Candidate, Integer> ??? */
+    /* The maps of candidates to their voting cards and labels */
     private Map<Candidate, Label> preferenceBoxMap;
-
     private Map<Candidate, HBox> voteCardMap;
 
     /**
@@ -46,8 +42,7 @@ public class VoteWindowView extends AbstractView {
      * @param width the width of the javafx stage
      * @param height the height of the javafx stage
      */
-    public VoteWindowView(double width, double height) {
-
+    public VoteWindowView(double width, double height, String ballotName, Integer minPrefs) {
         this.width = width;
         this.height = height;
 
@@ -55,13 +50,16 @@ public class VoteWindowView extends AbstractView {
         BorderPane root = new BorderPane();
         this.root = root;
 
-        Text titleLabel = new Text("Place vote:");
+        Text titleLabel = new Text("Voting for " + ballotName +  ": place at least " + minPrefs.toString() + " preferences");
         titleLabel.getStyleClass().add("text-header-purple");
         titleLabel.setFill(Color.WHITE);
 
         HBox titleBox = new HBox(titleLabel);
         titleBox.getStyleClass().add("purple-header");
         titleBox.setPrefWidth(width);
+
+        VBox topBox = new VBox(titleBox);
+        topBox.setPrefWidth(width);
 
         votePane = new GridPane();
         votePane.setPrefWidth(width);
@@ -77,29 +75,32 @@ public class VoteWindowView extends AbstractView {
         // Button pane
         clearButton = new Button("Clear all");
         confirmButton = new Button("Confirm");
+        helpButton = new Button("?");
 
         clearButton.getStyleClass().add("cancel-button");
-
         confirmButton.getStyleClass().add("confirm-button-grey");
+        helpButton.getStyleClass().add("help-button");
 
 
-        HBox buttonRow = new HBox(clearButton, confirmButton);
+        HBox buttonRow = new HBox(helpButton, clearButton, confirmButton);
         buttonRow.setPrefWidth(200);
         buttonRow.setSpacing(5);
         buttonRow.setPadding(new Insets(0, 5, 0, 5));
 
-        clearButton.setPrefWidth((width - 20) / 2);
+        clearButton.setPrefWidth(3 * ((width - 20) / 8));
         confirmButton.setPrefWidth((width - 20) / 2);
+        helpButton.setPrefWidth((width - 20) / 8);
 
         clearButton.setPrefHeight(100);
         confirmButton.setPrefHeight(100);
+        helpButton.setPrefHeight(100);
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         VBox.setVgrow(spacer, Priority.ALWAYS);
         vbox.getChildren().add(votePane);
 
-        root.setTop(titleBox);
+        root.setTop(topBox);
         root.setBottom(buttonRow);
 
         ScrollPane scrolly = new ScrollPane();
@@ -112,10 +113,11 @@ public class VoteWindowView extends AbstractView {
     }
 
     /**
-     * Draws the candidate cards from a list of candidates. Also populates the voteCardMap and preferenceBoxMap.
+     * Draws the candidate cards from a list of candidates.
+     * Also populates the voteCardMap and preferenceBoxMap.
      * @param candidateList the list of candidates to draw
      */
-    public void drawCandidateCards(List<Candidate> candidateList) {
+    public void drawCandidateCards(List<Candidate> candidateList, long seed) {
         // Each Candidate object is assigned a TextArea, which can be changed when
         // user changes their vote
         preferenceBoxMap = new HashMap<>();
@@ -124,29 +126,26 @@ public class VoteWindowView extends AbstractView {
         // a vote for that candidate
         voteCardMap = new HashMap<>();
 
+        // See comment in Controller.setUpLoginWindow
+        List<Candidate> shuffledCandidates = new ArrayList<>(candidateList);
+        Collections.shuffle(shuffledCandidates, new Random(seed));
+
         // Iterates through all the candidates and displays them on the screen
         // Do not use a for-each loop here, we need a numeric index
-        for (int i = 0; i < candidateList.size(); i++) {
+        for (int i = 0; i < shuffledCandidates.size(); i++) {
             Label preferenceLabel = new Label();
-            //preferenceLabel.setText("1");
             preferenceLabel.getStyleClass().add("preference-label");
             preferenceLabel.setPrefSize(50, 50);
 
             // Here, the Candidate is assigned a TextArea
             // (the box with the preference number inside)
-            preferenceBoxMap.put(candidateList.get(i), preferenceLabel);
+            preferenceBoxMap.put(shuffledCandidates.get(i), preferenceLabel);
 
-            Text candidateName = new Text(candidateList.get(i).getName());
-            Text candidateParty = new Text(candidateList.get(i).getParty());
+            Text candidateName = new Text(shuffledCandidates.get(i).getName());
+            Text candidateParty = new Text(shuffledCandidates.get(i).getParty());
 
             candidateName.getStyleClass().add("candidate-name");
             candidateParty.getStyleClass().add("party-name");
-
-            /* TODO check wrapping for longer party names */
-            // Wrap the name and party text labels so it doesn't squash other vote card elements
-            // MaGiC NuMbErS, just leave these,
-            //candidateName.setWrappingWidth(200);
-            //candidateParty.setWrappingWidth(250);
 
             VBox candidateVbox = new VBox();
             candidateVbox.getChildren().addAll(candidateName, candidateParty);
@@ -155,7 +154,7 @@ public class VoteWindowView extends AbstractView {
 
             HBox voteCard = new HBox();
             voteCard.setPrefWidth(width/2);
-            voteCard.getStyleClass().add("vote-card");
+            voteCard.getStyleClass().add("vote-card-candidate");
             voteCard.getChildren().addAll(preferenceLabel, candidateVbox);
 
             // Shadow to make the cards look a bit more pretty and professional
@@ -167,7 +166,7 @@ public class VoteWindowView extends AbstractView {
             voteCard.setEffect(cardShadow);
 
             // We also assign each candidate a vote "card" (just an HBox)
-            voteCardMap.put(candidateList.get(i), voteCard);
+            voteCardMap.put(shuffledCandidates.get(i), voteCard);
 
             // This is why we need the numeric index, every other candidate is put onto a new line
             votePane.add(voteCard, i % VOTE_TABLE_COLUMNS, i / VOTE_TABLE_COLUMNS);
@@ -218,13 +217,24 @@ public class VoteWindowView extends AbstractView {
         return confirmButton;
     }
 
-    public void setConfirmButtonColor() {
-        confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button");
+    /**
+     * Getter for the help button
+     * @return the help button
+     */
+    public Button getHelpButton() {
+        return helpButton;
     }
 
-    public void setConfirmButtonGrey() {
+    /**
+     * Set the confirm button to be either greyed out or normal purple
+     * @param coloured whether the confirm button should be purple
+     */
+    public void setConfirmButtonColoured(boolean coloured) {
         confirmButton.getStyleClass().clear();
-        confirmButton.getStyleClass().add("confirm-button-grey");
+        if (coloured) {
+            confirmButton.getStyleClass().add("confirm-button");
+        } else {
+            confirmButton.getStyleClass().add("confirm-button-grey");
+        }
     }
 }
